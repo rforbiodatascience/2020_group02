@@ -1,0 +1,51 @@
+---
+title: "dataset_overview"
+author: "SMO"
+date: "16 4 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Datasets
+#Johns Hopkins COVID19 
+time_series_covid19_confirmed_global.csv, time_series_covid19_deaths_global.csv
+
+Observations: Country
+Variables: Confirmed cases/deaths by date 
+
+Cleaning:
+Convert to case-by-date tibble by country
+Compile state observations within countries
+Merge confirmed cases and confirmed deaths to same dataset
+Merge to WHO data by Country 
+
+#WHO datasets
+Adult mortality.csv
+Cause_specific_deaths.xls
+Healthy life expectancy.csv
+Life expectancy and healthy life expectancy.csv
+NCD_BMI_MEAN_age_standardized.csv
+NCD_BMI_above30_age_standardized.csv
+TOBACCO_0000000344,TOBACCO_0000000192.csv
+Current health expenditure.csv
+Health infrastructure.csv
+Medical doctors.csv
+Nurses and midwifes.csv
+Measles_reported_cases.csv
+Handwashing_facilities_percent.csv
+Air pollution.csv
+Household pollution_clean fuel technologies.csv
+Mortality from environmental pollution.csv
+Population demographics_2016.csv
+Crude birth_death rate.csv
+
+#UN datasets
+SYB62_1_201907_Population, Surface Area and Density (1).csv
+SYB62_230_201904_GDP and GDP Per Capita.csv 
+
+#EU_worlddata
+COVID-19-geographic-disbtribution-worldwide (2).xlsx 
+
