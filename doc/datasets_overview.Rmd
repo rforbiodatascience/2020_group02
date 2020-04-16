@@ -40,32 +40,97 @@ Shiny app showing the two plots, selecting for country through dropdown and show
 Fancy maps showing distrubition of deaths (both cummulative deaths pr. country and cummlative deaths pr. one)
 
 
+
+
+#Combining WHO, UN and our world in data with COVID-19 data
+Observations: Country
+Variables: variables possibly affecting cumulative death/spreading speed/etc
+Combining all variables (healthcare systems, tobacco, polution, bmi, etc)?
+
+Cleaning:
+Defining primary outcomes: time to 100/1000 deaths after firste confirmed death/case
+Cleaning each dataset to most recent year?
+Pivoting of UN-data?
+Merge several cleaned WHO and UN and ? datasets
+Merge to cleaned primary outcome-dataset
+
+
+R:
+Plots:
+  Gapminder inspired plots for each variable vs primary outcomes
+  
+PCA combining all variables?
+
+Results:
+Shiny app with "gapminde"-plots. 
+
+
+
+
 #WHO datasets
-Adult mortality.csv
+Adult mortality.csv (Adult_mortality <- read_csv("data/_raw/WHO/Mortality/Adult mortality.csv")
+  variables: stratified in sexes pr year
+  
 Cause_specific_deaths.xls
-Healthy life expectancy.csv
-Life expectancy and healthy life expectancy.csv
-NCD_BMI_MEAN_age_standardized.csv
+  
+Healthy life expectancy.csv (Healthy_life_expectancy <- read_csv("data/_raw/WHO/Mortality/Healthy life expectancy.csv")
+  variables: stratified in sexes pr year
+  
+Life expectancy and healthy life expectancy.csv (Life_expectancy_and_healthy_life_expectancy <- read_csv("data/_raw/WHO/Mortality/Life expectancy and healthy life expectancy.csv")
+  variables: stratified in sexes and birth/>60 years
+  
+NCD_BMI_MEAN_age_standardized.csv (NCD_BMI_MEAN_age_standardized <- read_csv("data/_raw/WHO/BMI/NCD_BMI_MEAN_age_standardized.csv")
+  variables: stratified in sexes pr year
+  
 NCD_BMI_above30_age_standardized.csv
-TOBACCO_0000000344,TOBACCO_0000000192.csv
-Current health expenditure.csv
-Health infrastructure.csv
-Medical doctors.csv
-Nurses and midwifes.csv
-Measles_reported_cases.csv
-Handwashing_facilities_percent.csv
-Air pollution.csv
-Household pollution_clean fuel technologies.csv
-Mortality from environmental pollution.csv
-Population demographics_2016.csv
-Crude birth_death rate.csv
+  
+TOBACCO_0000000344,TOBACCO_0000000192.csv (TOBACCO_0000000344_TOBACCO_0000000192 <- read_csv("data/_raw/WHO/smoking/TOBACCO_0000000344,TOBACCO_0000000192.csv")
+  variables: stratified in sexes and current & any
+
+Current health expenditure.csv (Current_health_expenditure <- read_csv("data/_raw/WHO/Health workforce and system/Current health expenditure.csv")
+  variables: pr year and pr capita/gdp
+
+Health infrastructure.csv (Health_infrastructure <- read_csv("data/_raw/WHO/Health workforce and system/Health infrastructure.csv")
+  variable: different hospitals pr 100.000 population
+  
+Medical doctors.csv (Medical_doctors <- read_csv("data/_raw/WHO/Health workforce and system/Medical doctors.csv")
+  variable: doctors absolute number and pr population
+  
+Nurses and midwifes.csv (Nurses_and_midwifes <- read_csv("data/_raw/WHO/Health workforce and system/Nurses and midwifes.csv")
+  variable: absolute number and pr population
+  
+Measles_reported_cases.csv (Measles_reported_cases <- read_csv("data/_raw/WHO/Public health and environment/Measles_reported_cases.csv")
+  variable: pr year
+  
+Handwashing_facilities_percent.csv (Handwashing_facilities_percent <- read_csv("data/_raw/WHO/Public health and environment/Handwashing_facilities_percent.csv")
+  variable: pr year and rural/urban
+
+Air pollution.csv (Air_pollution <- read_csv("data/_raw/WHO/Public health and environment/Air pollution.csv)
+  variable: urban/rural
+
+Household pollution_clean fuel technologies.csv (Household_pollution_clean_fuel_technologies <- read_csv("data/_raw/WHO/Public health and environment/Household pollution_clean fuel technologies.csv")
+  variable: pr year
+
+Mortality from environmental pollution.csv (Mortality_from_environmental_pollution <- read_csv("data/_raw/WHO/Public health and environment/Mortality from environmental pollution.csv")
+
+
+Population demographics_2016.csv (Population_demographics_2016 <- read_csv("data/_raw/WHO/Population demographics/Population demographics_2016.csv")
+  variable: stratified in <15/>60 & fertilityrate
+  
+Crude birth_death rate.csv (Crude_birth_death_rate <- read_csv("data/_raw/WHO/Population demographics/Crude birth_death rate.csv")
+  variable: birthrate and deathrate
 
 #UN datasets
-SYB62_1_201907_Population, Surface Area and Density (1).csv
-SYB62_230_201904_GDP and GDP Per Capita.csv 
+SYB62_1_201907_Population, Surface Area and Density (1).csv (Crude_birth_death_rate <- read_csv("data/_raw/WHO/Population demographics/Crude birth_death rate.csv")
+  variable: area; density; male/female; <15year/>60years; pr year
+  Needs pivoting
+  
+SYB62_230_201904_GDP and GDP Per Capita.csv (SYB62_230_201904_GDP_and_GDP_Per_Capita <- read_csv("data/_raw/UN/SYB62_230_201904_GDP and GDP Per Capita.csv")
+  variable: pr capita/total; pr year
 
 #EU_worlddata
-COVID-19-geographic-disbtribution-worldwide (2).xlsx 
+COVID-19-geographic-disbtribution-worldwide (2).xlsx (COVID_19_geographic_disbtribution_worldwide_2_ <- read_excel("data/_raw/EU - worlddata Covid-19/COVID-19-geographic-disbtribution-worldwide (2).xlsx")
+  variable: deaths and cases pr date
 
 #Our world in data
 Covid-testing-all-oberservations.csv
