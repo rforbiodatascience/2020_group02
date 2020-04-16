@@ -17,10 +17,28 @@ Observations: Country
 Variables: Confirmed cases/deaths by date 
 
 Cleaning:
-Convert to case-by-date tibble by country
-Compile state observations within countries
+Convert to case-by-date tibble by country (tidy dataset using pivotlonger())
+Compile state observations within countries 
 Merge confirmed cases and confirmed deaths to same dataset
-Merge to WHO data by Country 
+Merge to cleaned WHO data by country (NB! rename differences in country) - Population demographics_2016.csv would be usefull
+Merge to cleaned Covid-testing-all-oberservations.csv (data in our world)  
+
+
+
+R:
+gglot presentation of J. Hopkins data `Confirmed cases by date` and `deaths by date` for countries (worldwide) using geom_col() (it could be nice to relate to both cummulative deaths pr. country and cummlative deaths pr. one mio. citizen)
+
+gglot presentation of J. Hopkins data `Confirmed cases by date` and `deaths by date` related to no of tests performed for each country (Covid-testing-all-oberservations.csv, data in our world)
+
+
+Global mapp præsentation of data utilizing the leaflet package
+
+
+Results:
+Shiny app showing the two plots, selecting for country through dropdown and showing facts pr. country in a table format. 
+
+Fancy maps showing distrubition of deaths (both cummulative deaths pr. country and cummlative deaths pr. one)
+
 
 #WHO datasets
 Adult mortality.csv
@@ -48,4 +66,7 @@ SYB62_230_201904_GDP and GDP Per Capita.csv
 
 #EU_worlddata
 COVID-19-geographic-disbtribution-worldwide (2).xlsx 
+
+#Our world in data
+Covid-testing-all-oberservations.csv
 
