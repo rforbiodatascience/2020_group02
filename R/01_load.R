@@ -48,6 +48,12 @@ mortality_causes_raw <- read_xls(path = "data/_raw/WHO/Mortality/Cause_specific_
 
 
 ##WHO - public health and environment - metchr
+#Air pollution
+air_pollution_raw <- read_csv(file = "data/_raw/WHO/Public health and environment/Air pollution.csv",
+                              col_names = c("Country", "Total concentration of fine particular matter", "Urban concentration of fine particular matter", "Rural concentration of fine particular matter"),
+                              skip = 3)
+                              
+
 
 # Wrangle data
 # ------------------------------------------------------------------------------
@@ -85,3 +91,6 @@ write_tsv(x = life_expectancy_raw,
 
 write_tsv(x = mortality_causes_raw,
           path = "data/01_mortality_causes_load.tsv")
+
+write_tsv(x = air_pollution_raw,
+          path = "data/01_air_pollution_load.tsv")
