@@ -28,11 +28,7 @@ POP_demo_raw <- read_csv(file = "data/_raw/WHO/Population demographics/Populatio
   #UN data
 UN_pop_raw <- read_csv("data/_raw/UN/SYB62_1_201907_Population, Surface Area and Density (1).csv", skip = 1)
 UN_gdp_raw <- read_csv(file = "data/_raw/UN/SYB62_230_201904_GDP and GDP Per Capita.csv", col_names = FALSE, skip = 2)
-=======
-#UN data
-UN_pop_raw <- read_csv("data/_raw/UN/SYB62_1_201907_Population, Surface Area and Density (1).csv")
-UN_GDP_raw <- read_csv("data/_raw/UN/SYB62_230_201904_GDP and GDP Per Capita.csv"
->>>>>>> 109832290fdda21c1b510b29406a353ca55b25aa
+
 
 ##WHO - mortality
 #Adult mortality
@@ -103,7 +99,7 @@ write_csv(x = POP_demo,
 write_tsv(x = UN_pop_raw,
           path = "data/01_UN_pop_raw.tsv")
 
-write_tsv(x = UN_pop_gdp,
+write_tsv(x = UN_GDP_raw,
           path = "data/01_UN_pop_gdp.tsv")
 =======
 write_tsv(x = mortality_causes_raw,
