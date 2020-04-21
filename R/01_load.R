@@ -6,12 +6,10 @@ rm(list = ls())
 # ------------------------------------------------------------------------------
 library("tidyverse")
 library("stringr")
-<<<<<<< HEAD
 library("readr")
-=======
 library("lubridate")
 library("readxl")
->>>>>>> 109832290fdda21c1b510b29406a353ca55b25aa
+
 
 # Define functions
 # ------------------------------------------------------------------------------
@@ -83,9 +81,7 @@ write_tsv(x = adult_mortality_raw,
 write_tsv(x = life_expectancy_raw,
           path = "data/01_life_expectancy_load.tsv")
 
-=======
 
-<<<<<<< HEAD
 write_csv(x = POP_demo,
           path = "data/01_POP_demo.csv")
 
@@ -93,7 +89,7 @@ write_tsv(x = UN_pop_raw,
           path = "data/01_UN_pop_raw.tsv")
 
 write_tsv(x = UN_GDP_raw,
-          path = "data/01_UN_pop_gdp.tsv")
-=======
+          path = "data/01_UN_gdp_raw.tsv")
+
 write_tsv(x = mortality_causes_raw,
           path = "data/01_mortality_causes_load.tsv")
