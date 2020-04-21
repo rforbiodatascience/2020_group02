@@ -22,7 +22,7 @@ COVID_test <- read_tsv(file = "data/01_COVID_test.tsv")
 POP_demo <- read_tsv(file = "data/01_POP_demo.tsv")
 
 adult_mortality <- read_tsv(file = "data/01_adult_mortality_load.tsv")
-life_expedtancy <- read_tsv(file = "data/01_life_expectancy_load.tsv")
+life_expectancy <- read_tsv(file = "data/01_life_expectancy_load.tsv")
 mortality_causes <- read_tsv(file = "data/01_mortality_causes_load.tsv")
 
 UN_pop <- read_tsv(file = "data/01_UN_pop_raw.tsv")
@@ -31,17 +31,32 @@ UN_pop <- read_tsv(file = "data/01_UN_pop_raw.tsv")
 # ------------------------------------------------------------------------------
 #my_data_clean <- my_data # %>% ...
 
+#Data in our world data
 COVID_test_clean <- COVID_test %>%
   rename("Country" = "Entity") %>% 
   select(Country, Date, `Cumulative total`, `Cumulative total per thousand`)
 
+## WHO -Population demographics
+# Population size, median Pop age, urban distribution
 POP_demo_clean <- POP_demo %>% 
   select(-`Population living on &lt;$1 (PPP int. $) a day (%)`) %>%
  filter(Year %in% c("2020", "2013", "2016"))
 
+<<<<<<< HEAD
 
 #UN datasets
 UN_pop_clean <- UN_pop %>%
+=======
+<<<<<<< HEAD
+POP_demo_test <- POP_demo_raw %>% 
+  rename(Population = `Population (in thousands) total`) %>% 
+  mutate(Pop_num = str_replace(Population, " ", "")) 
+
+
+=======
+<<<<<<< HEAD
+UN_pop_demo_clean <- UN_pop_raw %>%
+>>>>>>> b91f34f69dfbe267d4b219796ff4fbe657ffe2d9
     select(X2, Year, Series, Value) %>%
   rename("Country_Region" = "X2") %>%
   filter(Year == 2019, Series == "Population density" | Series == "Sex ratio (males per 100 females)" | Series == "Population aged 60+ years old (percentage)") %>%
@@ -50,6 +65,7 @@ UN_pop_clean <- UN_pop %>%
 
 
 =======
+>>>>>>> 74ee20fdfc8107a1ba90283dd375718fc234f154
 ##WHO - mortality
 #Adult mortality
 adult_mortality_clean <- adult_mortality  %>% 
