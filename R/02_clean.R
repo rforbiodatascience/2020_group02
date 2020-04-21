@@ -42,30 +42,23 @@ POP_demo_clean <- POP_demo %>%
   select(-`Population living on &lt;$1 (PPP int. $) a day (%)`) %>%
  filter(Year %in% c("2020", "2013", "2016"))
 
-<<<<<<< HEAD
+
 
 #UN datasets
 UN_pop_clean <- UN_pop %>%
-=======
-<<<<<<< HEAD
+D
 POP_demo_test <- POP_demo_raw %>% 
   rename(Population = `Population (in thousands) total`) %>% 
   mutate(Pop_num = str_replace(Population, " ", "")) 
 
 
-=======
-<<<<<<< HEAD
 UN_pop_demo_clean <- UN_pop_raw %>%
->>>>>>> b91f34f69dfbe267d4b219796ff4fbe657ffe2d9
     select(X2, Year, Series, Value) %>%
   rename("Country_Region" = "X2") %>%
   filter(Year == 2019, Series == "Population density" | Series == "Sex ratio (males per 100 females)" | Series == "Population aged 60+ years old (percentage)") %>%
   pivot_wider(names_from = Series, values_from = Value)
 
 
-
-=======
->>>>>>> 74ee20fdfc8107a1ba90283dd375718fc234f154
 ##WHO - mortality
 #Adult mortality
 adult_mortality_clean <- adult_mortality  %>% 
@@ -82,7 +75,6 @@ life_expectancy_clean <- life_expectancy  %>%
 
 #Cause specific mortality
 mortality_causes %>% 
->>>>>>> 109832290fdda21c1b510b29406a353ca55b25aa
 
   
 # Write data
