@@ -6,12 +6,10 @@ rm(list = ls())
 # ------------------------------------------------------------------------------
 library("tidyverse")
 library("stringr")
-<<<<<<< HEAD
 library("readr")
-=======
 library("lubridate")
 library("readxl")
->>>>>>> 109832290fdda21c1b510b29406a353ca55b25aa
+
 
 # Define functions
 # ------------------------------------------------------------------------------
@@ -29,17 +27,15 @@ COVID_test_raw <- read_csv2(file = "data/_raw/Our world in data/covid-testing-al
 
 
 
-<<<<<<< HEAD
 #UN data
 UN_pop_raw <- read_csv("data/_raw/UN/SYB62_1_201907_Population, Surface Area and Density (1).csv")
 UN_GDP_raw <- read_csv("data/_raw/UN/SYB62_230_201904_GDP and GDP Per Capita.csv")
-=======
-<<<<<<< HEAD
+
   #UN data
 UN_pop_raw <- read_csv("data/_raw/UN/SYB62_1_201907_Population, Surface Area and Density (1).csv", skip = 1)
 UN_gdp_raw <- read_csv(file = "data/_raw/UN/SYB62_230_201904_GDP and GDP Per Capita.csv", col_names = FALSE, skip = 2)
 
->>>>>>> 74ee20fdfc8107a1ba90283dd375718fc234f154
+
 
 ##WHO - mortality
 #Adult mortality
@@ -88,10 +84,6 @@ write_tsv(x = adult_mortality_raw,
 
 write_tsv(x = life_expectancy_raw,
           path = "data/01_life_expectancy_load.tsv")
-<<<<<<< HEAD
-=======
-
-<<<<<<< HEAD
 write_csv(x = POP_demo,
           path = "data/01_POP_demo.csv")
 
@@ -100,8 +92,7 @@ write_tsv(x = UN_pop_raw,
 
 write_tsv(x = UN_GDP_raw,
           path = "data/01_UN_pop_gdp.tsv")
-=======
+
 write_tsv(x = mortality_causes_raw,
           path = "data/01_mortality_causes_load.tsv")
->>>>>>> 109832290fdda21c1b510b29406a353ca55b25aa
->>>>>>> 74ee20fdfc8107a1ba90283dd375718fc234f154
+
