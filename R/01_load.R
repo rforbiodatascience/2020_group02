@@ -18,6 +18,10 @@ source(file = "R/99_project_functions.R")
 COVID_test_raw <- read_csv2(file = "data/_raw/Our world in data/covid-testing-all-observations.csv")
 POP_demo_raw <- read_csv(file = "data/_raw/WHO/Population demographics/Population demographics_all years.csv")
 
+  #UN data
+UN_pop_raw <- read_csv("data/_raw/UN/SYB62_1_201907_Population, Surface Area and Density (1).csv")
+UN_GDP_raw <- read_csv("data/_raw/UN/SYB62_230_201904_GDP and GDP Per Capita.csv"
+
 # Wrangle data
 # ------------------------------------------------------------------------------
 # my_data <- my_data_raw # %>% ...
