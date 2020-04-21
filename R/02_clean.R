@@ -29,7 +29,11 @@ POP_demo_clean <- POP_demo %>%
   select(-`Population living on &lt;$1 (PPP int. $) a day (%)`) %>%
  filter(Year %in% c("2020", "2013", "2016"))
 
-  
+UN_pop_demo_clean <- UN_pop_raw %>%
+    select(X2, Year, Series, Value) %>%
+  rename("Country_Region" = "X2") %>%
+  filter(Year == 2019, Series == "Population density" | Series == "Sex ratio (males per 100 females)" | Series == "Population aged 60+ years old (percentage)") %>%
+  pivot_wider(names_from = Series, values_from = Value)
 
   
 # Write data
