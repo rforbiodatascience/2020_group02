@@ -18,11 +18,12 @@ source(file = "R/99_project_functions.R")
 # ------------------------------------------------------------------------------
 # my_data <- read_tsv(file = "data/01_my_data.tsv")
 
-COVID_test <- read_csv(file = "data/01_COVID_test.csv")
-POP_demo <- read_csv(file = "data/01_POP_demo.csv")
+COVID_test <- read_tsv(file = "data/01_COVID_test.tsv")
+POP_demo <- read_tsv(file = "data/01_POP_demo.tsv")
 
 adult_mortality <- read_tsv(file = "data/01_adult_mortality_load.tsv")
-life_expectancy <- read_tsv(file = "data/01_life_expectancy_load.tsv")
+life_expedtancy <- read_tsv(file = "data/01_life_expectancy_load.tsv")
+mortality_causes <- read_tsv(file = "data/01_mortality_causes_load.tsv")
 
 # Wrangle data
 # ------------------------------------------------------------------------------
@@ -48,6 +49,10 @@ adult_mortality_clean <- adult_mortality  %>%
 life_expectancy_clean <- life_expectancy  %>% 
   filter(Year == 2016) %>% 
   select(Country, `Life expectancy at birth (years)`, `Healthy life expectancy (HALE) at birth (years)`)
+
+
+#Cause specific mortality
+mortality_causes %>% 
 
   
 # Write data
