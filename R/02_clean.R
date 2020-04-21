@@ -21,9 +21,9 @@ source(file = "R/99_project_functions.R")
 COVID_test <- read_tsv(file = "data/01_COVID_test.tsv")
 POP_demo <- read_tsv(file = "data/01_POP_demo.tsv")
 
-
 adult_mortality <- read_tsv(file = "data/01_adult_mortality_load.tsv")
 life_expectancy <- read_tsv(file = "data/01_life_expectancy_load.tsv")
+mortality_causes <- read_tsv(file = "data/01_mortality_causes_load.tsv")
 
 # Wrangle data
 # ------------------------------------------------------------------------------
@@ -40,11 +40,21 @@ POP_demo_clean <- POP_demo %>%
   select(-`Population living on &lt;$1 (PPP int. $) a day (%)`) %>%
  filter(Year %in% c("2020", "2013", "2016"))
 
+<<<<<<< HEAD
 POP_demo_test <- POP_demo_raw %>% 
   rename(Population = `Population (in thousands) total`) %>% 
   mutate(Pop_num = str_replace(Population, " ", "")) 
 
 
+=======
+<<<<<<< HEAD
+UN_pop_demo_clean <- UN_pop_raw %>%
+    select(X2, Year, Series, Value) %>%
+  rename("Country_Region" = "X2") %>%
+  filter(Year == 2019, Series == "Population density" | Series == "Sex ratio (males per 100 females)" | Series == "Population aged 60+ years old (percentage)") %>%
+  pivot_wider(names_from = Series, values_from = Value)
+=======
+>>>>>>> 74ee20fdfc8107a1ba90283dd375718fc234f154
 ##WHO - mortality
 #Adult mortality
 adult_mortality_clean <- adult_mortality  %>% 
@@ -57,6 +67,11 @@ adult_mortality_clean <- adult_mortality  %>%
 life_expectancy_clean <- life_expectancy  %>% 
   filter(Year == 2016) %>% 
   select(Country, `Life expectancy at birth (years)`, `Healthy life expectancy (HALE) at birth (years)`)
+
+
+#Cause specific mortality
+mortality_causes %>% 
+>>>>>>> 109832290fdda21c1b510b29406a353ca55b25aa
 
   
 # Write data
