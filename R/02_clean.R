@@ -18,23 +18,31 @@ source(file = "R/99_project_functions.R")
 # ------------------------------------------------------------------------------
 # my_data <- read_tsv(file = "data/01_my_data.tsv")
 
-COVID_test <- read_csv(file = "data/01_COVID_test.csv")
-POP_demo <- read_csv(file = "data/01_POP_demo.csv")
+COVID_test <- read_csv(file = "data/01_COVID_test.tsv")
+POP_demo <- read_csv(file = "data/01_POP_demo.tsv")
 
-adult_mortality <- read_tsv(file = "data/01_adult_mortality_load.tsv")
-life_expedtancy <- read_tsv(file = "data/01_life_expectancy_load.tsv")
+adult_mortality <- read_tsv(file = "data/01_adult_mortality_load.csv")
+life_expedtancy <- read_tsv(file = "data/01_life_expectancy_load.csv")
 
 # Wrangle data
 # ------------------------------------------------------------------------------
 #my_data_clean <- my_data # %>% ...
 
+#Data in our world data
 COVID_test_clean <- COVID_test %>%
   rename("Country" = "Entity") %>% 
   select(Country, Date, `Cumulative total`, `Cumulative total per thousand`)
 
+## WHO -Population demographics
+# Population size, median Pop age, urban distribution
 POP_demo_clean <- POP_demo %>% 
   select(-`Population living on &lt;$1 (PPP int. $) a day (%)`) %>%
  filter(Year %in% c("2020", "2013", "2016"))
+
+POP_demo_test <- POP_demo_raw %>% 
+  rename(Population = `Population (in thousands) total`) %>% 
+  mutate(Pop_num = str_replace(Population, " ", "")) 
+
 
 ##WHO - mortality
 #Adult mortality
