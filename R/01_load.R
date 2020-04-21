@@ -63,6 +63,14 @@ mortality_causes_raw <- read_xls(path = "data/_raw/WHO/Mortality/Cause_specific_
                                  skip = 9,
                                  col_names = col_names)
 
+
+##WHO - public health and environment - metchr
+#Air pollution
+air_pollution_raw <- read_csv(file = "data/_raw/WHO/Public health and environment/Air pollution.csv",
+                              col_names = c("Country", "Total concentration of fine particular matter", "Urban concentration of fine particular matter", "Rural concentration of fine particular matter"),
+                              skip = 3)
+                              
+
 # Wrangle data
 # ------------------------------------------------------------------------------
 # my_data <- my_data_raw # %>% ...
@@ -92,9 +100,14 @@ write_csv(x = POP_demo,
 write_tsv(x = UN_pop_raw,
           path = "data/01_UN_pop_raw.tsv")
 
-write_tsv(x = UN_GDP_raw
+
+
+write_tsv(x = UN_gdp_raw
           path = "data/01_UN_gdp_raw.tsv")
 
 write_tsv(x = mortality_causes_raw,
           path = "data/01_mortality_causes_load.tsv")
+
+write_tsv(x = air_pollution_raw,
+          path = "data/01_air_pollution_load.tsv")
 
