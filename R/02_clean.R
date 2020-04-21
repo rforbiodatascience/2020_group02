@@ -25,6 +25,8 @@ adult_mortality <- read_tsv(file = "data/01_adult_mortality_load.tsv")
 life_expedtancy <- read_tsv(file = "data/01_life_expectancy_load.tsv")
 mortality_causes <- read_tsv(file = "data/01_mortality_causes_load.tsv")
 
+UN_pop <- read_tsv(file = "data/01_UN_pop_raw.tsv")
+
 # Wrangle data
 # ------------------------------------------------------------------------------
 #my_data_clean <- my_data # %>% ...
@@ -37,12 +39,16 @@ POP_demo_clean <- POP_demo %>%
   select(-`Population living on &lt;$1 (PPP int. $) a day (%)`) %>%
  filter(Year %in% c("2020", "2013", "2016"))
 
-<<<<<<< HEAD
-UN_pop_demo_clean <- UN_pop_raw %>%
+
+#UN datasets
+UN_pop_clean <- UN_pop %>%
     select(X2, Year, Series, Value) %>%
   rename("Country_Region" = "X2") %>%
   filter(Year == 2019, Series == "Population density" | Series == "Sex ratio (males per 100 females)" | Series == "Population aged 60+ years old (percentage)") %>%
   pivot_wider(names_from = Series, values_from = Value)
+
+
+
 =======
 ##WHO - mortality
 #Adult mortality
