@@ -82,9 +82,15 @@ life_expectancy_clean <- life_expectancy  %>%
 
 
 #Cause specific mortality
-mortality_causes %>% 
+mortality_causes <- read_tsv(file = "data/01_mortality_causes_load.tsv") 
 
-  
+mortality_causes_clean <- mortality_causes %>% 
+  as_tibble(mortality_causes_clean) %>% 
+  rename(Cause_1 = "...5", Cause_2 = "...6") %>% 
+  mutate(Cause_1_chr = str_replace(Cause_1, "\\d+\\.", ""))
+
+mortality_causes
+
 # Write data
 # ------------------------------------------------------------------------------
 #write_tsv(x = my_data_clean, path = "data/02_my_data_clean.tsv")
