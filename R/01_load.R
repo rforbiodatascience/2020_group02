@@ -96,10 +96,10 @@ air_pollution_raw <- read_csv(file = "data/_raw/WHO/Public health and environmen
 # ------------------------------------------------------------------------------
 # write_tsv(x = my_data, path = "data/01_my_data.tsv")
 
-write_csv(x = COVID_test,
+write_tsv(x = COVID_test_raw,
           path = "data/01_COVID_test.tsv")
 
-write_csv(x = POP_demo,
+write_tsv(x = POP_demo_raw,
           path = "data/01_POP_demo.tsv")
 
 write_tsv(x = adult_mortality_raw,
@@ -107,9 +107,6 @@ write_tsv(x = adult_mortality_raw,
 
 write_tsv(x = life_expectancy_raw,
           path = "data/01_life_expectancy_load.tsv")
-
-write_csv(x = POP_demo,
-          path = "data/01_POP_demo.csv")
 
 write_tsv(x = UN_pop_raw,
           path = "data/01_UN_pop_raw.tsv")

@@ -40,33 +40,20 @@ COVID_test_clean <- COVID_test %>%
 # Population size, median Pop age, urban distribution
 POP_demo_clean <- POP_demo %>% 
   select(-`Population living on &lt;$1 (PPP int. $) a day (%)`) %>%
- filter(Year %in% c("2020", "2013", "2016"))
-
-
-
-#UN datasets
-UN_pop_clean <- UN_pop %>%
-<<<<<<< HEAD
-D
-POP_demo_test <- POP_demo_raw %>% 
+ filter(Year %in% c("2020", "2013", "2016")) 
+#skal merges ind i ovenstående - kommer
+POP_demo_clean <- POP_demo %>% 
   rename(Population = `Population (in thousands) total`) %>% 
   mutate(Pop_num = str_replace(Population, " ", "")) 
 
 
-UN_pop_demo_clean <- UN_pop_raw %>%
-=======
->>>>>>> 12bf8d6032a72022348c22aad4902a3b38268d11
+#UN datasets
+UN_pop_clean <- UN_pop %>%
     select(X2, Year, Series, Value) %>%
   rename("Country_Region" = "X2") %>%
   filter(Year == 2019, Series == "Population density" | Series == "Sex ratio (males per 100 females)" | Series == "Population aged 60+ years old (percentage)") %>%
   pivot_wider(names_from = Series, values_from = Value)
 
-
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 12bf8d6032a72022348c22aad4902a3b38268d11
 ##WHO - mortality
 #Adult mortality
 adult_mortality_clean <- adult_mortality  %>% 
