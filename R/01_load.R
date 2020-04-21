@@ -36,11 +36,14 @@ life_expectancy_raw <- read_csv(file = "data/_raw/WHO/Mortality/Life expectancy 
                                 skip = 2)
                        
 #Cause specific mortality
+
+#header names are extracted from row 7 and saved in character vector
 col_names <- read_xls(path = "data/_raw/WHO/Mortality/Cause_specific_deaths.xls",
                       sheet = 2,
                       cell_rows(7)) %>% 
   names()
-                       
+
+#Rest of data is imported, first 9 rows of metadata are skipped and column names are added                       
 mortality_causes_raw <- read_xls(path = "data/_raw/WHO/Mortality/Cause_specific_deaths.xls",
                                  sheet = 2,
                                  skip = 9,
