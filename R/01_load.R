@@ -20,12 +20,26 @@ source(file = "R/99_project_functions.R")
 #my_data_raw <- read_tsv(file = "data/_raw/my_raw_data.tsv")
 
 ##Data in our world data
+#COVID-19 tests performed. Global data
 COVID_test_raw <- read_csv2(file = "data/_raw/Our world in data/covid-testing-all-observations.csv")
 
+
 ## John Hopkins COVID data
-#JH_COVIDtime_raw <- read_csv(data/_raw/Our world in data/covid-testing-all-observations.csv)
+# Confirmed COVID-19 cases, in time series. Global data
+JH_conftime_raw <- read_csv("data/_raw/Johns Hopkins - COVID-19/time_series_covid19_confirmed_global.csv")
+
+#Deaths due to COVID-19, in time series. Global data
+JH_deadtime_raw <- read_csv("data/_raw/Johns Hopkins - COVID-19/time_series_covid19_deaths_global.csv")
+
+#Recovered form COVID-19, in time series. Global data
+JH_recotime_raw <- read_csv("data/_raw/Johns Hopkins - COVID-19/time_series_covid19_recovered_global.csv")
+
+#Recovered form COVID-19, in time series. Global data
+JH_recotime_raw <- read_csv("data/_raw/Johns Hopkins - COVID-19/time_series_covid19_recovered_global.csv")
 
 
+#Cummulative JH COVID-19 data on date 04-16-2020. Global data
+JH_cummulat_raw <- read_csv("data/_raw/Johns Hopkins - COVID-19/csse_covid_19_daily_reports_04-16-2020.csv")
 
 
 #UN data
@@ -100,9 +114,7 @@ write_csv(x = POP_demo,
 write_tsv(x = UN_pop_raw,
           path = "data/01_UN_pop_raw.tsv")
 
-
-
-write_tsv(x = UN_gdp_raw
+write_tsv(x = UN_gdp_raw,
           path = "data/01_UN_gdp_raw.tsv")
 
 write_tsv(x = mortality_causes_raw,
@@ -110,4 +122,6 @@ write_tsv(x = mortality_causes_raw,
 
 write_tsv(x = air_pollution_raw,
           path = "data/01_air_pollution_load.tsv")
+
+
 
