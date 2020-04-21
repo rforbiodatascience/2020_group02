@@ -20,6 +20,10 @@ source(file = "R/99_project_functions.R")
 ##Data in our world data
 COVID_test_raw <- read_csv2(file = "data/_raw/Our world in data/covid-testing-all-observations.csv")
 
+## John Hopkins COVID data
+#JH_COVIDtime_raw <- read_csv(data/_raw/Our world in data/covid-testing-all-observations.csv)
+
+
 
 #UN data
 UN_pop_raw <- read_csv("data/_raw/UN/SYB62_1_201907_Population, Surface Area and Density (1).csv")
@@ -54,12 +58,6 @@ mortality_causes_raw <- read_xls(path = "data/_raw/WHO/Mortality/Cause_specific_
 # ------------------------------------------------------------------------------
 # my_data <- my_data_raw # %>% ...
 
-COVID_test <- COVID_test_raw # %>% ...
-
-POP_demo_test <- POP_demo_raw %>% 
-  rename(Population = "Population (in thousands) total") %>% 
-  mutate(Pop_num = str_replace(Population, " ", "")) 
-  
 
 
 

@@ -18,11 +18,12 @@ source(file = "R/99_project_functions.R")
 # ------------------------------------------------------------------------------
 # my_data <- read_tsv(file = "data/01_my_data.tsv")
 
-COVID_test <- read_csv(file = "data/01_COVID_test.tsv")
-POP_demo <- read_csv(file = "data/01_POP_demo.tsv")
+COVID_test <- read_tsv(file = "data/01_COVID_test.tsv")
+POP_demo <- read_tsv(file = "data/01_POP_demo.tsv")
 
-adult_mortality <- read_tsv(file = "data/01_adult_mortality_load.csv")
-life_expedtancy <- read_tsv(file = "data/01_life_expectancy_load.csv")
+
+adult_mortality <- read_tsv(file = "data/01_adult_mortality_load.tsv")
+life_expectancy <- read_tsv(file = "data/01_life_expectancy_load.tsv")
 
 # Wrangle data
 # ------------------------------------------------------------------------------
