@@ -6,6 +6,8 @@ rm(list = ls())
 # ------------------------------------------------------------------------------
 library("tidyverse")
 library("stringr")
+library("lubridate")
+library("readxl")
 
 # Define functions
 # ------------------------------------------------------------------------------
@@ -17,6 +19,32 @@ source(file = "R/99_project_functions.R")
 
 COVID_test_raw <- read_csv2(file = "data/_raw/Our world in data/covid-testing-all-observations.csv")
 POP_demo_raw <- read_csv(file = "data/_raw/WHO/Population demographics/Population demographics_all years.csv")
+
+#UN data
+UN_pop_raw <- read_csv("data/_raw/UN/SYB62_1_201907_Population, Surface Area and Density (1).csv")
+UN_GDP_raw <- read_csv("data/_raw/UN/SYB62_230_201904_GDP and GDP Per Capita.csv"
+
+##WHO - mortality
+#Adult mortality
+adult_mortality_raw <- read_csv(file = "data/_raw/WHO/Mortality/Adult mortality.csv",  
+                                col_names = c("Country", "Year", "Adult mortality rate", "Adult male mortality rate", "Adult female mortality rate"),
+                                skip = 2)
+                       
+#Life expectancy and healthy life expectancy
+life_expectancy_raw <- read_csv(file = "data/_raw/WHO/Mortality/Life expectancy and healthy life expectancy.csv",
+                                col_names = c("Country", "Year", "Life expectancy at birth (years)", "Male life expectancy at birth (years)", "Female life expectancy at birth (years)", "Life expectancy at age 60 (years)", "Male life expectancy at age 60 (years)", "Female life expectancy at age 60 (years)", "Healthy life expectancy (HALE) at birth (years)", "Male healthy life expectancy (HALE) at birth (years)", "Female healthy life expectancy (HALE) at birth (years)", "Healthy life expectancy (HALE) at age 60 (years)", "Male healthy life expectancy (HALE) at age 60 (years)", "Female healthy life expectancy (HALE) at age 60 (years)"),
+                                skip = 2)
+                       
+#Cause specific mortality
+col_names <- read_xls(path = "data/_raw/WHO/Mortality/Cause_specific_deaths.xls",
+                      sheet = 2,
+                      cell_rows(7)) %>% 
+  names()
+                       
+mortality_causes_raw <- read_xls(path = "data/_raw/WHO/Mortality/Cause_specific_deaths.xls",
+                                 sheet = 2,
+                                 skip = 9,
+                                 col_names = col_names)
 
 # Wrangle data
 # ------------------------------------------------------------------------------
@@ -46,3 +74,9 @@ write_csv(x = COVID_test,
 
 write_csv(x = POP_demo,
           path = "data/01_POP_demo.csv")
+
+write_tsv(x = adult_mortality_raw,
+          path = "data/01_adult_mortality_load.tsv")
+
+write_tsv(x = life_expectancy_raw,
+          path = "data/01_life_expectancy_load.tsv")
