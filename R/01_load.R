@@ -95,8 +95,8 @@ write_csv(x = POP_demo,
 write_tsv(x = UN_pop_raw,
           path = "data/01_UN_pop_raw.tsv")
 
-write_tsv(x = UN_GDP_raw,
-          path = "data/01_UN_pop_gdp.tsv")
+write_tsv(x = UN_gdp_raw)
+          path = "data/01_UN_gdp_raw.tsv")
 
 write_tsv(x = mortality_causes_raw,
           path = "data/01_mortality_causes_load.tsv")
