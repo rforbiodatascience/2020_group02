@@ -22,7 +22,7 @@ COVID_test <- read_csv(file = "data/01_COVID_test.csv")
 POP_demo <- read_csv(file = "data/01_POP_demo.csv")
 
 adult_mortality <- read_tsv(file = "data/01_adult_mortality_load.tsv")
-life_expedtancy <- read_tsv(file = "data/01_life_expectancy_load.tsv")
+life_expectancy <- read_tsv(file = "data/01_life_expectancy_load.tsv")
 
 # Wrangle data
 # ------------------------------------------------------------------------------
