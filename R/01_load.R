@@ -31,12 +31,8 @@ JH_conftime_raw <- read_csv("data/_raw/Johns Hopkins - COVID-19/time_series_covi
 #Deaths due to COVID-19, in time series. Global data
 JH_deadtime_raw <- read_csv("data/_raw/Johns Hopkins - COVID-19/time_series_covid19_deaths_global.csv")
 
-#Recovered form COVID-19, in time series. Global data
+#Recovered from COVID-19, in time series. Global data
 JH_recotime_raw <- read_csv("data/_raw/Johns Hopkins - COVID-19/time_series_covid19_recovered_global.csv")
-
-#Recovered form COVID-19, in time series. Global data
-JH_recotime_raw <- read_csv("data/_raw/Johns Hopkins - COVID-19/time_series_covid19_recovered_global.csv")
-
 
 #Cummulative JH COVID-19 data on date 04-16-2020. Global data
 JH_cummulat_raw <- read_csv("data/_raw/Johns Hopkins - COVID-19/csse_covid_19_daily_reports_04-16-2020.csv")
@@ -98,6 +94,18 @@ air_pollution_raw <- read_csv(file = "data/_raw/WHO/Public health and environmen
 
 write_tsv(x = COVID_test_raw,
           path = "data/01_COVID_test.tsv")
+
+write_tsv(x = JH_conftime_raw,
+          path = "data/01_JH_conftime.tsv")
+
+write_tsv(x = JH_deadtime_raw,
+          path = "data/01_JH_deadtime.tsv")
+
+write_tsv(x = JH_recotime_raw,
+          path = "data/01_JH_recotime.tsv")
+
+write_tsv(x = JH_cummulat_raw ,
+          path = "data/01_JH_cummulat.tsv")
 
 write_tsv(x = POP_demo_raw,
           path = "data/01_POP_demo.tsv")
