@@ -23,7 +23,6 @@ COVID_test <- read_tsv(file = "data/01_COVID_test.tsv")
 JH_conftime <- read_tsv(file = "data/01_JH_conftime.tsv")
 JH_deadtime <- read_tsv(file = "data/01_JH_deadtime.tsv")
 JH_recotime <- read_tsv(file = "data/01_JH_recotime.tsv")
-JH_cummulat <- read_tsv(file = "data/01_JH_cummulat.tsv")
 
 POP_demo <- read_tsv(file = "data/01_POP_demo.tsv")
 adult_mortality <- read_tsv(file = "data/01_adult_mortality_load.tsv")
@@ -55,10 +54,12 @@ POP_demo_clean <- POP_demo %>%
   select(-c(`Population living on &lt;$1 (PPP int. $) a day (%)`, `Population (in thousands) total`)) %>%
   filter(Year %in% c("2020", "2013", "2016")) 
 
-## John Hopkins COVID data
+## Johns Hopkins COVID data
 # Confirmed COVID-19 cases, in time series. Global data _MCHR001 is working on this
 
-
+#JH_conftime_claen <- JH_conftime %>% 
+  
+  
 #UN datasets
 UN_pop_clean <- UN_pop %>%
     select(X2, Year, Series, Value) %>%
