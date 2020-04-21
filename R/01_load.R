@@ -29,6 +29,13 @@ POP_demo$`Population (in thousands) total` <- gsub('\\s+', '', POP_demo$`Populat
 POP_demo$`Population (in thousands) total` <- as.numeric(POP_demo$`Population (in thousands) total`) 
 POP_demo$Year <- as.numeric(POP_demo$Year) 
 
+POP_demo_test <- POP_demo_raw %>% 
+  as_tibble(POP_demo_test) %>% 
+  rename(Population = "Population (in thousands) total") %>% 
+  mutate(Pop_num = str_replace(Population, " ", ""))
+
+
+
 
 # Write data
 # ------------------------------------------------------------------------------
