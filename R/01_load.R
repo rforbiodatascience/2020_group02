@@ -119,6 +119,6 @@ write_tsv(x = mortality_causes_raw,
 write_tsv(x = air_pollution_raw,
           path = "data/01_air_pollution_load.tsv")
 
-write_tsv(x = gender,
-          path = "data/_raw/sex_leader_raw.tsv")
+write_tsv(x = sex_leader_raw,
+          path = "data/01_sex_leader_raw.tsv")
 
