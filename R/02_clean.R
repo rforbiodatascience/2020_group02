@@ -32,6 +32,8 @@ mortality_causes <- read_tsv(file = "data/01_mortality_causes_load.tsv")
 UN_pop <- read_tsv(file = "data/01_UN_pop_raw.tsv")
 UN_gdp <- read_tsv(file = "data/01_UN_gdp_raw.tsv")
 
+sex_leader <- read_tsv(file = "data/01_sex_leader_raw.tsv")
+
 # Wrangle data
 # ------------------------------------------------------------------------------
 #my_data_clean <- my_data # %>% ...
@@ -63,10 +65,27 @@ POP_demo_clean <- POP_demo %>%
   
 #UN datasets
 UN_pop_clean <- UN_pop %>%
-    select(X2, Year, Series, Value) %>%
+  select(X2, Year, Series, Value) %>%
   rename("Country_Region" = "X2") %>%
   filter(Year == 2019, Series == "Population density" | Series == "Sex ratio (males per 100 females)" | Series == "Population aged 60+ years old (percentage)") %>%
-  pivot_wider(names_from = Series, values_from = Value)
+  pivot_wider(names_from = Series, values_from = Value) %>%
+  select(Country_Region, 'Population density', 'Sex ratio (males per 100 females)', 'Population aged 60+ years old (percentage)')
+
+
+UN_gdp_clean <- UN_gdp %>%
+  separate(X1, into = c("nr", "Country_Region", "Year", "Series", "Value", "footnotes", "source"), sep = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)")
+UN_gdp_clean <- as.data.frame(sapply(UN_gdp_clean, function(x) gsub("\"", "", x))) %>%
+  filter(Year == 2017, Series == "GDP in current prices (millions of US dollars)" | Series == "GDP per capita (US dollars)") %>%
+  pivot_wider(names_from = Series, values_from = Value) %>%
+  select(Country_Region, 'GDP in current prices (millions of US dollars)', 'GDP per capita (US dollars)')
+
+#Gender leader
+sex_leader_clean <- sex %>% 
+  filter(year == 2020 & month == 4) %>%
+  mutate(sex = case_when(`male` == 1 ~ "male",
+                         `male` == 0 ~ "female")) %>%
+  select(country, sex)
+
 
 ##WHO - mortality
 #Adult mortality
@@ -100,3 +119,9 @@ write_tsv(x = adult_mortality_clean,
           path = "data/02_adult_mortality_clean.tsv")
 write_tsv(x = life_expectancy_clean,
           path = "data/02_life_expectancy_clean.tsv")
+write_tsv(x = UN_pop_clean,
+          path = "data/02_UN_pop_clean.tsv")
+write_tsv(x = UN_gdp_clean,
+          path = "data/02_UN_gdp_clean.tsv")
+write_tsv(x = sex_leader_clean,
+          path = "data/02_sex_leader_clean.tsv")
