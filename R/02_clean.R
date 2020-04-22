@@ -30,6 +30,7 @@ life_expectancy <- read_tsv(file = "data/01_life_expectancy_load.tsv")
 mortality_causes <- read_tsv(file = "data/01_mortality_causes_load.tsv")
 
 UN_pop <- read_tsv(file = "data/01_UN_pop_raw.tsv")
+UN_gdp <- read_tsv(file = "data/01_UN_gdp_raw.tsv")
 
 # Wrangle data
 # ------------------------------------------------------------------------------

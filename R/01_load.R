@@ -36,10 +36,6 @@ JH_recotime_raw <- read_csv("data/_raw/Johns Hopkins - COVID-19/time_series_covi
 
 
 #UN data
-UN_pop_raw <- read_csv("data/_raw/UN/SYB62_1_201907_Population, Surface Area and Density (1).csv")
-UN_GDP_raw <- read_csv("data/_raw/UN/SYB62_230_201904_GDP and GDP Per Capita.csv")
-
-  #UN data
 UN_pop_raw <- read_csv("data/_raw/UN/SYB62_1_201907_Population, Surface Area and Density (1).csv", skip = 1)
 UN_gdp_raw <- read_csv(file = "data/_raw/UN/SYB62_230_201904_GDP and GDP Per Capita.csv", col_names = FALSE, skip = 2)
 
