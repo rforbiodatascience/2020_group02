@@ -74,9 +74,16 @@ mortality_causes_raw <- read_xls(path = "data/_raw/WHO/Mortality/Cause_specific_
 ##WHO - public health and environment
 -------------------------------------------------------------------------------------------------------
 #Air pollution
+cols <- read_csv(file = "data/_raw/WHO/Public health and environment/Air pollution.csv",
+                   n_max = 3,
+                   col_names = FALSE)
+
+col_names <- summarise_all(cols, funs(paste(na.omit(.), collapse = "_"))) %>%
+  unlist()
+
 air_pollution_raw <- read_csv(file = "data/_raw/WHO/Public health and environment/Air pollution.csv",
-                              col_names = c("Country", "Total concentration of fine particular matter", "Urban concentration of fine particular matter", "Rural concentration of fine particular matter"),
-                              skip = 3)
+                              skip = 3,
+                              col_names = col_names)
 
 #Handwashing facilities
 cols <- read_csv(file = "data/_raw/WHO/Public health and environment/Handwashing_facilities_percent.csv",

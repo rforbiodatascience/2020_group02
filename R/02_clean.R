@@ -90,8 +90,9 @@ sex_leader_clean <- sex %>%
 
 
 ##WHO - mortality
+--------------------------------------------------------------------------------------------
 #Adult mortality
-adult_mortality_clean <- adult_mortality  %>% 
+adult_mortality_clean <- read_tsv(file = "data/01_adult_mortality_load.tsv")  %>% 
   filter(Year == 2016) %>% 
   select(Country, `Adult mortality rate`) 
 
@@ -117,6 +118,12 @@ mortality_causes
 BMI_above30_clean <- BMI_above30  %>% 
   separate(BMI_above30_all, into = c("BMI_above30_prevalence_all", "ref_int_all"), sep = " ") %>%
   select(Country, "BMI_above30_prevalence_all")
+
+
+##WHO - public health and environment
+-------------------------------------------------------------------------------------------------------
+#Air pollution
+
 
 
 # Write data
