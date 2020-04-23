@@ -51,6 +51,9 @@ adult_mortality_raw <- read_csv(file = "data/_raw/WHO/Mortality/Adult mortality.
 # Population size, median Pop age, urban distribution 
 POP_demo_raw <- read_csv(file = "data/_raw/WHO/Population demographics/Population demographics_all years.csv")                       
 
+#WHO BMI
+BMI_above30_agestand_raw <- read_csv("data/_raw/WHO/BMI/NCD_BMI_above30_age_standardized.csv")
+
 #Life expectancy and healthy life expectancy
 life_expectancy_raw <- read_csv(file = "data/_raw/WHO/Mortality/Life expectancy and healthy life expectancy.csv",
                                 col_names = c("Country", "Year", "Life expectancy at birth (years)", "Male life expectancy at birth (years)", "Female life expectancy at birth (years)", "Life expectancy at age 60 (years)", "Male life expectancy at age 60 (years)", "Female life expectancy at age 60 (years)", "Healthy life expectancy (HALE) at birth (years)", "Male healthy life expectancy (HALE) at birth (years)", "Female healthy life expectancy (HALE) at birth (years)", "Healthy life expectancy (HALE) at age 60 (years)", "Male healthy life expectancy (HALE) at age 60 (years)", "Female healthy life expectancy (HALE) at age 60 (years)"),
@@ -154,3 +157,5 @@ write_tsv(x = household_pollution_raw,
 write_tsv(x = sex_leader_raw,
           path = "data/01_sex_leader_raw.tsv")
 
+write_tsv(x = BMI_above30_agestand_raw,
+          path = "data/01_BMI_above30_agestand_raw.tsv")
