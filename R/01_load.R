@@ -155,6 +155,19 @@ medical_doctors_raw <- read_csv("data/_raw/WHO/Health workforce and system/Medic
 nurses_midwifes_raw <- read_csv("data/_raw/WHO/Health workforce and system/Nurses and midwifes.csv")
 
 
+##Smoking
+-------------------------------------------------------------------------------
+cols <- read_csv(file = "data/_raw/WHO/smoking/smoking.csv",
+                   n_max = 2,
+                   col_names = FALSE)
+
+col_names <- summarise_all(cols, funs(paste(na.omit(.), collapse = "_"))) %>% 
+  unlist()
+
+smoking_raw <- read_csv(file = "data/_raw/WHO/smoking/smoking.csv",
+                              skip = 2,
+                              col_names = col_names)
+
 
 # Wrangle data
 # ------------------------------------------------------------------------------
@@ -223,6 +236,9 @@ write_tsv(x = medical_doctors_raw,
 
 write_tsv(x = nurses_midwifes_raw,
           path = "data/01_nurses_midwifes_load.tsv")
+
+write_tsv(x = smoking_raw,
+          path = "data/01_smoking_load.tsv")
 
 write_tsv(x = sex_leader_raw,
           path = "data/01_sex_leader_raw.tsv")
