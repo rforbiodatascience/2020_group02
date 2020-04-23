@@ -52,7 +52,7 @@ adult_mortality_raw <- read_csv(file = "data/_raw/WHO/Mortality/Adult mortality.
 POP_demo_raw <- read_csv(file = "data/_raw/WHO/Population demographics/Population demographics_all years.csv")                       
 
 #WHO BMI
-BMI_above30_agestand_raw <- read_csv("data/_raw/WHO/BMI/NCD_BMI_above30_age_standardized.csv")
+BMI_above30_agestand_raw <- read_csv("data/_raw/WHO/BMI/NCD_BMI_above30_age_standardized.csv", col_names = c("Country", "BMI_above30_all", "BMI_above30_male", "BMI_above30_female"), skip = 4)
 
 #Life expectancy and healthy life expectancy
 life_expectancy_raw <- read_csv(file = "data/_raw/WHO/Mortality/Life expectancy and healthy life expectancy.csv",
