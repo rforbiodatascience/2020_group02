@@ -51,6 +51,9 @@ adult_mortality_raw <- read_csv(file = "data/_raw/WHO/Mortality/Adult mortality.
 # Population size, median Pop age, urban distribution 
 POP_demo_raw <- read_csv(file = "data/_raw/WHO/Population demographics/Population demographics_all years.csv")                       
 
+#WHO BMI
+BMI_above30_agestand_raw <- read_csv("data/_raw/WHO/BMI/NCD_BMI_above30_age_standardized.csv", col_names = c("Country", "BMI_above30_all", "BMI_above30_male", "BMI_above30_female"), skip = 4)
+
 #Life expectancy and healthy life expectancy
 life_expectancy_raw <- read_csv(file = "data/_raw/WHO/Mortality/Life expectancy and healthy life expectancy.csv",
                                 col_names = c("Country", "Year", "Life expectancy at birth (years)", "Male life expectancy at birth (years)", "Female life expectancy at birth (years)", "Life expectancy at age 60 (years)", "Male life expectancy at age 60 (years)", "Female life expectancy at age 60 (years)", "Healthy life expectancy (HALE) at birth (years)", "Male healthy life expectancy (HALE) at birth (years)", "Female healthy life expectancy (HALE) at birth (years)", "Healthy life expectancy (HALE) at age 60 (years)", "Male healthy life expectancy (HALE) at age 60 (years)", "Female healthy life expectancy (HALE) at age 60 (years)"),
@@ -68,26 +71,110 @@ mortality_causes_raw <- read_xls(path = "data/_raw/WHO/Mortality/Cause_specific_
                                  col_names = col_names)
 
 
-##WHO - public health and environment - metchr
+##WHO - public health and environment
+-------------------------------------------------------------------------------------------------------
 #Air pollution
+cols <- read_csv(file = "data/_raw/WHO/Public health and environment/Air pollution.csv",
+                   n_max = 3,
+                   col_names = FALSE)
+
+col_names <- summarise_all(cols, funs(paste(na.omit(.), collapse = "_"))) %>%
+  unlist()
+
 air_pollution_raw <- read_csv(file = "data/_raw/WHO/Public health and environment/Air pollution.csv",
-                              col_names = c("Country", "Total concentration of fine particular matter", "Urban concentration of fine particular matter", "Rural concentration of fine particular matter"),
-                              skip = 3)
+                              skip = 3,
+                              col_names = col_names)
 
 #Handwashing facilities
 cols <- read_csv(file = "data/_raw/WHO/Public health and environment/Handwashing_facilities_percent.csv",
                  n_max = 3,
                  col_names = FALSE)
 
-col_names <- summarise_all(funs(paste(na.omit(.), collapse = "_"))) %>%
+col_names <- summarise_all(cols, funs(paste(na.omit(.), collapse = "_"))) %>%
   unlist()
   
 
 handwashing_facilities_raw <- read_csv(file = "data/_raw/WHO/Public health and environment/Handwashing_facilities_percent.csv",
                                        skip = 3,
-                                       col_names = FALSE) %>% 
-  names(col_names)
+                                       col_names = col_names) 
+
+
+#Household pollution - clean fuel technologies
+cols <- read_csv(file = "data/_raw/WHO/Public health and environment/Household pollution_clean fuel technologies.csv",
+                 n_max = 2,
+                 col_names = FALSE)
+
+col_names <- summarise_all(cols, funs(paste(na.omit(.), collapse = "_"))) %>% 
+  unlist()
+
+household_pollution_raw <- read_csv(file = "data/_raw/WHO/Public health and environment/Household pollution_clean fuel technologies.csv",
+                                    skip = 2,
+                                    col_names = col_names)
+
+#Measles reported cases
+cols <- read_csv(file = "data/_raw/WHO/Public health and environment/Measles_reported_cases.csv",
+                 n_max = 2,
+                 col_names = FALSE)
+
+col_names <- summarise_all(cols, funs(paste(na.omit(.), collapse = "_"))) %>% 
+  unlist()
+
+measles_cases_raw <- read_csv(file = "data/_raw/WHO/Public health and environment/Measles_reported_cases.csv",
+                                    skip = 2,
+                                    col_names = col_names)
+
+
+#Mortality from environmental pollution
+cols <- read_csv(file = "data/_raw/WHO/Public health and environment/Mortality from environmental pollution.csv",
+                 n_max = 3,
+                 col_names = FALSE)
+
+col_names <- summarise_all(cols, funs(paste(na.omit(.), collapse = "_"))) %>%
+  unlist()
+
+
+mortality_pollution_related_raw <- read_csv(file = "data/_raw/WHO/Public health and environment/Mortality from environmental pollution.csv",
+                                       skip = 3,
+                                       col_names = col_names) 
+
+
+##Health workforce and system
+--------------------------------------------------------------------------------
+#Current health expenditure
+cols <- read_csv(file = "data/_raw/WHO/Health workforce and system/Current health expenditure.csv",
+                   n_max = 2,
+                   col_names = FALSE)
+
+col_names <- summarise_all(cols, funs(paste(na.omit(.), collapse = "_"))) %>% 
+  unlist()
+
+health_expenditure_raw <- read_csv(file = "data/_raw/WHO/Health workforce and system/Current health expenditure.csv",
+                              skip = 2,
+                              col_names = col_names)
+
+#Health infrastructure
+health_infrastructure_raw <- read_csv("data/_raw/WHO/Health workforce and system/Health infrastructure.csv")
                               
+#Medical doctors
+medical_doctors_raw <- read_csv("data/_raw/WHO/Health workforce and system/Medical doctors.csv")
+
+#Nursus and midwifes
+nurses_midwifes_raw <- read_csv("data/_raw/WHO/Health workforce and system/Nurses and midwifes.csv")
+
+
+##Smoking
+-------------------------------------------------------------------------------
+cols <- read_csv(file = "data/_raw/WHO/smoking/smoking.csv",
+                   n_max = 2,
+                   col_names = FALSE)
+
+col_names <- summarise_all(cols, funs(paste(na.omit(.), collapse = "_"))) %>% 
+  unlist()
+
+smoking_raw <- read_csv(file = "data/_raw/WHO/smoking/smoking.csv",
+                              skip = 2,
+                              col_names = col_names)
+
 
 # Wrangle data
 # ------------------------------------------------------------------------------
@@ -133,6 +220,35 @@ write_tsv(x = mortality_causes_raw,
 write_tsv(x = air_pollution_raw,
           path = "data/01_air_pollution_load.tsv")
 
+write_tsv(x = handwashing_facilities_raw,
+          path = "data/01_handwashing_facilities_load.tsv")
+
+write_tsv(x = household_pollution_raw,
+          path = "data/01_household_pollution_load.tsv")
+
+write_tsv(x = measles_cases_raw,
+          path = "data/01_measles_cases_load.tsv")
+
+write_tsv(x = mortality_pollution_related_raw,
+          path = "data/01_mortality_pollution_related_load.tsv")
+
+write_tsv(x = health_expenditure_raw,
+          path = "data/01_health_expenditure_load.tsv")
+
+write_tsv(x = health_infrastructure_raw,
+          path = "data/01_health_infrastructure_load.tsv")
+
+write_tsv(x = medical_doctors_raw,
+          path = "data/01_medical_doctors_load.tsv")
+
+write_tsv(x = nurses_midwifes_raw,
+          path = "data/01_nurses_midwifes_load.tsv")
+
+write_tsv(x = smoking_raw,
+          path = "data/01_smoking_load.tsv")
+
 write_tsv(x = sex_leader_raw,
           path = "data/01_sex_leader_raw.tsv")
 
+write_tsv(x = BMI_above30_agestand_raw,
+          path = "data/01_BMI_above30_agestand_raw.tsv")

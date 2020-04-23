@@ -8,6 +8,7 @@ library("tidyverse")
 library("stringr")
 library("lubridate")
 library("readxl") 
+library("readr")
 
 
 # Define functions
@@ -33,6 +34,8 @@ UN_pop <- read_tsv(file = "data/01_UN_pop_raw.tsv")
 UN_gdp <- read_tsv(file = "data/01_UN_gdp_raw.tsv")
 
 sex_leader <- read_tsv(file = "data/01_sex_leader_raw.tsv")
+
+BMI_above30 <- read_tsv(file = "data/01_BMI_above30_agestand_raw.tsv")
 
 # Wrangle data
 # ------------------------------------------------------------------------------
@@ -133,6 +136,12 @@ writeLines("^\\w+\\.")
 
 
 
+#BMI
+BMI_above30_clean <- BMI_above30  %>% 
+  separate(BMI_above30_all, into = c("BMI_above30_prevalence_all", "ref_int_all"), sep = " ") %>%
+  select(Country, "BMI_above30_prevalence_all")
+
+
 # Write data
 # ------------------------------------------------------------------------------
 #write_tsv(x = my_data_clean, path = "data/02_my_data_clean.tsv")
@@ -147,3 +156,5 @@ write_tsv(x = UN_gdp_clean,
           path = "data/02_UN_gdp_clean.tsv")
 write_tsv(x = sex_leader_clean,
           path = "data/02_sex_leader_clean.tsv")
+write_tsv(x = BMI_above30_clean,
+          path = "data/02_BMI_above30_clean.tsv")
