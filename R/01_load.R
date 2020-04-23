@@ -71,7 +71,8 @@ mortality_causes_raw <- read_xls(path = "data/_raw/WHO/Mortality/Cause_specific_
                                  col_names = col_names)
 
 
-##WHO - public health and environment - metchr
+##WHO - public health and environment
+-------------------------------------------------------------------------------------------------------
 #Air pollution
 air_pollution_raw <- read_csv(file = "data/_raw/WHO/Public health and environment/Air pollution.csv",
                               col_names = c("Country", "Total concentration of fine particular matter", "Urban concentration of fine particular matter", "Rural concentration of fine particular matter"),
@@ -128,6 +129,12 @@ col_names <- summarise_all(cols, funs(paste(na.omit(.), collapse = "_"))) %>%
 mortality_pollution_related_raw <- read_csv(file = "data/_raw/WHO/Public health and environment/Mortality from environmental pollution.csv",
                                        skip = 3,
                                        col_names = col_names) 
+
+
+##Health workforce and system
+--------------------------------------------------------------------------------
+#Current health expenditure
+
                               
 
 # Wrangle data
