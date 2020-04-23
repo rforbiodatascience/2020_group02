@@ -122,9 +122,12 @@ mortality_causes <- read_tsv(file = "data/01_mortality_causes_load.tsv")
   mutate(Cause_clean = str_replace(Cause_clean, "^_", "")) %>% 
   rowid_to_column("ID") %>% 
 
-  pivot_longer(cols = select(-"Cause_clean"), 
+  pivot_longer(cols = -c("ID", "Cause_clean"), 
   names_to = "Country", 
-  values_to = "Result")
+  values_to = "Result") %>% 
+  pivot_wider(
+      names_from = "Cause_clean", 
+      values_from = "Result")
   
 
 mortality_causes_clean
