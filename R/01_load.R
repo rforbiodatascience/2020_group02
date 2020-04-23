@@ -134,8 +134,27 @@ mortality_pollution_related_raw <- read_csv(file = "data/_raw/WHO/Public health 
 ##Health workforce and system
 --------------------------------------------------------------------------------
 #Current health expenditure
+cols <- read_csv(file = "data/_raw/WHO/Health workforce and system/Current health expenditure.csv",
+                   n_max = 2,
+                   col_names = FALSE)
 
+col_names <- summarise_all(cols, funs(paste(na.omit(.), collapse = "_"))) %>% 
+  unlist()
+
+health_expenditure_raw <- read_csv(file = "data/_raw/WHO/Health workforce and system/Current health expenditure.csv",
+                              skip = 2,
+                              col_names = col_names)
+
+#Health infrastructure
+health_infrastructure_raw <- read_csv("data/_raw/WHO/Health workforce and system/Health infrastructure.csv")
                               
+#Medical doctors
+medical_doctors_raw <- read_csv("data/_raw/WHO/Health workforce and system/Medical doctors.csv")
+
+#Nursus and midwifes
+nurses_midwifes_raw <- read_csv("data/_raw/WHO/Health workforce and system/Nurses and midwifes.csv")
+
+
 
 # Wrangle data
 # ------------------------------------------------------------------------------
@@ -192,6 +211,18 @@ write_tsv(x = measles_cases_raw,
 
 write_tsv(x = mortality_pollution_related_raw,
           path = "data/01_mortality_pollution_related_load.tsv")
+
+write_tsv(x = health_expenditure_raw,
+          path = "data/01_health_expenditure_load.tsv")
+
+write_tsv(x = health_infrastructure_raw,
+          path = "data/01_health_infrastructure_load.tsv")
+
+write_tsv(x = medical_doctors_raw,
+          path = "data/01_medical_doctors_load.tsv")
+
+write_tsv(x = nurses_midwifes_raw,
+          path = "data/01_nurses_midwifes_load.tsv")
 
 write_tsv(x = sex_leader_raw,
           path = "data/01_sex_leader_raw.tsv")
