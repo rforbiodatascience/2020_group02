@@ -104,12 +104,34 @@ life_expectancy_clean <- life_expectancy  %>%
 #Cause specific mortality
 mortality_causes <- read_tsv(file = "data/01_mortality_causes_load.tsv") 
 
-mortality_causes_clean <- mortality_causes %>% 
+#Removing useless variables 
+#Uniting primary and secondary causes of disease with "_" 
+#Removing excess digits/letters
+
+  mortality_causes_clean <- mortality_causes %>% 
   as_tibble(mortality_causes_clean) %>% 
   rename(Cause_1 = "...5", Cause_2 = "...6") %>% 
-  mutate(Cause_1_chr = str_replace(Cause_1, "\\d+\\.", ""))
+  select(-'Sex', -'GHE code', -'Member State
+(See Notes for explanation of colour codes)', -'GHE cause', -'...3') %>% 
+  unite("Cause_clean", Cause_1:Cause_2, sep = "_", remove = TRUE, na.rm = T) %>% 
+  select(Cause_clean, everything()) %>% 
+  mutate(Cause_clean = str_replace(Cause_clean, "^\\w+\\.", "")) %>% 
+  mutate(Cause_clean = str_replace(Cause_clean, "^_", "")) %>% 
+  rowid_to_column("ID") %>% 
 
-mortality_causes
+  pivot_longer(cols = select(-"Cause_clean"), 
+  names_to = "Country", 
+  values_to = "Result")
+  
+
+mortality_causes_clean
+rlang::last_error()
+rlang::last_trace()
+
+#Test of above regular expression as string
+writeLines("^\\w+\\.")
+
+
 
 # Write data
 # ------------------------------------------------------------------------------
