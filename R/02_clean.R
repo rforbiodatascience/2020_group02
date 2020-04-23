@@ -99,7 +99,7 @@ adult_mortality_clean <- adult_mortality  %>%
 #Adult_mortality rate corresponds to the probability of dying between age 15 and 60 per 1000 individuals
 
 #Life expectancy and healthy life expectancy  
-life_expectancy_clean <- life_expectancy  %>% 
+life_expectancy_clean <- read_tsv(file = "data/01_life_expectancy_load.tsv")  %>% 
   filter(Year == 2016) %>% 
   select(Country, `Life expectancy at birth (years)`, `Healthy life expectancy (HALE) at birth (years)`)
 
@@ -145,6 +145,19 @@ BMI_above30_clean <- BMI_above30  %>%
   select(Country, "BMI_above30_prevalence_all")
 
 
+##WHO - public health and environment
+-------------------------------------------------------------------------------------------------------
+#Air pollution
+air_pollution_clean <- read_tsv(file = "data/01_air_pollution_load.tsv")  %>% 
+  select(Country, "Concentrations of fine particulate matter (PM2.5)_2016_Total") %>% 
+  rename(Concentration_fine_particles = "Concentrations of fine particulate matter (PM2.5)_2016_Total")
+
+#Handwashing facilities
+handwashing_facilities_clean <- read_tsv(file = "data/01_handwashing_facilities_load.tsv") %>%
+  select(Country, "2017_Population with basic handwashing facilities at home (%)_Total") %>% 
+  rename(Percent_of_population_basic_handwashing_facilities = "2017_Population with basic handwashing facilities at home (%)_Total")
+
+
 # Write data
 # ------------------------------------------------------------------------------
 #write_tsv(x = my_data_clean, path = "data/02_my_data_clean.tsv")
@@ -153,6 +166,10 @@ write_tsv(x = adult_mortality_clean,
           path = "data/02_adult_mortality_clean.tsv")
 write_tsv(x = life_expectancy_clean,
           path = "data/02_life_expectancy_clean.tsv")
+write_tsv(x = air_pollution_clean,
+          path = "data/02_air_pollution_clean.tsv")
+write_tsv(x = handwashing_facilities_clean,
+          path = "data/02_handwashing_facilities_clean.tsv")
 write_tsv(x = UN_pop_clean,
           path = "data/02_UN_pop_clean.tsv")
 write_tsv(x = UN_gdp_clean,
