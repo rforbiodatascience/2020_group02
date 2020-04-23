@@ -111,6 +111,20 @@ col_names <- summarise_all(cols, funs(paste(na.omit(.), collapse = "_"))) %>%
 measles_cases_raw <- read_csv(file = "data/_raw/WHO/Public health and environment/Measles_reported_cases.csv",
                                     skip = 2,
                                     col_names = col_names)
+
+
+#Mortality from environmental pollution
+cols <- read_csv(file = "data/_raw/WHO/Public health and environment/Mortality from environmental pollution.csv",
+                 n_max = 3,
+                 col_names = FALSE)
+
+col_names <- summarise_all(cols, funs(paste(na.omit(.), collapse = "_"))) %>%
+  unlist()
+
+
+mortality_pollution_related_raw <- read_csv(file = "data/_raw/WHO/Public health and environment/Mortality from environmental pollution.csv",
+                                       skip = 3,
+                                       col_names = col_names) 
                               
 
 # Wrangle data
@@ -165,6 +179,9 @@ write_tsv(x = household_pollution_raw,
 
 write_tsv(x = measles_cases_raw,
           path = "data/01_measles_cases_load.tsv")
+
+write_tsv(x = mortality_pollution_related_raw,
+          path = "data/01_mortality_pollution_related_load.tsv")
 
 write_tsv(x = sex_leader_raw,
           path = "data/01_sex_leader_raw.tsv")
