@@ -8,6 +8,7 @@ library("tidyverse")
 library("stringr")
 library("lubridate")
 library("readxl") 
+library("readr")
 
 
 # Define functions
@@ -30,6 +31,11 @@ life_expectancy <- read_tsv(file = "data/01_life_expectancy_load.tsv")
 mortality_causes <- read_tsv(file = "data/01_mortality_causes_load.tsv")
 
 UN_pop <- read_tsv(file = "data/01_UN_pop_raw.tsv")
+UN_gdp <- read_tsv(file = "data/01_UN_gdp_raw.tsv")
+
+sex_leader <- read_tsv(file = "data/01_sex_leader_raw.tsv")
+
+BMI_above30 <- read_tsv(file = "data/01_BMI_above30_agestand_raw.tsv")
 
 # Wrangle data
 # ------------------------------------------------------------------------------
@@ -133,12 +139,30 @@ JH_conftime_clean <- JH_conftime_clean %>%
   
 #UN datasets
 UN_pop_clean <- UN_pop %>%
-    select(X2, Year, Series, Value) %>%
+  select(X2, Year, Series, Value) %>%
   rename("Country_Region" = "X2") %>%
   filter(Year == 2019, Series == "Population density" | Series == "Sex ratio (males per 100 females)" | Series == "Population aged 60+ years old (percentage)") %>%
-  pivot_wider(names_from = Series, values_from = Value)
+  pivot_wider(names_from = Series, values_from = Value) %>%
+  select(Country_Region, 'Population density', 'Sex ratio (males per 100 females)', 'Population aged 60+ years old (percentage)')
+
+
+UN_gdp_clean <- UN_gdp %>%
+  separate(X1, into = c("nr", "Country_Region", "Year", "Series", "Value", "footnotes", "source"), sep = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)")
+UN_gdp_clean <- as.data.frame(sapply(UN_gdp_clean, function(x) gsub("\"", "", x))) %>%
+  filter(Year == 2017, Series == "GDP in current prices (millions of US dollars)" | Series == "GDP per capita (US dollars)") %>%
+  pivot_wider(names_from = Series, values_from = Value) %>%
+  select(Country_Region, 'GDP in current prices (millions of US dollars)', 'GDP per capita (US dollars)')
+
+#Gender leader
+sex_leader_clean <- sex %>% 
+  filter(year == 2020 & month == 4) %>%
+  mutate(sex = case_when(`male` == 1 ~ "male",
+                         `male` == 0 ~ "female")) %>%
+  select(country, sex)
+
 
 ##WHO - mortality
+--------------------------------------------------------------------------------------------
 #Adult mortality
 adult_mortality_clean <- adult_mortality  %>% 
   filter(Year == 2016) %>% 
@@ -147,7 +171,7 @@ adult_mortality_clean <- adult_mortality  %>%
 #Adult_mortality rate corresponds to the probability of dying between age 15 and 60 per 1000 individuals
 
 #Life expectancy and healthy life expectancy  
-life_expectancy_clean <- life_expectancy  %>% 
+life_expectancy_clean <- read_tsv(file = "data/01_life_expectancy_load.tsv")  %>% 
   filter(Year == 2016) %>% 
   select(Country, `Life expectancy at birth (years)`, `Healthy life expectancy (HALE) at birth (years)`)
 
@@ -155,12 +179,79 @@ life_expectancy_clean <- life_expectancy  %>%
 #Cause specific mortality
 mortality_causes <- read_tsv(file = "data/01_mortality_causes_load.tsv") 
 
-mortality_causes_clean <- mortality_causes %>% 
+#Removing useless variables 
+#Uniting primary and secondary causes of disease with "_" 
+#Removing excess digits/letters
+
+  mortality_causes_clean <- mortality_causes %>% 
   as_tibble(mortality_causes_clean) %>% 
   rename(Cause_1 = "...5", Cause_2 = "...6") %>% 
-  mutate(Cause_1_chr = str_replace(Cause_1, "\\d+\\.", ""))
+  select(-'Sex', -'GHE code', -'Member State
+(See Notes for explanation of colour codes)', -'GHE cause', -'...3') %>% 
+  unite("Cause_clean", Cause_1:Cause_2, sep = "_", remove = TRUE, na.rm = T) %>% 
+  select(Cause_clean, everything()) %>% 
+  mutate(Cause_clean = str_replace(Cause_clean, "^\\w+\\.", "")) %>% 
+  mutate(Cause_clean = str_replace(Cause_clean, "^_", "")) %>% 
+  rowid_to_column("ID") %>% 
 
-mortality_causes
+  pivot_longer(cols = -c("ID", "Cause_clean"), 
+  names_to = "Country", 
+  values_to = "Result") %>% 
+  pivot_wider(
+      names_from = "Cause_clean", 
+      values_from = "Result")
+  
+
+mortality_causes_clean
+rlang::last_error()
+rlang::last_trace()
+
+#Test of above regular expression as string
+writeLines("^\\w+\\.")
+
+
+
+#BMI
+BMI_above30_clean <- BMI_above30  %>% 
+  separate(BMI_above30_all, into = c("BMI_above30_prevalence_all", "ref_int_all"), sep = " ") %>%
+  select(Country, "BMI_above30_prevalence_all")
+
+
+##WHO - public health and environment
+-------------------------------------------------------------------------------------------------------
+#Air pollution
+air_pollution_clean <- read_tsv(file = "data/01_air_pollution_load.tsv")  %>% 
+  separate("Concentrations of fine particulate matter (PM2.5)_2016_Total", into = c("Concentration_fine_particles", "ref_interval"), sep = " ") %>%
+  select(Country, Concentration_fine_particles) %>% 
+  mutate(Concentration_fine_particles = as.numeric(Concentration_fine_particles))
+
+#Handwashing facilities
+handwashing_facilities_clean <- read_tsv(file = "data/01_handwashing_facilities_load.tsv") %>%
+  select(Country, "2017_Population with basic handwashing facilities at home (%)_Total") %>% 
+  rename(Proportion_basic_handwashing_facilities = "2017_Population with basic handwashing facilities at home (%)_Total")
+
+#Household pollution - clean fuel technologies
+household_pollution_clean <- read_tsv(file = "data/01_household_pollution_load.tsv") %>% 
+  select(Country, "Proportion of population with primary reliance on clean fuels and technologies (%)_2017") %>% 
+  rename(Proportion_using_clean_fuels = "Proportion of population with primary reliance on clean fuels and technologies (%)_2017") %>% 
+  mutate(Proportion_using_clean_fuels = recode(Proportion_using_clean_fuels, "&gt;95"="100")) %>% 
+  mutate(Proportion_using_clean_fuels = as.numeric(Proportion_using_clean_fuels))
+
+#Measles reported cases
+measles_cases_clean <- read_tsv(file = "data/01_measles_cases_load.tsv") %>% 
+  select(Country, "Measles - number of reported cases_2018") %>% 
+  rename(Measles_reported_cases = "Measles - number of reported cases_2018") %>% 
+  mutate(Measles_reported_cases = as.numeric(Measles_reported_cases))
+
+#Mortality from environmental pollution
+mortality_pollution_related_clean <- read_tsv(file = "data/01_mortality_pollution_related_load.tsv") %>%
+  separate("Ambient and household air pollution attributable death rate (per 100 000 population)_2016_Both sexes", into = c("Pollution_attributable_death_rate", "ref_interval"), sep = "\\[") %>%
+  separate("Ambient and household air pollution attributable death rate (per 100 000 population, age-standardized)_2016_Both sexes", into = c("Pollution_attributable_death_rate_std", "ref_interval_std"), sep = "\\[") %>% 
+  select(Country, Pollution_attributable_death_rate, Pollution_attributable_death_rate_std) %>% 
+  mutate(Pollution_attributable_death_rate = as.numeric(Pollution_attributable_death_rate)) %>% 
+  mutate(Pollution_attributable_death_rate_std = as.numeric(Pollution_attributable_death_rate_std))
+  
+  
 
 # Write data
 # ------------------------------------------------------------------------------
@@ -170,3 +261,21 @@ write_tsv(x = adult_mortality_clean,
           path = "data/02_adult_mortality_clean.tsv")
 write_tsv(x = life_expectancy_clean,
           path = "data/02_life_expectancy_clean.tsv")
+write_tsv(x = air_pollution_clean,
+          path = "data/02_air_pollution_clean.tsv")
+write_tsv(x = handwashing_facilities_clean,
+          path = "data/02_handwashing_facilities_clean.tsv")
+write_tsv(x = household_pollution_clean,
+          path = "data/02_household_pollution_clean.tsv")
+write_tsv(x = measles_cases_clean,
+          path = "data/02_measles_cases_clean.tsv")
+write_tsv(x = mortality_pollution_related_clean,
+          path = "data/02_mortality_pollution_related_clean.tsv")
+write_tsv(x = UN_pop_clean,
+          path = "data/02_UN_pop_clean.tsv")
+write_tsv(x = UN_gdp_clean,
+          path = "data/02_UN_gdp_clean.tsv")
+write_tsv(x = sex_leader_clean,
+          path = "data/02_sex_leader_clean.tsv")
+write_tsv(x = BMI_above30_clean,
+          path = "data/02_BMI_above30_clean.tsv")
