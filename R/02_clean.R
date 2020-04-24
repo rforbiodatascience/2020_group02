@@ -91,6 +91,7 @@ sex_leader_clean <- sex %>%
 
 
 ##WHO - mortality
+--------------------------------------------------------------------------------------------
 #Adult mortality
 adult_mortality_clean <- adult_mortality  %>% 
   filter(Year == 2016) %>% 
@@ -149,14 +150,21 @@ BMI_above30_clean <- BMI_above30  %>%
 -------------------------------------------------------------------------------------------------------
 #Air pollution
 air_pollution_clean <- read_tsv(file = "data/01_air_pollution_load.tsv")  %>% 
-  select(Country, "Concentrations of fine particulate matter (PM2.5)_2016_Total") %>% 
-  rename(Concentration_fine_particles = "Concentrations of fine particulate matter (PM2.5)_2016_Total")
+  separate("Concentrations of fine particulate matter (PM2.5)_2016_Total", into = c("Concentration_fine_particles", "ref_interval"), sep = " ") %>%
+  select(Country, Concentration_fine_particles) %>% 
+  mutate(Concentration_fine_particles = as.numeric(Concentration_fine_particles))
 
 #Handwashing facilities
 handwashing_facilities_clean <- read_tsv(file = "data/01_handwashing_facilities_load.tsv") %>%
   select(Country, "2017_Population with basic handwashing facilities at home (%)_Total") %>% 
-  rename(Percent_of_population_basic_handwashing_facilities = "2017_Population with basic handwashing facilities at home (%)_Total")
+  rename(Proportion_basic_handwashing_facilities = "2017_Population with basic handwashing facilities at home (%)_Total")
 
+#Household pollution - clean fuel technologies
+household_pollution_clean <- read_tsv(file = "data/01_household_pollution_load.tsv") %>% 
+  select(Country, "Proportion of population with primary reliance on clean fuels and technologies (%)_2017") %>% 
+  rename(Proportion_using_clean_fuels = "Proportion of population with primary reliance on clean fuels and technologies (%)_2017") %>% 
+  mutate(Proportion_using_clean_fuels = recode(Proportion_using_clean_fuels, "&gt;95"="100")) %>% 
+  mutate(Proportion_using_clean_fuels = as.numeric(Proportion_using_clean_fuels))
 
 # Write data
 # ------------------------------------------------------------------------------
@@ -170,6 +178,8 @@ write_tsv(x = air_pollution_clean,
           path = "data/02_air_pollution_clean.tsv")
 write_tsv(x = handwashing_facilities_clean,
           path = "data/02_handwashing_facilities_clean.tsv")
+write_tsv(x = household_pollution_clean,
+          path = "data/02_household_pollution_clean.tsv")
 write_tsv(x = UN_pop_clean,
           path = "data/02_UN_pop_clean.tsv")
 write_tsv(x = UN_gdp_clean,
