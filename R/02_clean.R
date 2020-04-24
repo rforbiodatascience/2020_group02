@@ -166,6 +166,22 @@ household_pollution_clean <- read_tsv(file = "data/01_household_pollution_load.t
   mutate(Proportion_using_clean_fuels = recode(Proportion_using_clean_fuels, "&gt;95"="100")) %>% 
   mutate(Proportion_using_clean_fuels = as.numeric(Proportion_using_clean_fuels))
 
+#Measles reported cases
+measles_cases_clean <- read_tsv(file = "data/01_measles_cases_load.tsv") %>% 
+  select(Country, "Measles - number of reported cases_2018") %>% 
+  rename(Measles_reported_cases = "Measles - number of reported cases_2018") %>% 
+  mutate(Measles_reported_cases = as.numeric(Measles_reported_cases))
+
+#Mortality from environmental pollution
+mortality_pollution_related_clean <- read_tsv(file = "data/01_mortality_pollution_related_load.tsv") %>%
+  separate("Ambient and household air pollution attributable death rate (per 100 000 population)_2016_Both sexes", into = c("Pollution_attributable_death_rate", "ref_interval"), sep = "\\[") %>%
+  separate("Ambient and household air pollution attributable death rate (per 100 000 population, age-standardized)_2016_Both sexes", into = c("Pollution_attributable_death_rate_std", "ref_interval_std"), sep = "\\[") %>% 
+  select(Country, Pollution_attributable_death_rate, Pollution_attributable_death_rate_std) %>% 
+  mutate(Pollution_attributable_death_rate = as.numeric(Pollution_attributable_death_rate)) %>% 
+  mutate(Pollution_attributable_death_rate_std = as.numeric(Pollution_attributable_death_rate_std))
+  
+  
+
 # Write data
 # ------------------------------------------------------------------------------
 #write_tsv(x = my_data_clean, path = "data/02_my_data_clean.tsv")
@@ -180,6 +196,10 @@ write_tsv(x = handwashing_facilities_clean,
           path = "data/02_handwashing_facilities_clean.tsv")
 write_tsv(x = household_pollution_clean,
           path = "data/02_household_pollution_clean.tsv")
+write_tsv(x = measles_cases_clean,
+          path = "data/02_measles_cases_clean.tsv")
+write_tsv(x = mortality_pollution_related_clean,
+          path = "data/02_mortality_pollution_related_clean.tsv")
 write_tsv(x = UN_pop_clean,
           path = "data/02_UN_pop_clean.tsv")
 write_tsv(x = UN_gdp_clean,
