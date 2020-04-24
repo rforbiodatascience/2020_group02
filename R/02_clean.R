@@ -9,7 +9,7 @@ library("stringr")
 library("lubridate")
 library("readxl") 
 library("readr")
-
+library("tidyr")
 
 # Define functions
 # ------------------------------------------------------------------------------
@@ -19,7 +19,8 @@ source(file = "R/99_project_functions.R")
 # ------------------------------------------------------------------------------
 # my_data <- read_tsv(file = "data/01_my_data.tsv")
 
-COVID_test <- read_tsv(file = "data/01_COVID_test.tsv")
+COVID_test <- read_tsv(file = "data/01_COVID_test.tsv", 
+                       col_types = cols(Date = col_date(format="%d-%m-%Y")))
 
 JH_conftime <- read_tsv(file = "data/01_JH_conftime.tsv")
 JH_deadtime <- read_tsv(file = "data/01_JH_deadtime.tsv")
@@ -39,31 +40,30 @@ BMI_above30 <- read_tsv(file = "data/01_BMI_above30_agestand_raw.tsv")
 
 # Wrangle data
 # ------------------------------------------------------------------------------
-#my_data_clean <- my_data # %>% ...
-
 ##Data in our world data
-#COVID-19 tests performed. Global data
+#COVID-19 tests performed (cummulative data over time). Global data.
 
 COVID_test_clean <- COVID_test %>%
-  rename("Country" = "Entity") %>% 
+  separate(Entity, into = c("Country", "waste"), sep ="-", ) %>% 
   select(Country, Date, `Cumulative total`, `Cumulative total per thousand`)
 
-#This dont work on the dataset - MCHR001 is working on this
-#COVID_test_clean$Date <- as.Date(COVID_test_clean$Date, "%d-%m-%y")
-
-
+-------------------------------------------------------------------------------
 ## WHO -Population demographics
 # Population size, median Pop age, urban distribution
 
 POP_demo_clean <- POP_demo %>%  
-  mutate(`Population (in thousands) total numeric` = str_replace(`Population (in thousands) total`, " ", "")) %>%  
-  select(-c(`Population living on &lt;$1 (PPP int. $) a day (%)`, `Population (in thousands) total`)) %>%
-  filter(Year %in% c("2020", "2013", "2016")) 
-
+  mutate(`Population (in thousands) total` = str_replace(`Population (in thousands) total`, " ", "")) %>%
+  select(-c(`Population living on &lt;$1 (PPP int. $) a day (%)`)) %>%
+  filter(Year %in% c("2020", "2013", "2016")) %>% 
+  select(-Year)
+  
+  
+  
+  -------------------------------------------------------------------------------
 ## Johns Hopkins COVID data
-# Confirmed COVID-19 cases, in time series. Global data _MCHR001 is working on this
-
-#Uniting latitude and longitude for transformation to state of capital and tidy data by pivot_long
+  
+# Confirmed COVID-19 cases, in time series. 
+# Unifying latitude and longitude for transformation to state of capital, and tidying data by pivot_long
 JH_conftime_clean <- JH_conftime 
 
 JH_conftime_clean <- JH_conftime_clean %>% 
@@ -126,16 +126,14 @@ JH_conftime_clean <- JH_conftime_clean %>%
   pivot_longer(names_to = "date", 
                values_to = "Number of confirmed COVID-19",
                cols = -c("Country/Region", "Lat", "Long"),
-             names_ptypes = list(date = character())
+             names_ptypes = (date = date())
              )
  
   JH_conftime_clean <- JH_conftime_clean %>%
   group_by(`Country/Region`, Lat, Long, date) %>% 
   summarise(conf_COVID = sum(`Number of confirmed COVID-19`)) 
-  
 
-# Removal of states/provinces that is not the capital.
-
+------------------------------------------------------------------------------------------------
   
 #UN datasets
 UN_pop_clean <- UN_pop %>%
