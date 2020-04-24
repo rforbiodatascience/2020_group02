@@ -63,7 +63,7 @@ POP_demo_clean <- POP_demo %>%
 ## Johns Hopkins COVID data
 # Confirmed COVID-19 cases, in time series. Global data _MCHR001 is working on this
 
-#Tidy data by pivot_longer
+#Uniting latitude and longitude for transformation to state of capital and tidy data by pivot_long
 JH_conftime_clean <- JH_conftime 
 
 JH_conftime_clean <- JH_conftime_clean %>% 
