@@ -49,16 +49,17 @@ COVID_test_clean <- COVID_test %>%
 
 -------------------------------------------------------------------------------
 ## WHO -Population demographics
-# Population size, median Pop age, urban distribution
-
-POP_demo_clean <- POP_demo %>%  
-  mutate(`Population (in thousands) total` = str_replace(`Population (in thousands) total`, " ", "")) %>%
+# Population size, median Pop age, urban distribution, % pop > 60 years and < 15 years. Dataset composed 2013, 2016 and 2020 - and collapsed by omitting the variable "Year" and NA. 
+#uses str_replace_all (and not only str_replace) because of more than one ws in population of China.
+POP_demo_clean <- POP_demo %>% 
+  mutate(`Population (in thousands) total` = str_replace_all(`Population (in thousands) total`, " ", "")) %>%
   select(-c(`Population living on &lt;$1 (PPP int. $) a day (%)`)) %>%
   filter(Year %in% c("2020", "2013", "2016")) %>% 
-  select(-Year)
+  select(-Year) %>% 
+  group_by(Country) %>%
+  summarise_each(funs(first(.[!is.na(.)])))
   
-  
-  
+# summarise_each(funs(first(.[!is.na(.)]))) er fundet via stackoverflow (https://stackoverflow.com/questions/28509462/how-to-collapse-many-records-into-one-while-removing-na-values) - virker men jeg forstår den ikke. Følg op på det! MCHR001
   -------------------------------------------------------------------------------
 ## Johns Hopkins COVID data
   
@@ -425,6 +426,8 @@ medical_doctors_clean <- read_tsv(file = "data/01_medical_doctors_load.tsv") %>%
 
 write_tsv(x = COVID_test_clean, 
           path = "data/02_COVID_test_clean.tsv" )
+write_tsv(x = POP_demo_clean, 
+          path = "data/02_POP_demo_clean.tsv" )
 write_tsv(x = JH_conftime_clean, 
           path = "data/02_JH_conftime_clean.tsv" )
 write_tsv(x = JH_deadtime_clean, 
