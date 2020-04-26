@@ -49,16 +49,17 @@ COVID_test_clean <- COVID_test %>%
 
 -------------------------------------------------------------------------------
 ## WHO -Population demographics
-# Population size, median Pop age, urban distribution
-
-POP_demo_clean <- POP_demo %>%  
-  mutate(`Population (in thousands) total` = str_replace(`Population (in thousands) total`, " ", "")) %>%
+# Population size, median Pop age, urban distribution, % pop > 60 years and < 15 years. Dataset composed 2013, 2016 and 2020 - and collapsed by omitting the variable "Year" and NA. 
+#uses str_replace_all (and not only str_replace) because of more than one ws in population of China.
+POP_demo_clean <- POP_demo %>% 
+  mutate(`Population (in thousands) total` = str_replace_all(`Population (in thousands) total`, " ", "")) %>%
   select(-c(`Population living on &lt;$1 (PPP int. $) a day (%)`)) %>%
   filter(Year %in% c("2020", "2013", "2016")) %>% 
-  select(-Year)
+  select(-Year) %>% 
+  group_by(Country) %>%
+  summarise_each(funs(first(.[!is.na(.)])))
   
-  
-  
+# summarise_each(funs(first(.[!is.na(.)]))) er fundet via stackoverflow (https://stackoverflow.com/questions/28509462/how-to-collapse-many-records-into-one-while-removing-na-values) - virker men jeg forstår den ikke. Følg op på det! MCHR001
   -------------------------------------------------------------------------------
 ## Johns Hopkins COVID data
   
@@ -299,9 +300,9 @@ sex_leader_clean <- sex %>%
 
 
 ##WHO - mortality
---------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------
 #Adult mortality
-adult_mortality_clean <- adult_mortality  %>% 
+adult_mortality_clean <- read_tsv(file = "data/01_adult_mortality_load.tsv") %>% 
   filter(Year == 2016) %>% 
   select(Country, `Adult mortality rate`) 
 
@@ -368,7 +369,7 @@ BMI_above30_clean <- BMI_above30  %>%
 
 
 ##WHO - public health and environment
--------------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------
 #Air pollution
 air_pollution_clean <- read_tsv(file = "data/01_air_pollution_load.tsv")  %>% 
   separate("Concentrations of fine particulate matter (PM2.5)_2016_Total", into = c("Concentration_fine_particles", "ref_interval"), sep = " ") %>%
@@ -400,8 +401,48 @@ mortality_pollution_related_clean <- read_tsv(file = "data/01_mortality_pollutio
   select(Country, Pollution_attributable_death_rate, Pollution_attributable_death_rate_std) %>% 
   mutate(Pollution_attributable_death_rate = as.numeric(Pollution_attributable_death_rate)) %>% 
   mutate(Pollution_attributable_death_rate_std = as.numeric(Pollution_attributable_death_rate_std))
-  
-  
+
+
+##WHO - Health workforce and system
+#-------------------------------------------------------------------------------------------------------
+#Current health expenditure
+health_expenditure_clean <- read_tsv(file = "data/01_health_expenditure_load.tsv") %>% 
+  select(Country, "2017_Current health expenditure (CHE) per capita in US$") %>% 
+  rename(Current_health_expenditure_per_person_USD = "2017_Current health expenditure (CHE) per capita in US$")
+
+#Definition: Per capita current expenditures on health expressed in respective currency - US dolar. 
+#Rationale: This indicator calculates the average expenditure on health per person. It contributes to understand the health expenditure relative to the population size facilitating international comparison.
+
+#Health infrastructure
+health_infrastructure_clean <- read_tsv(file = "data/01_health_infrastructure_load.tsv") %>% 
+  filter(Year == "2013") %>% 
+  select(Country, "Total density per 100 000 population: Hospitals") %>% 
+  rename(Density_of_hospitals = "Total density per 100 000 population: Hospitals")
+
+#Definition: Number of hospitals, including the following hospital categories: rural and district, provincial (second level referral), regional/specialized/teaching and research hospitals (tertiary care), from the public and private sectors, per 100,000 population.
+
+#Medical doctors
+medical_doctors_clean <- read_tsv(file = "data/01_medical_doctors_load.tsv") %>% 
+  group_by(Country) %>% 
+  arrange(desc(Year)) %>% 
+  slice(1) %>% 
+  ungroup %>% 
+  select(Country, "Medical doctors (per 10 000 population)") %>% 
+  rename(Density_of_medical_doctors = "Medical doctors (per 10 000 population)")
+
+#Definition: Medical doctors per 10000 inhabitants. Includes generalists , specialist medical practitioners and medical doctors not further defined, in the given national and/or subnational area.
+
+#Nurses and midwifes
+nurses_midwifes_clean <- read_tsv(file = "data/01_nurses_midwifes_load.tsv") %>% 
+  group_by(Country) %>% 
+  arrange(desc(Year)) %>% 
+  slice(1) %>% 
+  ungroup %>% 
+  select(Country, "Nursing and midwifery personnel (per 10 000 population)") %>% 
+  rename(Density_of_nurses_midwifes = "Nursing and midwifery personnel (per 10 000 population)")
+
+#Definition: Nurses and midwifes per 10000 inhabitants. 
+
 
 # Write data
 # ------------------------------------------------------------------------------
@@ -409,6 +450,8 @@ mortality_pollution_related_clean <- read_tsv(file = "data/01_mortality_pollutio
 
 write_tsv(x = COVID_test_clean, 
           path = "data/02_COVID_test_clean.tsv" )
+write_tsv(x = POP_demo_clean, 
+          path = "data/02_POP_demo_clean.tsv" )
 write_tsv(x = JH_conftime_clean, 
           path = "data/02_JH_conftime_clean.tsv" )
 write_tsv(x = JH_deadtime_clean, 
@@ -429,6 +472,14 @@ write_tsv(x = measles_cases_clean,
           path = "data/02_measles_cases_clean.tsv")
 write_tsv(x = mortality_pollution_related_clean,
           path = "data/02_mortality_pollution_related_clean.tsv")
+write_tsv(x = health_expenditure_clean,
+          path = "data/02_health_expenditure_clean.tsv")
+write_tsv(x = health_infrastructure_clean,
+          path = "data/02_health_infrastructure_clean.tsv")
+write_tsv(x = medical_doctors_clean,
+          path = "data/02_medical_doctors_clean.tsv")
+write_tsv(x = nurses_midwifes_clean,
+          path = "data/02_nurses_midwifes_clean.tsv")
 write_tsv(x = UN_pop_clean,
           path = "data/02_UN_pop_clean.tsv")
 write_tsv(x = UN_gdp_clean,
