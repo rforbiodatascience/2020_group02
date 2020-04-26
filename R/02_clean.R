@@ -410,7 +410,7 @@ health_infrastructure_clean <- read_tsv(file = "data/01_health_infrastructure_lo
 
 #Medical doctors
 medical_doctors_clean <- read_tsv(file = "data/01_medical_doctors_load.tsv") %>% 
-  group_by(Country)%>% 
+  group_by(Country) %>% 
   arrange(desc(Year)) %>% 
   slice(1) %>% 
   ungroup %>% 
@@ -418,6 +418,15 @@ medical_doctors_clean <- read_tsv(file = "data/01_medical_doctors_load.tsv") %>%
   rename(Density_of_medical_doctors = "Medical doctors (per 10 000 population)")
 
 #Definition: Medical doctors per 10000 inhabitants. Includes generalists , specialist medical practitioners and medical doctors not further defined, in the given national and/or subnational area.
+
+#Nurses and midwifes
+nurses_midwifes_clean <- read_tsv(file = "data/01_nurses_midwifes_load.tsv") %>% 
+  group_by(Country) %>% 
+  arrange(desc(Year)) %>% 
+  slice(1) %>% 
+  ungroup %>% 
+  select(Country, "Nursing and midwifery personnel (per 10 000 population)") %>% 
+  rename(Density_of_nurses_midwifes = "Nursing and midwifery personnel (per 10 000 population)")
 
 
 # Write data
@@ -454,6 +463,8 @@ write_tsv(x = health_infrastructure_clean,
           path = "data/02_health_infrastructure_clean.tsv")
 write_tsv(x = medical_doctors_clean,
           path = "data/02_medical_doctors_clean.tsv")
+write_tsv(x = nurses_midwifes_clean,
+          path = "data/02_nurses_midwifes_clean.tsv")
 write_tsv(x = UN_pop_clean,
           path = "data/02_UN_pop_clean.tsv")
 write_tsv(x = UN_gdp_clean,
