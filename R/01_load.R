@@ -72,7 +72,7 @@ mortality_causes_raw <- read_xls(path = "data/_raw/WHO/Mortality/Cause_specific_
 
 
 ##WHO - public health and environment
--------------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------
 #Air pollution
 cols <- read_csv(file = "data/_raw/WHO/Public health and environment/Air pollution.csv",
                    n_max = 3,
@@ -139,7 +139,7 @@ mortality_pollution_related_raw <- read_csv(file = "data/_raw/WHO/Public health 
 
 
 ##Health workforce and system
---------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
 #Current health expenditure
 cols <- read_csv(file = "data/_raw/WHO/Health workforce and system/Current health expenditure.csv",
                    n_max = 2,
@@ -163,7 +163,7 @@ nurses_midwifes_raw <- read_csv("data/_raw/WHO/Health workforce and system/Nurse
 
 
 ##Smoking
--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 cols <- read_csv(file = "data/_raw/WHO/smoking/smoking.csv",
                    n_max = 2,
                    col_names = FALSE)
