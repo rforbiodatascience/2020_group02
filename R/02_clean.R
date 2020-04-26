@@ -313,38 +313,51 @@ life_expectancy_clean <- read_tsv(file = "data/01_life_expectancy_load.tsv")  %>
   select(Country, `Life expectancy at birth (years)`, `Healthy life expectancy (HALE) at birth (years)`)
 
 
-#Cause specific mortality
+#CAUSE-SPECIFIC MORTALITY
+
+#read dataset to object
 mortality_causes <- read_tsv(file = "data/01_mortality_causes_load.tsv") 
 
-#Removing useless variables 
-#Uniting primary and secondary causes of disease with "_" 
-#Removing excess digits/letters
-
+#Renaming variables, removing gender-specifc rows and unnecessary variables 
   mortality_causes_clean <- mortality_causes %>% 
   as_tibble(mortality_causes_clean) %>% 
   rename(Cause_1 = "...5", Cause_2 = "...6") %>% 
+  filter(Sex=="Persons") %>% 
   select(-'Sex', -'GHE code', -'Member State
 (See Notes for explanation of colour codes)', -'GHE cause', -'...3') %>% 
+
+#Uniting primary and secondary causes of disease with "_" 
   unite("Cause_clean", Cause_1:Cause_2, sep = "_", remove = TRUE, na.rm = T) %>% 
   select(Cause_clean, everything()) %>% 
+
+#Removing excess digits/letters, removing blank rows from subtypes of diseases, assigning row ID no
   mutate(Cause_clean = str_replace(Cause_clean, "^\\w+\\.", "")) %>% 
   mutate(Cause_clean = str_replace(Cause_clean, "^_", "")) %>% 
+  mutate_all(na_if,"") %>% 
+  filter(!is.na(Cause_clean)) %>% 
   rowid_to_column("ID") %>% 
 
-  pivot_longer(cols = -c("ID", "Cause_clean"), 
-  names_to = "Country", 
-  values_to = "Result") %>% 
+#Transposing table using pivot
+  pivot_longer(
+    cols = -c("ID", "Cause_clean"), 
+    names_to = "Country", 
+    values_to = "Result") %>% 
+  select(-"ID") %>% 
   pivot_wider(
-      names_from = "Cause_clean", 
-      values_from = "Result")
-  
+    names_from = Cause_clean, 
+    values_from = Result,
+    values_fill = list(Result = 0)) %>% 
 
+#Turning character variables into numeric
+  mutate_all(~str_replace_all(., "^\\.$", "0")) %>% 
+  mutate_all(type.convert, as.is=TRUE)
+
+#check successful cleaning 
 mortality_causes_clean
-rlang::last_error()
-rlang::last_trace()
 
-#Test of above regular expression as string
+#Test of above regular expressions as strings
 writeLines("^\\w+\\.")
+writeLines("^\\.$")
 
 
 
@@ -424,3 +437,5 @@ write_tsv(x = sex_leader_clean,
           path = "data/02_sex_leader_clean.tsv")
 write_tsv(x = BMI_above30_clean,
           path = "data/02_BMI_above30_clean.tsv")
+write_tsv(x = mortality_causes_clean,
+          path = "data/02_mortality_causes_clean.tsv")
