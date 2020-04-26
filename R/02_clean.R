@@ -428,6 +428,8 @@ nurses_midwifes_clean <- read_tsv(file = "data/01_nurses_midwifes_load.tsv") %>%
   select(Country, "Nursing and midwifery personnel (per 10 000 population)") %>% 
   rename(Density_of_nurses_midwifes = "Nursing and midwifery personnel (per 10 000 population)")
 
+#Definition: Nurses and midwifes per 10000 inhabitants. 
+
 
 # Write data
 # ------------------------------------------------------------------------------
