@@ -35,9 +35,21 @@ JH_deadtime_raw <- read_csv("data/_raw/Johns Hopkins - COVID-19/time_series_covi
 JH_recotime_raw <- read_csv("data/_raw/Johns Hopkins - COVID-19/time_series_covid19_recovered_global.csv")
 
 
-#UN data
+#UN pop data
 UN_pop_raw <- read_csv("data/_raw/UN/SYB62_1_201907_Population, Surface Area and Density (1).csv", skip = 1)
+#UN gdp data
+cols <- read_csv(file = "data/_raw/UN/SYB62_230_201904_GDP and GDP Per Capita.csv",
+                 n_max = 2,
+                 col_names = FALSE)
+col_names <- summarise_all(cols, funs(paste(na.omit(.), collapse = "_")))  %>% 
+  unlist()
+UN_gdp_raw <- read_csv(file = "data/_raw/UN/SYB62_230_201904_GDP and GDP Per Capita.csv",
+                                       skip = 2,
+                                       col_names = col_names) 
+
+
 UN_gdp_raw <- read_csv(file = "data/_raw/UN/SYB62_230_201904_GDP and GDP Per Capita.csv", col_names = FALSE, skip = 2)
+
 
 #Gender-leader data
 sex_leader_raw <- read_csv(file = "data/_raw/gender_leader.csv")
