@@ -55,7 +55,7 @@ COVID_test_clean <- COVID_test %>%
 -------------------------------------------------------------------------------
 ## WHO -Population demographics
 # Population size, median Pop age, urban distribution, % pop > 60 years and < 15 years. Dataset composed 2013, 2016 and 2020 - and collapsed by omitting the variable "Year" and NA. 
-#uses str_replace_all (and not only str_replace) because of more than one ws in population of China.
+#uses str_replace_all (and not only str_replace) because of more than one ws in population of China and India.
 POP_demo_clean <- POP_demo %>% 
   mutate(`Population (in thousands) total` = str_replace_all(`Population (in thousands) total`, " ", "")) %>%
   select(-c(`Population living on &lt;$1 (PPP int. $) a day (%)`)) %>%
@@ -283,7 +283,7 @@ JH_conftime_clean <- JH_conftime_clean %>%
 #UN datasets
 UN_pop_clean <- UN_pop %>%
   select(X2, Year, Series, Value) %>%
-  rename("Country_Region" = "X2") %>%
+  rename("country" = "X2") %>%
   filter(Year == 2019, Series == "Population density" | Series == "Sex ratio (males per 100 females)" | Series == "Population aged 60+ years old (percentage)") %>%
   pivot_wider(names_from = Series, values_from = Value) %>%
   select(Country_Region, 'Population density', 'Sex ratio (males per 100 females)', 'Population aged 60+ years old (percentage)')
@@ -295,6 +295,8 @@ UN_gdp_clean <- as.data.frame(sapply(UN_gdp_clean, function(x) gsub("\"", "", x)
   filter(Year == 2017, Series == "GDP in current prices (millions of US dollars)" | Series == "GDP per capita (US dollars)") %>%
   pivot_wider(names_from = Series, values_from = Value) %>%
   select(Country_Region, 'GDP in current prices (millions of US dollars)', 'GDP per capita (US dollars)')
+
+mutate_all(~str_replace_all(., "^\\.$", "0")) %>% 
 
 #Gender leader
 sex_leader_clean <- sex %>% 
@@ -370,7 +372,8 @@ writeLines("^\\.$")
 #BMI
 BMI_above30_clean <- BMI_above30  %>% 
   separate(BMI_above30_all, into = c("BMI_above30_prevalence_all", "ref_int_all"), sep = " ") %>%
-  select(Country, "BMI_above30_prevalence_all")
+  select(Country, "BMI_above30_prevalence_all") %>%
+  mutate(BMI_above30_prevalence_all = as.numeric(BMI_above30_prevalence_all))
 
 
 ##WHO - public health and environment
