@@ -6,6 +6,7 @@ rm(list = ls())
 # ------------------------------------------------------------------------------
 library("tidyverse")
 library("readr")
+library("countrycode")
 
 # Define functions
 # ------------------------------------------------------------------------------
@@ -41,8 +42,9 @@ extra_countries_JH <- JH_conftime_clean %>%
 
 #WHO datasets antijoin
 WHO_extra_countries <- POP_demo_clean %>% 
-  anti_join(smoking_clean, by = 'Country') %>% 
-  count(Country, sort = T)
+  rename(country = Country) %>% 
+  anti_join(smoking_clean, by = 'country') %>% 
+  count(country, sort = T)
 
 
 #WHO-UN datasets antijoin
@@ -92,6 +94,19 @@ country.translate('Arg', 'UN')
 
 as.keyvalue(country, Argentina, UN)
 is.keyvalue(ex)
+
+
+#Combine countries from different sources - test
+#-----------------------------------------------------
+
+countries_combined <- bind_rows(list(COVID_test_clean, JH_conftime_clean, JH_deadtime_clean, JH_recotime_clean, POP_demo_clean, UN_pop_clean), 
+                                .id = "origin") %>% 
+  mutate(origin = recode(origin, "1"="COVID_test_clean", "2" = "JH_conftime_clean", "3" = "JH_deadtime_clean")) %>% 
+  group_by(Country) %>% 
+  slice(1) %>% 
+  ungroup() %>% 
+  arrange(Country) %>% 
+  select(origin, Country)
 
 # Write data
 # ------------------------------------------------------------------------------
