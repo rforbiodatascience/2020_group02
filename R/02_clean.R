@@ -41,7 +41,12 @@ air_pollution <- read_tsv(file = "data/01_air_pollution_load.tsv")
 handwashing_facilities <- read_tsv(file = "data/01_handwashing_facilities_load.tsv")
 household_pollution <- read_tsv(file = "data/01_household_pollution_load.tsv")
 measles_cases <- read_tsv(file = "data/01_measles_cases_load.tsv")
-mortality_pollution_related <- read_tsv(file = "data/01_mortality_pollution_related_load.tsv") 
+mortality_pollution_related <- read_tsv(file = "data/01_mortality_pollution_related_load.tsv")
+
+health_expenditure <- read_tsv(file = "data/01_health_expenditure_load.tsv")
+health_infrastructure <- read_tsv(file = "data/01_health_infrastructure_load.tsv")
+medical_doctors <- read_tsv(file = "data/01_medical_doctors_load.tsv")
+nurses_midwifes <- read_tsv(file = "data/01_nurses_midwifes_load.tsv")
 
 UN_pop <- read_tsv(file = "data/01_UN_pop_raw.tsv")
 UN_gdp <- read_tsv(file = "data/01_UN_gdp_raw.tsv")
@@ -436,23 +441,25 @@ mortality_pollution_related_clean <- mortality_pollution_related %>%
 ##WHO - Health workforce and system
 #-------------------------------------------------------------------------------------------------------
 #Current health expenditure
-health_expenditure_clean <- read_tsv(file = "data/01_health_expenditure_load.tsv") %>% 
+health_expenditure_clean <- health_expenditure %>% 
   select(Country, "2017_Current health expenditure (CHE) per capita in US$") %>% 
-  rename(Current_health_expenditure_per_person_USD = "2017_Current health expenditure (CHE) per capita in US$")
+  rename(country = Country,
+         current_health_expenditure_per_person_USD = "2017_Current health expenditure (CHE) per capita in US$")
 
 #Definition: Per capita current expenditures on health expressed in respective currency - US dolar. 
 #Rationale: This indicator calculates the average expenditure on health per person. It contributes to understand the health expenditure relative to the population size facilitating international comparison.
 
 #Health infrastructure
-health_infrastructure_clean <- read_tsv(file = "data/01_health_infrastructure_load.tsv") %>% 
+health_infrastructure_clean <- health_infrastructure %>% 
   filter(Year == "2013") %>% 
   select(Country, "Total density per 100 000 population: Hospitals") %>% 
-  rename(Density_of_hospitals = "Total density per 100 000 population: Hospitals")
+  rename(country = Country,
+         density_of_hospitals = "Total density per 100 000 population: Hospitals")
 
 #Definition: Number of hospitals, including the following hospital categories: rural and district, provincial (second level referral), regional/specialized/teaching and research hospitals (tertiary care), from the public and private sectors, per 100,000 population.
 
 #Medical doctors
-medical_doctors_clean <- read_tsv(file = "data/01_medical_doctors_load.tsv") %>% 
+medical_doctors_clean <- medical_doctors %>% 
   group_by(Country) %>% 
   arrange(desc(Year)) %>% 
   slice(1) %>% 
@@ -467,7 +474,7 @@ medical_doctors_clean <- read_tsv(file = "data/01_medical_doctors_load.tsv") %>%
 #Definition: Medical doctors per 10000 inhabitants. Includes generalists , specialist medical practitioners and medical doctors not further defined, in the given national and/or subnational area.
 
 #Nurses and midwifes
-nurses_midwifes_clean <- read_tsv(file = "data/01_nurses_midwifes_load.tsv") %>% 
+nurses_midwifes_clean <- nurses_midwifes %>% 
   group_by(Country) %>% 
   arrange(desc(Year)) %>% 
   slice(1) %>% 
