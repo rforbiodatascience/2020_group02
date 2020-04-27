@@ -304,13 +304,15 @@ UN_pop_clean <- UN_pop %>%
 
 
 UN_gdp_clean <- UN_gdp %>%
-  separate(X1, into = c("nr", "Country_Region", "Year", "Series", "Value", "footnotes", "source"), sep = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)")
-UN_gdp_clean <- as.data.frame(sapply(UN_gdp_clean, function(x) gsub("\"", "", x))) %>%
+  separate("[T13.]_Region/Country/Area", into = c("nr", "country", "Year", "Series", "Value", "footnotes", "source"), sep = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)")
+  UN_gdp_clean <-  as.data.frame(sapply(UN_gdp_clean, function(x) gsub("\"", "", x))) %>%
   filter(Year == 2017, Series == "GDP in current prices (millions of US dollars)" | Series == "GDP per capita (US dollars)") %>%
   pivot_wider(names_from = Series, values_from = Value) %>%
-  select(Country_Region, 'GDP in current prices (millions of US dollars)', 'GDP per capita (US dollars)')
+  select(country, 'GDP in current prices (millions of US dollars)', 'GDP per capita (US dollars)')
 
-mutate_all(~str_replace_all(., "^\\.$", "0")) %>% 
+mutate_all(~str_replace_all(UN_gdp_clean, """, " ")) 
+
+
 
 #Gender leader
 sex_leader_clean <- sex %>% 
