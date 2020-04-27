@@ -346,10 +346,10 @@ mortality_causes <- read_tsv(file = "data/01_mortality_causes_load.tsv")
   select(-"ID") %>% 
   pivot_wider(
     names_from = Cause_clean, 
-    values_from = Result,
-    values_fill = list(Result = 0)) %>% 
+    values_from = Result) %>% 
 
 #Turning character variables into numeric
+  mutate_all(na_if(.,"^\\.$"))
   mutate_all(~str_replace_all(., "^\\.$", "0")) %>% 
   mutate_all(type.convert, as.is=TRUE)
 
