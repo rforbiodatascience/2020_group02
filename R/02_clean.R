@@ -4,6 +4,7 @@ rm(list = ls())
 
 # Load libraries
 # ------------------------------------------------------------------------------
+#Check om dette kan slås sammen til færre pakker
 library("tidyverse")
 library("stringr")
 library("lubridate")
@@ -17,7 +18,11 @@ source(file = "R/99_project_functions.R")
 
 # Load data
 # ------------------------------------------------------------------------------
-# my_data <- read_tsv(file = "data/01_my_data.tsv")
+#Tilføj til readme fil at vi har besluttet at anvende nyeste datapunkt for hvert variabel
+#Check "summarise_each(funs(first(.[!is.na(.)])))" brugt i population demographics
+#Check muligheden for at supplere data med ældre non-missing values, hvis nyeste værdi er missing (Smoking)
+#Funktion til latitude og longitude data for lande med flere regioner
+#Load samtlige datasæt i toppen
 
 COVID_test <- read_tsv(file = "data/01_COVID_test.tsv", 
                        col_types = cols(Date = col_date(format="%d-%m-%Y")))
@@ -425,6 +430,7 @@ health_infrastructure_clean <- read_tsv(file = "data/01_health_infrastructure_lo
 medical_doctors_clean <- read_tsv(file = "data/01_medical_doctors_load.tsv") %>% 
   group_by(Country) %>% 
   arrange(desc(Year)) %>% 
+  Se Mettes
   slice(1) %>% 
   ungroup %>% 
   select(Country, "Medical doctors (per 10 000 population)") %>% 
