@@ -463,24 +463,22 @@ medical_doctors_clean <- medical_doctors %>%
   group_by(Country) %>% 
   arrange(desc(Year)) %>% 
   slice(1) %>% 
-  ungroup 
-
-  summarise_at(funs(first(.[!is.na(.)])))
-
-
+  ungroup() %>% 
   select(Country, "Medical doctors (per 10 000 population)") %>% 
-  rename(Density_of_medical_doctors = "Medical doctors (per 10 000 population)")
+  rename(country = Country,
+         density_of_medical_doctors = "Medical doctors (per 10 000 population)")
 
 #Definition: Medical doctors per 10000 inhabitants. Includes generalists , specialist medical practitioners and medical doctors not further defined, in the given national and/or subnational area.
-
+  
 #Nurses and midwifes
-nurses_midwifes_clean <- nurses_midwifes %>% 
+nurses_midwifes_clean <- nurses_midwifes %>%
   group_by(Country) %>% 
   arrange(desc(Year)) %>% 
   slice(1) %>% 
-  ungroup %>% 
+  ungroup() %>% 
   select(Country, "Nursing and midwifery personnel (per 10 000 population)") %>% 
-  rename(Density_of_nurses_midwifes = "Nursing and midwifery personnel (per 10 000 population)")
+  rename(country = Country,
+         density_of_nurses_midwifes = "Nursing and midwifery personnel (per 10 000 population)")
 
 #Definition: Nurses and midwifes per 10000 inhabitants. 
 
