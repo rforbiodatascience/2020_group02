@@ -444,6 +444,38 @@ nurses_midwifes_clean <- read_tsv(file = "data/01_nurses_midwifes_load.tsv") %>%
 #Definition: Nurses and midwifes per 10000 inhabitants. 
 
 
+##WHO - Smoking
+#-------------------------------------------------------------------------------
+#Read dataset to object
+smoking_clean <- read_tsv(file = "data/01_smoking_load.tsv") %>% 
+  
+#Separate into variables of prevalence and confidence interval and remove unnecessary variables
+  separate("Prevalence of smoking any tobacco product among persons aged &gt;= 15 years_Male", into = c("Prevalence_smoking_males", "ref_interval_males"), sep = " ") %>% 
+  separate("Prevalence of smoking any tobacco product among persons aged &gt;= 15 years_Female", into = c("Prevalence_smoking_females", "ref_interval_females"), sep = " ")  %>% 
+  mutate(Prevalence_smoking_males = as.numeric(Prevalence_smoking_males)) %>% 
+  mutate(Prevalence_smoking_females = as.numeric(Prevalence_smoking_females)) %>% 
+  select(Country, Year, Prevalence_smoking_males, Prevalence_smoking_females) %>% 
+
+#Remove predicted future prevalence of smoking
+  filter(Year != "2025") %>% 
+  
+#Limiting dataset to most recent observation
+  group_by(Country) %>% 
+  arrange(desc(Year)) %>% 
+  slice(1) %>% 
+  ungroup %>% 
+  
+#Combining smoking prevalence to overall measure for males and females combined
+  mutate(Prevalence_smoking = (Prevalence_smoking_females+Prevalence_smoking_males)/2) %>%
+
+#Removing unnecessary variables
+  select(Country, Prevalence_smoking)  
+
+#Definition: Percentage of population above age 15 years smoking any tobacco product.
+
+
+
+
 # Write data
 # ------------------------------------------------------------------------------
 #write_tsv(x = my_data_clean, path = "data/02_my_data_clean.tsv")
@@ -480,6 +512,8 @@ write_tsv(x = medical_doctors_clean,
           path = "data/02_medical_doctors_clean.tsv")
 write_tsv(x = nurses_midwifes_clean,
           path = "data/02_nurses_midwifes_clean.tsv")
+write_tsv(x = smoking_clean,
+          path = "data/02_smoking_clean.tsv")
 write_tsv(x = UN_pop_clean,
           path = "data/02_UN_pop_clean.tsv")
 write_tsv(x = UN_gdp_clean,
