@@ -32,6 +32,7 @@ JH_deadtime <- read_tsv(file = "data/01_JH_deadtime.tsv")
 JH_recotime <- read_tsv(file = "data/01_JH_recotime.tsv")
 
 POP_demo <- read_tsv(file = "data/01_POP_demo.tsv")
+
 adult_mortality <- read_tsv(file = "data/01_adult_mortality_load.tsv")
 life_expectancy <- read_tsv(file = "data/01_life_expectancy_load.tsv")
 mortality_causes <- read_tsv(file = "data/01_mortality_causes_load.tsv")
@@ -309,16 +310,23 @@ sex_leader_clean <- sex %>%
 ##WHO - mortality
 #--------------------------------------------------------------------------------------------
 #Adult mortality
-adult_mortality_clean <- read_tsv(file = "data/01_adult_mortality_load.tsv") %>% 
+adult_mortality_clean <- adult_mortality %>% 
   filter(Year == 2016) %>% 
-  select(Country, `Adult mortality rate`) 
+  select(Country, "Adult mortality rate (probability of dying between 15 and 60 years per 1000 population)_Both sexes") %>% 
+  rename(country = Country,
+         adult_mortality_rate = "Adult mortality rate (probability of dying between 15 and 60 years per 1000 population)_Both sexes")
 
-#Adult_mortality rate corresponds to the probability of dying between age 15 and 60 per 1000 individuals
+#Adult_mortality rate corresponds to the probability of dying between age 15 and 60 per 1000 individuals in 2016
 
 #Life expectancy and healthy life expectancy  
-life_expectancy_clean <- read_tsv(file = "data/01_life_expectancy_load.tsv")  %>% 
+life_expectancy_clean <- life_expectancy %>% 
   filter(Year == 2016) %>% 
-  select(Country, `Life expectancy at birth (years)`, `Healthy life expectancy (HALE) at birth (years)`)
+  select(Country, "Life expectancy at birth (years)_Both sexes", "Healthy life expectancy (HALE) at birth (years)_Both sexes") %>% 
+  rename(country = Country,
+         life_expectancy = "Life expectancy at birth (years)_Both sexes",
+         healthy_life_expectancy = "Healthy life expectancy (HALE) at birth (years)_Both sexes")
+
+#Life expectancy and healthy life expectancy corresponds to at birth estimates from the year 2016
 
 
 #CAUSE-SPECIFIC MORTALITY
