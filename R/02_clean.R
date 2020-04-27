@@ -50,7 +50,7 @@ COVID_test_clean <- COVID_test %>%
 -------------------------------------------------------------------------------
 ## WHO -Population demographics
 # Population size, median Pop age, urban distribution, % pop > 60 years and < 15 years. Dataset composed 2013, 2016 and 2020 - and collapsed by omitting the variable "Year" and NA. 
-#uses str_replace_all (and not only str_replace) because of more than one ws in population of China.
+#uses str_replace_all (and not only str_replace) because of more than one ws in population of China and India.
 POP_demo_clean <- POP_demo %>% 
   mutate(`Population (in thousands) total` = str_replace_all(`Population (in thousands) total`, " ", "")) %>%
   select(-c(`Population living on &lt;$1 (PPP int. $) a day (%)`)) %>%
