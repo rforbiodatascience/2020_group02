@@ -4,20 +4,20 @@ rm(list = ls())
 
 # Load libraries
 # ------------------------------------------------------------------------------
-library("tidyverse")
+#Check om dette kan slås sammen til færre pakker
+library("tidyverse")  
 library("stringr")
 library("readr")
 library("lubridate")
 library("readxl")
 
 
-# Define functions
-# ------------------------------------------------------------------------------
-source(file = "R/99_project_functions.R")
-
 # Load data
 # ------------------------------------------------------------------------------
-#my_data_raw <- read_tsv(file = "data/_raw/my_raw_data.tsv")
+#HUSK!
+#Column names included in load file
+#Henvisninger til datasættenes oprindelse inkluderes i Readme file
+#Check funktionen til summarise_all - fjern unlist
 
 ##Data in our world data
 #COVID-19 tests performed. Global data
@@ -47,6 +47,7 @@ sex_leader_raw <- read_csv(file = "data/_raw/gender_leader.csv")
 adult_mortality_raw <- read_csv(file = "data/_raw/WHO/Mortality/Adult mortality.csv",  
                                 col_names = c("Country", "Year", "Adult mortality rate", "Adult male mortality rate", "Adult female mortality rate"),
                                 skip = 2)
+
 ## WHO -Population demographics
 # Population size, median Pop age, urban distribution 
 POP_demo_raw <- read_csv(file = "data/_raw/WHO/Population demographics/Population demographics_all years.csv")                       
@@ -72,7 +73,7 @@ mortality_causes_raw <- read_xls(path = "data/_raw/WHO/Mortality/Cause_specific_
 
 
 ##WHO - public health and environment
--------------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------
 #Air pollution
 cols <- read_csv(file = "data/_raw/WHO/Public health and environment/Air pollution.csv",
                    n_max = 3,
@@ -90,8 +91,7 @@ cols <- read_csv(file = "data/_raw/WHO/Public health and environment/Handwashing
                  n_max = 3,
                  col_names = FALSE)
 
-col_names <- summarise_all(cols, funs(paste(na.omit(.), collapse = "_"))) %>%
-  unlist()
+col_names <- summarise_all(cols, funs(paste(na.omit(.), collapse = "_"))) 
   
 
 handwashing_facilities_raw <- read_csv(file = "data/_raw/WHO/Public health and environment/Handwashing_facilities_percent.csv",
@@ -139,7 +139,7 @@ mortality_pollution_related_raw <- read_csv(file = "data/_raw/WHO/Public health 
 
 
 ##Health workforce and system
---------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
 #Current health expenditure
 cols <- read_csv(file = "data/_raw/WHO/Health workforce and system/Current health expenditure.csv",
                    n_max = 2,
@@ -163,7 +163,7 @@ nurses_midwifes_raw <- read_csv("data/_raw/WHO/Health workforce and system/Nurse
 
 
 ##Smoking
--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 cols <- read_csv(file = "data/_raw/WHO/smoking/smoking.csv",
                    n_max = 2,
                    col_names = FALSE)

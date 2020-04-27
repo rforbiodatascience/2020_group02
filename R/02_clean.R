@@ -4,6 +4,7 @@ rm(list = ls())
 
 # Load libraries
 # ------------------------------------------------------------------------------
+#Check om dette kan slås sammen til færre pakker
 library("tidyverse")
 library("stringr")
 library("lubridate")
@@ -17,7 +18,11 @@ source(file = "R/99_project_functions.R")
 
 # Load data
 # ------------------------------------------------------------------------------
-# my_data <- read_tsv(file = "data/01_my_data.tsv")
+#Tilføj til readme fil at vi har besluttet at anvende nyeste datapunkt for hvert variabel
+#Check "summarise_each(funs(first(.[!is.na(.)])))" brugt i population demographics
+#Check muligheden for at supplere data med ældre non-missing values, hvis nyeste værdi er missing (Smoking)
+#Funktion til latitude og longitude data for lande med flere regioner
+#Load samtlige datasæt i toppen
 
 COVID_test <- read_tsv(file = "data/01_COVID_test.tsv", 
                        col_types = cols(Date = col_date(format="%d-%m-%Y")))
@@ -300,9 +305,9 @@ sex_leader_clean <- sex %>%
 
 
 ##WHO - mortality
---------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------
 #Adult mortality
-adult_mortality_clean <- adult_mortality  %>% 
+adult_mortality_clean <- read_tsv(file = "data/01_adult_mortality_load.tsv") %>% 
   filter(Year == 2016) %>% 
   select(Country, `Adult mortality rate`) 
 
@@ -314,38 +319,51 @@ life_expectancy_clean <- read_tsv(file = "data/01_life_expectancy_load.tsv")  %>
   select(Country, `Life expectancy at birth (years)`, `Healthy life expectancy (HALE) at birth (years)`)
 
 
-#Cause specific mortality
+#CAUSE-SPECIFIC MORTALITY
+
+#read dataset to object
 mortality_causes <- read_tsv(file = "data/01_mortality_causes_load.tsv") 
 
-#Removing useless variables 
-#Uniting primary and secondary causes of disease with "_" 
-#Removing excess digits/letters
-
+#Renaming variables, removing gender-specifc rows and unnecessary variables 
   mortality_causes_clean <- mortality_causes %>% 
   as_tibble(mortality_causes_clean) %>% 
   rename(Cause_1 = "...5", Cause_2 = "...6") %>% 
+  filter(Sex=="Persons") %>% 
   select(-'Sex', -'GHE code', -'Member State
 (See Notes for explanation of colour codes)', -'GHE cause', -'...3') %>% 
+
+#Uniting primary and secondary causes of disease with "_" 
   unite("Cause_clean", Cause_1:Cause_2, sep = "_", remove = TRUE, na.rm = T) %>% 
   select(Cause_clean, everything()) %>% 
+
+#Removing excess digits/letters, removing blank rows from subtypes of diseases, assigning row ID no
   mutate(Cause_clean = str_replace(Cause_clean, "^\\w+\\.", "")) %>% 
   mutate(Cause_clean = str_replace(Cause_clean, "^_", "")) %>% 
+  mutate_all(na_if,"") %>% 
+  filter(!is.na(Cause_clean)) %>% 
   rowid_to_column("ID") %>% 
 
-  pivot_longer(cols = -c("ID", "Cause_clean"), 
-  names_to = "Country", 
-  values_to = "Result") %>% 
+#Transposing table using pivot
+  pivot_longer(
+    cols = -c("ID", "Cause_clean"), 
+    names_to = "Country", 
+    values_to = "Result") %>% 
+  select(-"ID") %>% 
   pivot_wider(
-      names_from = "Cause_clean", 
-      values_from = "Result")
-  
+    names_from = Cause_clean, 
+    values_from = Result) %>% 
 
+#Turning character variables into numeric
+  mutate_all(na_if(.,"^\\.$"))
+  mutate_all(~str_replace_all(., "^\\.$", "0")) %>% 
+  mutate_all(type.convert, as.is=TRUE)
+
+#check successful cleaning 
 mortality_causes_clean
-rlang::last_error()
-rlang::last_trace()
 
-#Test of above regular expression as string
+#Test of above regular expressions as strings
 writeLines("^\\w+\\.")
+writeLines("^\\.$")
 
 
 
@@ -356,7 +374,7 @@ BMI_above30_clean <- BMI_above30  %>%
 
 
 ##WHO - public health and environment
--------------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------
 #Air pollution
 air_pollution_clean <- read_tsv(file = "data/01_air_pollution_load.tsv")  %>% 
   separate("Concentrations of fine particulate matter (PM2.5)_2016_Total", into = c("Concentration_fine_particles", "ref_interval"), sep = " ") %>%
@@ -388,8 +406,81 @@ mortality_pollution_related_clean <- read_tsv(file = "data/01_mortality_pollutio
   select(Country, Pollution_attributable_death_rate, Pollution_attributable_death_rate_std) %>% 
   mutate(Pollution_attributable_death_rate = as.numeric(Pollution_attributable_death_rate)) %>% 
   mutate(Pollution_attributable_death_rate_std = as.numeric(Pollution_attributable_death_rate_std))
+
+
+##WHO - Health workforce and system
+#-------------------------------------------------------------------------------------------------------
+#Current health expenditure
+health_expenditure_clean <- read_tsv(file = "data/01_health_expenditure_load.tsv") %>% 
+  select(Country, "2017_Current health expenditure (CHE) per capita in US$") %>% 
+  rename(Current_health_expenditure_per_person_USD = "2017_Current health expenditure (CHE) per capita in US$")
+
+#Definition: Per capita current expenditures on health expressed in respective currency - US dolar. 
+#Rationale: This indicator calculates the average expenditure on health per person. It contributes to understand the health expenditure relative to the population size facilitating international comparison.
+
+#Health infrastructure
+health_infrastructure_clean <- read_tsv(file = "data/01_health_infrastructure_load.tsv") %>% 
+  filter(Year == "2013") %>% 
+  select(Country, "Total density per 100 000 population: Hospitals") %>% 
+  rename(Density_of_hospitals = "Total density per 100 000 population: Hospitals")
+
+#Definition: Number of hospitals, including the following hospital categories: rural and district, provincial (second level referral), regional/specialized/teaching and research hospitals (tertiary care), from the public and private sectors, per 100,000 population.
+
+#Medical doctors
+medical_doctors_clean <- read_tsv(file = "data/01_medical_doctors_load.tsv") %>% 
+  group_by(Country) %>% 
+  arrange(desc(Year)) %>% 
+  Se Mettes
+  slice(1) %>% 
+  ungroup %>% 
+  select(Country, "Medical doctors (per 10 000 population)") %>% 
+  rename(Density_of_medical_doctors = "Medical doctors (per 10 000 population)")
+
+#Definition: Medical doctors per 10000 inhabitants. Includes generalists , specialist medical practitioners and medical doctors not further defined, in the given national and/or subnational area.
+
+#Nurses and midwifes
+nurses_midwifes_clean <- read_tsv(file = "data/01_nurses_midwifes_load.tsv") %>% 
+  group_by(Country) %>% 
+  arrange(desc(Year)) %>% 
+  slice(1) %>% 
+  ungroup %>% 
+  select(Country, "Nursing and midwifery personnel (per 10 000 population)") %>% 
+  rename(Density_of_nurses_midwifes = "Nursing and midwifery personnel (per 10 000 population)")
+
+#Definition: Nurses and midwifes per 10000 inhabitants. 
+
+
+##WHO - Smoking
+#-------------------------------------------------------------------------------
+#Read dataset to object
+smoking_clean <- read_tsv(file = "data/01_smoking_load.tsv") %>% 
   
+#Separate into variables of prevalence and confidence interval and remove unnecessary variables
+  separate("Prevalence of smoking any tobacco product among persons aged &gt;= 15 years_Male", into = c("Prevalence_smoking_males", "ref_interval_males"), sep = " ") %>% 
+  separate("Prevalence of smoking any tobacco product among persons aged &gt;= 15 years_Female", into = c("Prevalence_smoking_females", "ref_interval_females"), sep = " ")  %>% 
+  mutate(Prevalence_smoking_males = as.numeric(Prevalence_smoking_males)) %>% 
+  mutate(Prevalence_smoking_females = as.numeric(Prevalence_smoking_females)) %>% 
+  select(Country, Year, Prevalence_smoking_males, Prevalence_smoking_females) %>% 
+
+#Remove predicted future prevalence of smoking
+  filter(Year != "2025") %>% 
   
+#Limiting dataset to most recent observation
+  group_by(Country) %>% 
+  arrange(desc(Year)) %>% 
+  slice(1) %>% 
+  ungroup %>% 
+  
+#Combining smoking prevalence to overall measure for males and females combined
+  mutate(Prevalence_smoking = (Prevalence_smoking_females+Prevalence_smoking_males)/2) %>%
+
+#Removing unnecessary variables
+  select(Country, Prevalence_smoking)  
+
+#Definition: Percentage of population above age 15 years smoking any tobacco product.
+
+
+
 
 # Write data
 # ------------------------------------------------------------------------------
@@ -419,6 +510,16 @@ write_tsv(x = measles_cases_clean,
           path = "data/02_measles_cases_clean.tsv")
 write_tsv(x = mortality_pollution_related_clean,
           path = "data/02_mortality_pollution_related_clean.tsv")
+write_tsv(x = health_expenditure_clean,
+          path = "data/02_health_expenditure_clean.tsv")
+write_tsv(x = health_infrastructure_clean,
+          path = "data/02_health_infrastructure_clean.tsv")
+write_tsv(x = medical_doctors_clean,
+          path = "data/02_medical_doctors_clean.tsv")
+write_tsv(x = nurses_midwifes_clean,
+          path = "data/02_nurses_midwifes_clean.tsv")
+write_tsv(x = smoking_clean,
+          path = "data/02_smoking_clean.tsv")
 write_tsv(x = UN_pop_clean,
           path = "data/02_UN_pop_clean.tsv")
 write_tsv(x = UN_gdp_clean,
@@ -427,3 +528,5 @@ write_tsv(x = sex_leader_clean,
           path = "data/02_sex_leader_clean.tsv")
 write_tsv(x = BMI_above30_clean,
           path = "data/02_BMI_above30_clean.tsv")
+write_tsv(x = mortality_causes_clean,
+          path = "data/02_mortality_causes_clean.tsv")
