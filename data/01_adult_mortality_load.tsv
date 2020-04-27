@@ -1,4 +1,4 @@
-Country	Year	Adult mortality rate	Adult male mortality rate	Adult female mortality rate
+Country	Year	Adult mortality rate (probability of dying between 15 and 60 years per 1000 population)_Both sexes	Adult mortality rate (probability of dying between 15 and 60 years per 1000 population)_Male	Adult mortality rate (probability of dying between 15 and 60 years per 1000 population)_Female
 Afghanistan	2016	245	272	216
 Afghanistan	2015	233	254	210
 Afghanistan	2014	234	254	213

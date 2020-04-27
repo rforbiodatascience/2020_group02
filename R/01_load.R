@@ -17,7 +17,7 @@ library("readxl")
 #HUSK!
 #Column names included in load file
 #Henvisninger til datasættenes oprindelse inkluderes i Readme file
-#Check funktionen til summarise_all - fjern unlist
+#Check funktionen til summarise_all 
 
 ##Data in our world data
 #COVID-19 tests performed. Global data
@@ -43,10 +43,31 @@ UN_gdp_raw <- read_csv(file = "data/_raw/UN/SYB62_230_201904_GDP and GDP Per Cap
 sex_leader_raw <- read_csv(file = "data/_raw/gender_leader.csv")
 
 ##WHO - mortality
+#-----------------------------------------------------------------------------------------------
 #Adult mortality
-adult_mortality_raw <- read_csv(file = "data/_raw/WHO/Mortality/Adult mortality.csv",  
-                                col_names = c("Country", "Year", "Adult mortality rate", "Adult male mortality rate", "Adult female mortality rate"),
-                                skip = 2)
+cols <- read_csv(file = "data/_raw/WHO/Mortality/Adult mortality.csv",
+                 n_max = 2,
+                 col_names = FALSE)
+
+col_names <- summarise_all(cols, funs(paste(na.omit(.), collapse = "_"))) %>% 
+  unlist()
+
+adult_mortality_raw <- read_csv(file = "data/_raw/WHO/Mortality/Adult mortality.csv",
+                              skip = 2,
+                              col_names = col_names)
+
+#Life expectancy and healthy life expectancy
+cols <- read_csv(file = "data/_raw/WHO/Mortality/Life expectancy and healthy life expectancy.csv",
+                 n_max = 2,
+                 col_names = FALSE)
+
+col_names <- summarise_all(cols, funs(paste(na.omit(.), collapse = "_"))) %>% 
+  unlist()
+
+life_expectancy_raw <- read_csv(file = "data/_raw/WHO/Mortality/Life expectancy and healthy life expectancy.csv",
+                                skip = 2,
+                                col_names = col_names)
+
 
 ## WHO -Population demographics
 # Population size, median Pop age, urban distribution 
@@ -55,10 +76,6 @@ POP_demo_raw <- read_csv(file = "data/_raw/WHO/Population demographics/Populatio
 #WHO BMI
 BMI_above30_agestand_raw <- read_csv("data/_raw/WHO/BMI/NCD_BMI_above30_age_standardized.csv", col_names = c("Country", "BMI_above30_all", "BMI_above30_male", "BMI_above30_female"), skip = 4)
 
-#Life expectancy and healthy life expectancy
-life_expectancy_raw <- read_csv(file = "data/_raw/WHO/Mortality/Life expectancy and healthy life expectancy.csv",
-                                col_names = c("Country", "Year", "Life expectancy at birth (years)", "Male life expectancy at birth (years)", "Female life expectancy at birth (years)", "Life expectancy at age 60 (years)", "Male life expectancy at age 60 (years)", "Female life expectancy at age 60 (years)", "Healthy life expectancy (HALE) at birth (years)", "Male healthy life expectancy (HALE) at birth (years)", "Female healthy life expectancy (HALE) at birth (years)", "Healthy life expectancy (HALE) at age 60 (years)", "Male healthy life expectancy (HALE) at age 60 (years)", "Female healthy life expectancy (HALE) at age 60 (years)"),
-                                skip = 2)
                        
 #Cause specific mortality
 col_names <- read_xls(path = "data/_raw/WHO/Mortality/Cause_specific_deaths.xls",
@@ -91,9 +108,9 @@ cols <- read_csv(file = "data/_raw/WHO/Public health and environment/Handwashing
                  n_max = 3,
                  col_names = FALSE)
 
-col_names <- summarise_all(cols, funs(paste(na.omit(.), collapse = "_"))) 
+col_names <- summarise_all(cols, funs(paste(na.omit(.), collapse = "_"))) %>% 
+  unlist()
   
-
 handwashing_facilities_raw <- read_csv(file = "data/_raw/WHO/Public health and environment/Handwashing_facilities_percent.csv",
                                        skip = 3,
                                        col_names = col_names) 
