@@ -296,6 +296,8 @@ UN_gdp_clean <- as.data.frame(sapply(UN_gdp_clean, function(x) gsub("\"", "", x)
   pivot_wider(names_from = Series, values_from = Value) %>%
   select(Country_Region, 'GDP in current prices (millions of US dollars)', 'GDP per capita (US dollars)')
 
+mutate_all(~str_replace_all(., "^\\.$", "0")) %>% 
+
 #Gender leader
 sex_leader_clean <- sex %>% 
   filter(year == 2020 & month == 4) %>%
