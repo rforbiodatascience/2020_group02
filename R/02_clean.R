@@ -48,6 +48,8 @@ health_infrastructure <- read_tsv(file = "data/01_health_infrastructure_load.tsv
 medical_doctors <- read_tsv(file = "data/01_medical_doctors_load.tsv")
 nurses_midwifes <- read_tsv(file = "data/01_nurses_midwifes_load.tsv")
 
+smoking <- read_tsv(file = "data/01_smoking_load.tsv")
+
 UN_pop <- read_tsv(file = "data/01_UN_pop_raw.tsv")
 UN_gdp <- read_tsv(file = "data/01_UN_gdp_raw.tsv")
 
@@ -486,29 +488,32 @@ nurses_midwifes_clean <- nurses_midwifes %>%
 ##WHO - Smoking
 #-------------------------------------------------------------------------------
 #Read dataset to object
-smoking_clean <- read_tsv(file = "data/01_smoking_load.tsv") %>% 
+smoking_clean <- smoking %>% 
   
-#Separate into variables of prevalence and confidence interval and remove unnecessary variables
-  separate("Prevalence of smoking any tobacco product among persons aged &gt;= 15 years_Male", into = c("Prevalence_smoking_males", "ref_interval_males"), sep = " ") %>% 
-  separate("Prevalence of smoking any tobacco product among persons aged &gt;= 15 years_Female", into = c("Prevalence_smoking_females", "ref_interval_females"), sep = " ")  %>% 
-  mutate(Prevalence_smoking_males = as.numeric(Prevalence_smoking_males)) %>% 
-  mutate(Prevalence_smoking_females = as.numeric(Prevalence_smoking_females)) %>% 
-  select(Country, Year, Prevalence_smoking_males, Prevalence_smoking_females) %>% 
+#Separate into variables of prevalence and confidence interval and remove unnecessary variables and rename
+  separate("Prevalence of smoking any tobacco product among persons aged &gt;= 15 years_Male", 
+           into = c("prevalence_smoking_males", "ref_interval_males"), sep = " ") %>% 
+  separate("Prevalence of smoking any tobacco product among persons aged &gt;= 15 years_Female", 
+           into = c("prevalence_smoking_females", "ref_interval_females"), sep = " ")  %>% 
+  mutate(prevalence_smoking_males = as.numeric(prevalence_smoking_males)) %>% 
+  mutate(prevalence_smoking_females = as.numeric(prevalence_smoking_females)) %>% 
+  select(Country, Year, prevalence_smoking_males, prevalence_smoking_females) %>% 
+  rename(country = Country) %>% 
 
 #Remove predicted future prevalence of smoking
   filter(Year != "2025") %>% 
   
 #Limiting dataset to most recent observation
-  group_by(Country) %>% 
+  group_by(country) %>% 
   arrange(desc(Year)) %>% 
   slice(1) %>% 
   ungroup %>% 
 
 #Combining smoking prevalence to overall measure for males and females combined
-  mutate(Prevalence_smoking = (Prevalence_smoking_females+Prevalence_smoking_males)/2) %>%
+  mutate(prevalence_smoking = (prevalence_smoking_females+prevalence_smoking_males)/2) %>%
 
 #Removing unnecessary variables
-  select(Country, Prevalence_smoking)  
+  select(country, prevalence_smoking)  
 
 #Definition: Percentage of population above age 15 years smoking any tobacco product.
 
