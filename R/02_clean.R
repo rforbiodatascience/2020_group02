@@ -37,6 +37,12 @@ adult_mortality <- read_tsv(file = "data/01_adult_mortality_load.tsv")
 life_expectancy <- read_tsv(file = "data/01_life_expectancy_load.tsv")
 mortality_causes <- read_tsv(file = "data/01_mortality_causes_load.tsv")
 
+air_pollution <- read_tsv(file = "data/01_air_pollution_load.tsv")
+handwashing_facilities <- read_tsv(file = "data/01_handwashing_facilities_load.tsv")
+household_pollution <- read_tsv(file = "data/01_household_pollution_load.tsv")
+measles_cases <- read_tsv(file = "data/01_measles_cases_load.tsv")
+mortality_pollution_related <- read_tsv(file = "data/01_mortality_pollution_related_load.tsv") 
+
 UN_pop <- read_tsv(file = "data/01_UN_pop_raw.tsv")
 UN_gdp <- read_tsv(file = "data/01_UN_gdp_raw.tsv")
 
@@ -387,36 +393,44 @@ BMI_above30_clean <- BMI_above30  %>%
 ##WHO - public health and environment
 #-------------------------------------------------------------------------------------------------------
 #Air pollution
-air_pollution_clean <- read_tsv(file = "data/01_air_pollution_load.tsv")  %>% 
-  separate("Concentrations of fine particulate matter (PM2.5)_2016_Total", into = c("Concentration_fine_particles", "ref_interval"), sep = " ") %>%
-  select(Country, Concentration_fine_particles) %>% 
-  mutate(Concentration_fine_particles = as.numeric(Concentration_fine_particles))
+air_pollution_clean <- air_pollution %>% 
+  separate("Concentrations of fine particulate matter (PM2.5)_2016_Total",
+           into = c("concentration_fine_particles", "ref_interval"), sep = " ") %>%
+  select(Country, concentration_fine_particles) %>% 
+  rename(country = Country) %>% 
+  mutate(concentration_fine_particles = as.numeric(concentration_fine_particles))
 
 #Handwashing facilities
-handwashing_facilities_clean <- read_tsv(file = "data/01_handwashing_facilities_load.tsv") %>%
+handwashing_facilities_clean <- handwashing_facilities %>%
   select(Country, "2017_Population with basic handwashing facilities at home (%)_Total") %>% 
-  rename(Proportion_basic_handwashing_facilities = "2017_Population with basic handwashing facilities at home (%)_Total")
+  rename(country = Country,
+         proportion_basic_handwashing_facilities = "2017_Population with basic handwashing facilities at home (%)_Total")
 
 #Household pollution - clean fuel technologies
-household_pollution_clean <- read_tsv(file = "data/01_household_pollution_load.tsv") %>% 
+household_pollution_clean <- household_pollution %>% 
   select(Country, "Proportion of population with primary reliance on clean fuels and technologies (%)_2017") %>% 
-  rename(Proportion_using_clean_fuels = "Proportion of population with primary reliance on clean fuels and technologies (%)_2017") %>% 
-  mutate(Proportion_using_clean_fuels = recode(Proportion_using_clean_fuels, "&gt;95"="100")) %>% 
-  mutate(Proportion_using_clean_fuels = as.numeric(Proportion_using_clean_fuels))
+  rename(country = Country,
+         proportion_using_clean_fuels = "Proportion of population with primary reliance on clean fuels and technologies (%)_2017") %>% 
+  mutate(proportion_using_clean_fuels = recode(proportion_using_clean_fuels, "&gt;95"="100", "&lt;5" = "1")) %>% 
+  mutate(proportion_using_clean_fuels = as.numeric(proportion_using_clean_fuels))
 
 #Measles reported cases
-measles_cases_clean <- read_tsv(file = "data/01_measles_cases_load.tsv") %>% 
+measles_cases_clean <- measles_cases %>% 
   select(Country, "Measles - number of reported cases_2018") %>% 
-  rename(Measles_reported_cases = "Measles - number of reported cases_2018") %>% 
-  mutate(Measles_reported_cases = as.numeric(Measles_reported_cases))
+  rename(country = Country,
+         measles_reported_cases = "Measles - number of reported cases_2018") %>% 
+  mutate(measles_reported_cases = as.numeric(measles_reported_cases))
 
 #Mortality from environmental pollution
-mortality_pollution_related_clean <- read_tsv(file = "data/01_mortality_pollution_related_load.tsv") %>%
-  separate("Ambient and household air pollution attributable death rate (per 100 000 population)_2016_Both sexes", into = c("Pollution_attributable_death_rate", "ref_interval"), sep = "\\[") %>%
-  separate("Ambient and household air pollution attributable death rate (per 100 000 population, age-standardized)_2016_Both sexes", into = c("Pollution_attributable_death_rate_std", "ref_interval_std"), sep = "\\[") %>% 
-  select(Country, Pollution_attributable_death_rate, Pollution_attributable_death_rate_std) %>% 
-  mutate(Pollution_attributable_death_rate = as.numeric(Pollution_attributable_death_rate)) %>% 
-  mutate(Pollution_attributable_death_rate_std = as.numeric(Pollution_attributable_death_rate_std))
+mortality_pollution_related_clean <- mortality_pollution_related %>%
+  separate("Ambient and household air pollution attributable death rate (per 100 000 population)_2016_Both sexes", 
+           into = c("pollution_attributable_death_rate", "ref_interval"), sep = "\\[") %>%
+  separate("Ambient and household air pollution attributable death rate (per 100 000 population, age-standardized)_2016_Both sexes", 
+           into = c("pollution_attributable_death_rate_std", "ref_interval_std"), sep = "\\[") %>% 
+  select(Country, pollution_attributable_death_rate, pollution_attributable_death_rate_std) %>% 
+  rename(country = Country) %>% 
+  mutate(pollution_attributable_death_rate = as.numeric(pollution_attributable_death_rate)) %>% 
+  mutate(pollution_attributable_death_rate_std = as.numeric(pollution_attributable_death_rate_std))
 
 
 ##WHO - Health workforce and system
@@ -441,9 +455,12 @@ health_infrastructure_clean <- read_tsv(file = "data/01_health_infrastructure_lo
 medical_doctors_clean <- read_tsv(file = "data/01_medical_doctors_load.tsv") %>% 
   group_by(Country) %>% 
   arrange(desc(Year)) %>% 
-  Se Mettes
   slice(1) %>% 
-  ungroup %>% 
+  ungroup 
+
+  summarise_at(funs(first(.[!is.na(.)])))
+
+
   select(Country, "Medical doctors (per 10 000 population)") %>% 
   rename(Density_of_medical_doctors = "Medical doctors (per 10 000 population)")
 
@@ -481,7 +498,7 @@ smoking_clean <- read_tsv(file = "data/01_smoking_load.tsv") %>%
   arrange(desc(Year)) %>% 
   slice(1) %>% 
   ungroup %>% 
-  
+
 #Combining smoking prevalence to overall measure for males and females combined
   mutate(Prevalence_smoking = (Prevalence_smoking_females+Prevalence_smoking_males)/2) %>%
 
