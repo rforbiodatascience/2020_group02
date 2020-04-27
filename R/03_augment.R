@@ -53,13 +53,45 @@ WHO_UN_extra_countries <- POP_demo_clean %>%
   anti_join(UN_pop_clean, by = 'Country') %>% 
   count(Country, sort = T)
 
+
 #UN JH datasets antijoin
 UN_extra_countries <- UN_pop_clean %>% 
   anti_join(JH_conftime_clean, by = 'Country') %>% 
   count(Country, sort = T)
 
-rlang::last_error()
 
+#Function for country corrections
+country.translate <- function(x, y) {
+if (y == 'WHO') {
+  WHO_country <- list(
+    'Argentinna' = 'Argentina',
+    'Republic of Laos' = 'Laos',
+    'Viet Nam' = 'Vietnam')
+  return(WHO_country[x])
+}
+else if (y == 'UN') {
+  UN_country <- list(
+    'Arg' = 'Argentina',
+    'Lao' = 'Laos',
+    'Viet Nam' = 'Vietnam')
+  return(UN_country[x])
+}
+else if (y == 'ourworld') {
+  ourworld_country <- list(
+    'Argen' = 'Argentina',
+    'Lao Republic' = 'Laos',
+    'Viet_Nam' = 'Vietnam')
+  return(ourworld_country[x])
+}
+else 
+  print("please enter type of dataset (WHO/UN/ourworld)")
+  }
+  
+country.translate('Arg', 'UN')
+
+
+as.keyvalue(country, Argentina, UN)
+is.keyvalue(ex)
 
 # Write data
 # ------------------------------------------------------------------------------
