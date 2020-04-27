@@ -283,7 +283,7 @@ JH_conftime_clean <- JH_conftime_clean %>%
 #UN datasets
 UN_pop_clean <- UN_pop %>%
   select(X2, Year, Series, Value) %>%
-  rename("Country_Region" = "X2") %>%
+  rename("country" = "X2") %>%
   filter(Year == 2019, Series == "Population density" | Series == "Sex ratio (males per 100 females)" | Series == "Population aged 60+ years old (percentage)") %>%
   pivot_wider(names_from = Series, values_from = Value) %>%
   select(Country_Region, 'Population density', 'Sex ratio (males per 100 females)', 'Population aged 60+ years old (percentage)')
