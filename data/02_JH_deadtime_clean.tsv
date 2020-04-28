@@ -1,4 +1,4 @@
-Country/Region	Lat	Long	date	deaths_COVID
+country	Lat	Long	date	Number of COVID-19 related deaths
 Afghanistan	33	65	1/22/20	0
 Afghanistan	33	65	1/23/20	0
 Afghanistan	33	65	1/24/20	0
