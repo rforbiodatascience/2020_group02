@@ -14,7 +14,6 @@ source(file = "R/99_project_functions.R")
 
 # Load data
 # ------------------------------------------------------------------------------
-
 adult_mortality_clean <- read_tsv(file = "data/02_adult_mortality_clean.tsv")
 air_pollution_clean <- read_tsv(file = "data/02_air_pollution_clean.tsv")
 bmi_above30_clean <- read_tsv(file = "data/02_bmi_above30_clean.tsv")
@@ -35,6 +34,7 @@ POP_demo_clean <- read_tsv(file = "data/02_POP_demo_clean.tsv")
 smoking_clean <- read_tsv(file = "data/02_smoking_clean.tsv")
 UN_gdp_clean <- read_tsv(file = "data/02_UN_gdp_clean.tsv")
 UN_pop_clean <- read_tsv(file = "data/02_UN_pop_clean.tsv")
+sex_leader_clean <- read_tsv(file = "data/02_sex_leader_clean.tsv")
 
 # Wrangle data
 # ------------------------------------------------------------------------------

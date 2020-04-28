@@ -300,7 +300,7 @@ UN_pop_clean <- UN_pop %>%
   rename("country" = "X2") %>%
   filter(Year == 2019, Series == "Population density" | Series == "Sex ratio (males per 100 females)" | Series == "Population aged 60+ years old (percentage)") %>%
   pivot_wider(names_from = Series, values_from = Value) %>%
-  select(Country_Region, 'Population density', 'Sex ratio (males per 100 females)', 'Population aged 60+ years old (percentage)')
+  select(country, 'Population density', 'Sex ratio (males per 100 females)', 'Population aged 60+ years old (percentage)')
 
 
 UN_gdp_clean <- UN_gdp %>%
@@ -310,12 +310,10 @@ UN_gdp_clean <- UN_gdp %>%
   pivot_wider(names_from = Series, values_from = Value) %>%
   select(country, 'GDP in current prices (millions of US dollars)', 'GDP per capita (US dollars)')
 
-mutate_all(~str_replace_all(UN_gdp_clean, """, " ")) 
-
 
 
 #Gender leader
-sex_leader_clean <- sex %>% 
+sex_leader_clean <- sex_leader %>% 
   filter(year == 2020 & month == 4) %>%
   mutate(sex = case_when(`male` == 1 ~ "male",
                          `male` == 0 ~ "female")) %>%
