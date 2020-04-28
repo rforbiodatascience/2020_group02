@@ -345,7 +345,6 @@ life_expectancy_clean <- life_expectancy %>%
 #CAUSE-SPECIFIC MORTALITY
 
 #read dataset to object
-mortality_causes <- read_tsv(file = "data/01_mortality_causes_load.tsv") 
 
 #Renaming variables, removing gender-specifc rows and unnecessary variables 
   mortality_causes_clean <- mortality_causes %>% 
@@ -369,7 +368,7 @@ mortality_causes <- read_tsv(file = "data/01_mortality_causes_load.tsv")
 #Transposing table using pivot
   pivot_longer(
     cols = -c("ID", "Cause_clean"), 
-    names_to = "Country", 
+    names_to = "country", 
     values_to = "Result") %>% 
   select(-"ID") %>% 
   pivot_wider(
@@ -377,7 +376,7 @@ mortality_causes <- read_tsv(file = "data/01_mortality_causes_load.tsv")
     values_from = Result) %>% 
 
 #Turning character variables into numeric
-  mutate_all(na_if(.,"^\\.$"))
+  #mutate_all(na_if(.,"^\\.$")) 
   mutate_all(~str_replace_all(., "^\\.$", "0")) %>% 
   mutate_all(type.convert, as.is=TRUE)
 
@@ -538,6 +537,8 @@ write_tsv(x = adult_mortality_clean,
           path = "data/02_adult_mortality_clean.tsv")
 write_tsv(x = life_expectancy_clean,
           path = "data/02_life_expectancy_clean.tsv")
+write_tsv(x = mortality_causes_clean,
+          path = "data/02_mortality_causes_clean.tsv")
 write_tsv(x = air_pollution_clean,
           path = "data/02_air_pollution_clean.tsv")
 write_tsv(x = handwashing_facilities_clean,
