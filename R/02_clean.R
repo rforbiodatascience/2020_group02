@@ -74,7 +74,6 @@ POP_demo_clean <- POP_demo %>%
   rename(country = Country) %>% 
   mutate(`Population (in thousands) total` = str_replace_all(`Population (in thousands) total`, " ", "")) %>%
   select(-c(`Population living on &lt;$1 (PPP int. $) a day (%)`)) %>%
-  rename(country = Country) %>% 
   filter(Year %in% c("2020", "2013", "2016")) %>% 
   select(-Year) %>% 
   group_by(country) %>%
