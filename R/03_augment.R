@@ -16,7 +16,7 @@ source(file = "R/99_project_functions.R")
 # ------------------------------------------------------------------------------
 adult_mortality_clean <- read_tsv(file = "data/02_adult_mortality_clean.tsv")
 air_pollution_clean <- read_tsv(file = "data/02_air_pollution_clean.tsv")
-bmi_above30_clean <- read_tsv(file = "data/02_bmi_above30_clean.tsv")
+bmi_above30_clean <- read_tsv(file = "data/02_BMI_above30_clean.tsv")
 COVID_test_clean <- read_tsv(file = "data/02_COVID_test_clean.tsv")
 handwashing_facilities_clean <- read_tsv(file = "data/02_handwashing_facilities_clean.tsv")
 health_expenditure_clean <- read_tsv(file = "data/02_health_expenditure_clean.tsv")
@@ -28,6 +28,7 @@ JH_recotime_clean <- read_tsv(file = "data/02_JH_recotime_clean.tsv", col_types 
 life_expectancy_clean <- read_tsv(file = "data/02_life_expectancy_clean.tsv")
 measles_cases_clean <- read_tsv(file = "data/02_measles_cases_clean.tsv")
 medical_doctors_clean <- read_tsv(file = "data/02_medical_doctors_clean.tsv")
+mortality_causes_clean <- read_tsv(file = "data/02_mortality_causes_clean.tsv")
 mortality_pollution_related_clean <- read_tsv(file = "data/02_mortality_pollution_related_clean.tsv")
 nurses_midwifes_clean <- read_tsv(file = "data/02_nurses_midwifes_clean.tsv")
 POP_demo_clean <- read_tsv(file = "data/02_POP_demo_clean.tsv")
@@ -39,7 +40,8 @@ sex_leader_clean <- read_tsv(file = "data/02_sex_leader_clean.tsv")
 # Wrangle data
 # ------------------------------------------------------------------------------
 
-#Anti-join for test of differences in naming of countries
+#Anti-join for test of differences in naming of countries - Johns Hopkins used as reference
+
 JH_conftime_clean <- JH_conftime_clean %>% 
   rename('country' = 'Country/Region')
 
@@ -48,6 +50,37 @@ countries_diff_adult_mortality <- adult_mortality_clean %>%
   count(country, sort = TRUE)
 
 countries_diff_air_pollution <- air_pollution_clean %>% 
+  anti_join(JH_conftime_clean, by = 'country') %>% 
+  count(country, sort = TRUE)
+
+countries_diff_bmi <- bmi_above30_clean %>% 
+  rename(country = Country) %>% 
+  anti_join(JH_conftime_clean, by = 'country') %>% 
+  count(country, sort = TRUE)
+
+countries_diff_covid_test <- COVID_test_clean %>% 
+  rename(country = Country) %>% 
+  anti_join(JH_conftime_clean, by = 'country') %>% 
+  count(country, sort = TRUE)
+
+countries_diff_handwashing_facilities <- handwashing_facilities_clean %>% 
+  anti_join(JH_conftime_clean, by = 'country') %>% 
+  count(country, sort = TRUE)
+
+countries_diff_health_expenditure <- health_expenditure_clean %>% 
+  anti_join(JH_conftime_clean, by = 'country') %>% 
+  count(country, sort = TRUE)
+
+countries_diff_health_infrastructure <- health_infrastructure_clean %>% 
+  anti_join(JH_conftime_clean, by = 'country') %>% 
+  count(country, sort = TRUE)
+
+countries_diff_household_pollution <- household_pollution_clean %>% 
+  anti_join(JH_conftime_clean, by = 'country') %>% 
+  count(country, sort = TRUE)
+
+countries_diff_JH_deadtime <- JH_deadtime_clean %>% 
+  rename(country = 'Country/Region') %>% 
   anti_join(JH_conftime_clean, by = 'country') %>% 
   count(country, sort = TRUE)
 
