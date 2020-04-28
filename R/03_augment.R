@@ -6,11 +6,9 @@ rm(list = ls())
 # ------------------------------------------------------------------------------
 library("tidyverse")
 library("readr")
-<<<<<<< HEAD
 library("forcats")
-=======
 library("countrycode")
->>>>>>> ce1d37fe8a7b50227d396c5072ba4d3acf44710a
+
 
 # Define functions
 # ------------------------------------------------------------------------------
@@ -22,14 +20,11 @@ adult_mortality_clean <- read_tsv(file = "data/02_adult_mortality_clean.tsv")
 air_pollution_clean <- read_tsv(file = "data/02_air_pollution_clean.tsv")
 bmi_above30_clean <- read_tsv(file = "data/02_bmi_above30_clean.tsv")
 COVID_test_clean <- read_tsv(file = "data/02_COVID_test_clean.tsv")
-<<<<<<< HEAD
 POP_demo_clean <- read_tsv(file = "data/02_POP_demo_clean.tsv")
-=======
 handwashing_facilities_clean <- read_tsv(file = "data/02_handwashing_facilities_clean.tsv")
 health_expenditure_clean <- read_tsv(file = "data/02_health_expenditure_clean.tsv")
 health_infrastructure_clean <- read_tsv(file = "data/02_health_infrastructure_clean.tsv")
 household_pollution_clean <- read_tsv(file = "data/02_household_pollution_clean.tsv")
->>>>>>> ce1d37fe8a7b50227d396c5072ba4d3acf44710a
 JH_conftime_clean <- read_tsv(file = "data/02_JH_conftime_clean.tsv", col_types = cols(date = col_date(format="%m/%d/%y")))
 JH_deadtime_clean <- read_tsv(file = "data/02_JH_deadtime_clean.tsv", col_types = cols(date = col_date(format="%m/%d/%y")))
 JH_recotime_clean <- read_tsv(file = "data/02_JH_recotime_clean.tsv", col_types = cols(date = col_date(format="%m/%d/%y")))
