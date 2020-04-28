@@ -8,6 +8,7 @@ library("tidyverse")
 library("readr")
 library("forcats")
 library("countrycode")
+library("purrr")
 
 
 # Define functions
@@ -20,7 +21,6 @@ adult_mortality_clean <- read_tsv(file = "data/02_adult_mortality_clean.tsv")
 air_pollution_clean <- read_tsv(file = "data/02_air_pollution_clean.tsv")
 bmi_above30_clean <- read_tsv(file = "data/02_BMI_above30_clean.tsv")
 COVID_test_clean <- read_tsv(file = "data/02_COVID_test_clean.tsv")
-POP_demo_clean <- read_tsv(file = "data/02_POP_demo_clean.tsv")
 handwashing_facilities_clean <- read_tsv(file = "data/02_handwashing_facilities_clean.tsv")
 health_expenditure_clean <- read_tsv(file = "data/02_health_expenditure_clean.tsv")
 health_infrastructure_clean <- read_tsv(file = "data/02_health_infrastructure_clean.tsv")
@@ -44,6 +44,8 @@ sex_leader_clean <- read_tsv(file = "data/02_sex_leader_clean.tsv")
 # ------------------------------------------------------------------------------
 
 #Anti-join for test of differences in naming of countries - Johns Hopkins used as reference
+
+dfs <- mget(ls(pattern = ".+_clean"))
 
 countries_diff_adult_mortality <- adult_mortality_clean %>% 
   anti_join(JH_conftime_clean, by = 'country') %>% 
