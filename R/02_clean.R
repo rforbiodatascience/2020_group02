@@ -310,8 +310,6 @@ UN_gdp_clean <- UN_gdp %>%
   pivot_wider(names_from = Series, values_from = Value) %>%
   select(country, 'GDP in current prices (millions of US dollars)', 'GDP per capita (US dollars)')
 
-mutate_all(~str_replace_all(UN_gdp_clean, """, " ")) 
-
 
 
 #Gender leader

@@ -24,6 +24,7 @@ JH_recotime_clean <- read_tsv(file = "data/02_JH_recotime_clean.tsv", col_types 
 POP_demo_clean <- read_tsv(file = "data/02_POP_demo_clean.tsv" )
 smoking_clean <- read_tsv(file = "data/02_smoking_clean.tsv" )
 UN_pop_clean <- read_tsv(file = "data/02_UN_pop_clean.tsv" )
+UN_gdp_clean <- read_tsv(file = "data/02_UN_gdp_clean.tsv")
 
 # Wrangle data
 # ------------------------------------------------------------------------------
