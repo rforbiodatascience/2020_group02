@@ -45,9 +45,6 @@ sex_leader_clean <- read_tsv(file = "data/02_sex_leader_clean.tsv")
 
 #Anti-join for test of differences in naming of countries - Johns Hopkins used as reference
 
-JH_conftime_clean <- JH_conftime_clean %>% 
-  rename('country' = 'Country/Region')
-
 countries_diff_adult_mortality <- adult_mortality_clean %>% 
   anti_join(JH_conftime_clean, by = 'country') %>% 
   count(country, sort = TRUE)
@@ -57,12 +54,10 @@ countries_diff_air_pollution <- air_pollution_clean %>%
   count(country, sort = TRUE)
 
 countries_diff_bmi <- bmi_above30_clean %>% 
-  rename(country = Country) %>% 
   anti_join(JH_conftime_clean, by = 'country') %>% 
   count(country, sort = TRUE)
 
 countries_diff_covid_test <- COVID_test_clean %>% 
-  rename(country = Country) %>% 
   anti_join(JH_conftime_clean, by = 'country') %>% 
   count(country, sort = TRUE)
 
@@ -83,25 +78,74 @@ countries_diff_household_pollution <- household_pollution_clean %>%
   count(country, sort = TRUE)
 
 countries_diff_JH_deadtime <- JH_deadtime_clean %>% 
-  rename(country = 'Country/Region') %>% 
   anti_join(JH_conftime_clean, by = 'country') %>% 
   count(country, sort = TRUE)
 
-extra_countries_POP_demo <- POP_demo_clean %>% 
-  rename('country' = 'Country') %>% 
-  anti_join(JH_conftime_clean, by = 'Country') %>% 
-  count(Country, sort = T)
+countries_diff_JH_recotime <- JH_recotime_clean %>% 
+  anti_join(JH_conftime_clean, by = 'country') %>% 
+  count(country, sort = TRUE)
 
-extra_countries_JH <- JH_conftime_clean %>% 
-  anti_join(POP_demo_clean, by = 'Country') %>% 
-  count(Country, sort = T)
+countries_diff_life_expectancy <- life_expectancy_clean %>% 
+  anti_join(JH_conftime_clean, by = 'country') %>% 
+  count(country, sort = TRUE)
+
+countries_diff_measles_cases <- measles_cases_clean %>% 
+  anti_join(JH_conftime_clean, by = 'country') %>% 
+  count(country, sort = TRUE)
+
+countries_diff_medical_doctors <- medical_doctors_clean %>% 
+  anti_join(JH_conftime_clean, by = 'country') %>% 
+  count(country, sort = TRUE)
+
+countries_diff_mortality_causes <- mortality_causes_clean %>% 
+  anti_join(JH_conftime_clean, by = 'country') %>% 
+  count(country, sort = TRUE)
+
+countries_diff_mortality_pollution <- mortality_pollution_related_clean %>% 
+  anti_join(JH_conftime_clean, by = 'country') %>% 
+  count(country, sort = TRUE)
+
+countries_diff_nurses_midwifes <- nurses_midwifes_clean %>% 
+  anti_join(JH_conftime_clean, by = 'country') %>% 
+  count(country, sort = TRUE)
+
+countries_diff_pop_demo <- POP_demo_clean %>% 
+  anti_join(JH_conftime_clean, by = 'country') %>% 
+  count(country, sort = TRUE)
+
+countries_diff_sex_leaders <- sex_leader_clean %>% 
+  anti_join(JH_conftime_clean, by = 'country') %>% 
+  count(country, sort = TRUE)
+
+countries_diff_smoking <- smoking_clean %>% 
+  anti_join(JH_conftime_clean, by = 'country') %>% 
+  count(country, sort = TRUE)
+
+countries_diff_un_gdp <- UN_gdp_clean %>% 
+  anti_join(JH_conftime_clean, by = 'country') %>% 
+  count(country, sort = TRUE)
+
+countries_diff_un_pop <- UN_pop_clean %>% 
+  anti_join(JH_conftime_clean, by = 'country') %>% 
+  count(country, sort = TRUE)
+
+#Combine countries from different sources 
+country_diff_dfs <- mget(ls(pattern = "countries_diff_.+"))
+
+countries_diffs_combined <- bind_rows(country_diff_dfs, .id = "origin") %>% 
+  group_by(country) %>% 
+  arrange(origin) %>% 
+  slice(1) %>%  
+  ungroup() %>% 
+  arrange(country) %>% 
+  select(origin, country)
+
 
 #WHO datasets antijoin
 WHO_extra_countries <- POP_demo_clean %>% 
   rename(country = Country) %>% 
   anti_join(smoking_clean, by = 'country') %>% 
   count(country, sort = T)
-
 
 #WHO-UN datasets antijoin
 UN_pop_clean <- UN_pop_clean %>% 
@@ -142,3 +186,5 @@ country_transverter_test <- POP_demo_clean %>%
 # ------------------------------------------------------------------------------
 write_tsv(x = my_data_clean_aug,
           path = "data/03_my_data_clean_aug.tsv")
+write_tsv(x = countries_diffs_combined,
+          path = "data/country_differences.tsv")
