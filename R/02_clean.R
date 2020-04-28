@@ -313,7 +313,7 @@ UN_gdp_clean <- UN_gdp %>%
 
 
 #Gender leader
-sex_leader_clean <- sex %>% 
+sex_leader_clean <- sex_leader %>% 
   filter(year == 2020 & month == 4) %>%
   mutate(sex = case_when(`male` == 1 ~ "male",
                          `male` == 0 ~ "female")) %>%

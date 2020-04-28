@@ -25,6 +25,7 @@ POP_demo_clean <- read_tsv(file = "data/02_POP_demo_clean.tsv" )
 smoking_clean <- read_tsv(file = "data/02_smoking_clean.tsv" )
 UN_pop_clean <- read_tsv(file = "data/02_UN_pop_clean.tsv" )
 UN_gdp_clean <- read_tsv(file = "data/02_UN_gdp_clean.tsv")
+sex_leader_clean <- read_tsv(file = "data/02_sex_leader_clean.tsv")
 
 # Wrangle data
 # ------------------------------------------------------------------------------
