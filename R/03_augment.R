@@ -39,11 +39,20 @@ sex_leader_clean <- read_tsv(file = "data/02_sex_leader_clean.tsv")
 # Wrangle data
 # ------------------------------------------------------------------------------
 
-#Anti-join for test
+#Anti-join for test of differences in naming of countries
 JH_conftime_clean <- JH_conftime_clean %>% 
-  rename('Country' = 'Country/Region')
+  rename('country' = 'Country/Region')
+
+countries_diff_adult_mortality <- adult_mortality_clean %>% 
+  anti_join(JH_conftime_clean, by = 'country') %>% 
+  count(country, sort = TRUE)
+
+countries_diff_air_pollution <- air_pollution_clean %>% 
+  anti_join(JH_conftime_clean, by = 'country') %>% 
+  count(country, sort = TRUE)
 
 extra_countries_POP_demo <- POP_demo_clean %>% 
+  rename('country' = 'Country') %>% 
   anti_join(JH_conftime_clean, by = 'Country') %>% 
   count(Country, sort = T)
 
