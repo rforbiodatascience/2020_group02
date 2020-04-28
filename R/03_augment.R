@@ -14,16 +14,27 @@ source(file = "R/99_project_functions.R")
 
 # Load data
 # ------------------------------------------------------------------------------
-#my_data_clean <- read_tsv(file = "data/02_my_data_clean.tsv")
 
+adult_mortality_clean <- read_tsv(file = "data/02_adult_mortality_clean.tsv")
+air_pollution_clean <- read_tsv(file = "data/02_air_pollution_clean.tsv")
+bmi_above30_clean <- read_tsv(file = "data/02_bmi_above30_clean.tsv")
 COVID_test_clean <- read_tsv(file = "data/02_COVID_test_clean.tsv")
-POP_demo_clean <- read_tsv(file = "data/02_POP_demo_clean.tsv", col_types = cols(`Population (in thousands) total` = col_double()))
+handwashing_facilities_clean <- read_tsv(file = "data/02_handwashing_facilities_clean.tsv")
+health_expenditure_clean <- read_tsv(file = "data/02_health_expenditure_clean.tsv")
+health_infrastructure_clean <- read_tsv(file = "data/02_health_infrastructure_clean.tsv")
+household_pollution_clean <- read_tsv(file = "data/02_household_pollution_clean.tsv")
 JH_conftime_clean <- read_tsv(file = "data/02_JH_conftime_clean.tsv", col_types = cols(date = col_date(format="%m/%d/%y")))
 JH_deadtime_clean <- read_tsv(file = "data/02_JH_deadtime_clean.tsv", col_types = cols(date = col_date(format="%m/%d/%y")))
 JH_recotime_clean <- read_tsv(file = "data/02_JH_recotime_clean.tsv", col_types = cols(date = col_date(format="%m/%d/%y")))
-POP_demo_clean <- read_tsv(file = "data/02_POP_demo_clean.tsv" )
-smoking_clean <- read_tsv(file = "data/02_smoking_clean.tsv" )
-UN_pop_clean <- read_tsv(file = "data/02_UN_pop_clean.tsv" )
+life_expectancy_clean <- read_tsv(file = "data/02_life_expectancy_clean.tsv")
+measles_cases_clean <- read_tsv(file = "data/02_measles_cases_clean.tsv")
+medical_doctors_clean <- read_tsv(file = "data/02_medical_doctors_clean.tsv")
+mortality_pollution_related_clean <- read_tsv(file = "data/02_mortality_pollution_related_clean.tsv")
+nurses_midwifes_clean <- read_tsv(file = "data/02_nurses_midwifes_clean.tsv")
+POP_demo_clean <- read_tsv(file = "data/02_POP_demo_clean.tsv")
+smoking_clean <- read_tsv(file = "data/02_smoking_clean.tsv")
+UN_gdp_clean <- read_tsv(file = "data/02_UN_gdp_clean.tsv")
+UN_pop_clean <- read_tsv(file = "data/02_UN_pop_clean.tsv")
 
 # Wrangle data
 # ------------------------------------------------------------------------------
@@ -96,17 +107,7 @@ as.keyvalue(country, Argentina, UN)
 is.keyvalue(ex)
 
 
-#Combine countries from different sources - test
-#-----------------------------------------------------
 
-countries_combined <- bind_rows(list(COVID_test_clean, JH_conftime_clean, JH_deadtime_clean, JH_recotime_clean, POP_demo_clean, UN_pop_clean), 
-                                .id = "origin") %>% 
-  mutate(origin = recode(origin, "1"="COVID_test_clean", "2" = "JH_conftime_clean", "3" = "JH_deadtime_clean")) %>% 
-  group_by(Country) %>% 
-  slice(1) %>% 
-  ungroup() %>% 
-  arrange(Country) %>% 
-  select(origin, Country)
 
 # Write data
 # ------------------------------------------------------------------------------
