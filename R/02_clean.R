@@ -71,11 +71,13 @@ COVID_test_clean <- COVID_test %>%
 # Population size, median Pop age, urban distribution, % pop > 60 years and < 15 years. Dataset composed 2013, 2016 and 2020 - and collapsed by omitting the variable "Year" and NA. 
 #uses str_replace_all (and not only str_replace) because of more than one ws in population of China and India.
 POP_demo_clean <- POP_demo %>% 
+  rename(country = Country) %>% 
   mutate(`Population (in thousands) total` = str_replace_all(`Population (in thousands) total`, " ", "")) %>%
   select(-c(`Population living on &lt;$1 (PPP int. $) a day (%)`)) %>%
+  rename(country = Country) %>% 
   filter(Year %in% c("2020", "2013", "2016")) %>% 
   select(-Year) %>% 
-  group_by(Country) %>%
+  group_by(country) %>%
   summarise_each(funs(first(.[!is.na(.)])))
   
 # summarise_each(funs(first(.[!is.na(.)]))) er fundet via stackoverflow (https://stackoverflow.com/questions/28509462/how-to-collapse-many-records-into-one-while-removing-na-values) - virker men jeg forstår den ikke. Følg op på det! MCHR001
@@ -149,7 +151,8 @@ JH_conftime_clean <- JH_conftime_clean %>%
  
   JH_conftime_clean <- JH_conftime_clean %>%
   group_by(`Country/Region`, Lat, Long, date) %>% 
-  summarise(conf_COVID = sum(`Number of confirmed COVID-19`))  
+  summarise(`Number of confirmed COVID-19` = sum(`Number of confirmed COVID-19`)) %>% 
+    rename(country = `Country/Region`)
 
   
     
@@ -220,7 +223,8 @@ JH_conftime_clean <- JH_conftime_clean %>%
   
   JH_deadtime_clean <- JH_deadtime_clean %>%
     group_by(`Country/Region`, Lat, Long, date) %>% 
-    summarise(deaths_COVID = sum(`Number of COVID-19 related deaths`))
+    summarise(`Number of COVID-19 related deaths` = sum(`Number of COVID-19 related deaths`)) %>% 
+    rename(country = `Country/Region`)
   
 
 # COVID-19 recovery, in time series. 
@@ -290,7 +294,8 @@ JH_conftime_clean <- JH_conftime_clean %>%
   
   JH_recotime_clean <- JH_recotime_clean %>%
     group_by(`Country/Region`, Lat, Long, date) %>% 
-    summarise(recov_COVID = sum(`Recovered from COVID-19 (no.)`)) 
+    summarise(`Recovered from COVID-19 (no.)` = sum(`Recovered from COVID-19 (no.)`)) %>% 
+    rename(country = `Country/Region`)
   
 ------------------------------------------------------------------------------------------------
   
@@ -302,7 +307,7 @@ UN_pop_clean <- UN_pop %>%
   pivot_wider(names_from = Series, values_from = Value) %>%
   select(country, 'Population density', 'Sex ratio (males per 100 females)', 'Population aged 60+ years old (percentage)')
 
-
+#Jeg kan ikke få dette scriptet til at køre - MCHR001
 UN_gdp_clean <- UN_gdp %>%
   separate("[T13.]_Region/Country/Area", into = c("nr", "country", "Year", "Series", "Value", "footnotes", "source"), sep = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)")
   UN_gdp_clean <-  as.data.frame(sapply(UN_gdp_clean, function(x) gsub("\"", "", x))) %>%
@@ -345,7 +350,7 @@ life_expectancy_clean <- life_expectancy %>%
 #CAUSE-SPECIFIC MORTALITY
 
 #read dataset to object
-
+#Kan ikke få scriptet til at køre -MCHR001
 #Renaming variables, removing gender-specifc rows and unnecessary variables 
   mortality_causes_clean <- mortality_causes %>% 
   as_tibble(mortality_causes_clean) %>% 
@@ -393,6 +398,7 @@ writeLines("^\\.$")
 BMI_above30_clean <- BMI_above30  %>% 
   separate(BMI_above30_all, into = c("BMI_above30_prevalence_all", "ref_int_all"), sep = " ") %>%
   select(Country, "BMI_above30_prevalence_all") %>%
+  rename(country = Country) %>% 
   mutate(BMI_above30_prevalence_all = as.numeric(BMI_above30_prevalence_all))
 
 
