@@ -6,7 +6,9 @@ rm(list = ls())
 # ------------------------------------------------------------------------------
 library("tidyverse")
 library("readr")
+library("forcats")
 library("countrycode")
+
 
 # Define functions
 # ------------------------------------------------------------------------------
@@ -18,6 +20,7 @@ adult_mortality_clean <- read_tsv(file = "data/02_adult_mortality_clean.tsv")
 air_pollution_clean <- read_tsv(file = "data/02_air_pollution_clean.tsv")
 bmi_above30_clean <- read_tsv(file = "data/02_BMI_above30_clean.tsv")
 COVID_test_clean <- read_tsv(file = "data/02_COVID_test_clean.tsv")
+POP_demo_clean <- read_tsv(file = "data/02_POP_demo_clean.tsv")
 handwashing_facilities_clean <- read_tsv(file = "data/02_handwashing_facilities_clean.tsv")
 health_expenditure_clean <- read_tsv(file = "data/02_health_expenditure_clean.tsv")
 health_infrastructure_clean <- read_tsv(file = "data/02_health_infrastructure_clean.tsv")
@@ -115,41 +118,25 @@ UN_extra_countries <- UN_pop_clean %>%
   count(Country, sort = T)
 
 
-#Function for country corrections
-country.translate <- function(x, y) {
-if (y == 'WHO') {
-  WHO_country <- list(
-    'Argentinna' = 'Argentina',
-    'Republic of Laos' = 'Laos',
-    'Viet Nam' = 'Vietnam')
-  return(WHO_country[x])
+#Function for alligning to Country to Johns Hopkins data
+#-------------------------------------------------------------------------------
+
+
+country_translate <- function(x){
+con <- c("Afghanistan" ="Afghanistan", "Bolivia (Plurinational State of)"= "Bolivia", "Brunei Darussalam" = "Brunei", "Comoros" = "not in JH", "Congo" = "Congo (Brazzaville)" , 
+         "Cook Islands" = "not in JH", "Côte d'Ivoire, Democratic People's Republic of Korea" = "not in JH" , "Democratic Republic of the Congo" = "Congo (Kinshasa)", 	"Iran (Islamic Republic of)" = "Iran",
+         "Kiribati" = "not in JH", "Lao People's Democratic Republic" = "Laos" , "Lesotho, Marshall Islands"= "not in JH", "Micronesia (Federated States of)" = "not in JH", "Myanmar"="Burma", "Nauru" = "not in JH", "Niue" = "not in JH",
+         "Palau" = "not in JH", "Republic of Korea" = "Korea, South", "Republic of Moldova" = "Moldova", "Republic of North Macedonia" = "North Macedonia", "Russian Federation"= "Russia", "Samoa" = "not in JH", 
+         "Solomon Islands" = "not in JH", "Syrian Arab Republic" = "Syria", "Tajikistan" = "not in JH", "Tonga"= "not in JH", "Turkmenistan" = "not in JH", "Tuvalu"="not in JH", "United Kingdom of Great Britain and Northern Ireland" = "United Kingdom", 
+         "United Republic of Tanzania" = "Tanzania", "United States of America" = "US", "Vanuatu" = "not in JH", "Venezuela (Bolivarian Republic)" = "Venezuela", "Viet Nam" = "Vietnam") 
+return(as.list(con[x]))
 }
-else if (y == 'UN') {
-  UN_country <- list(
-    'Arg' = 'Argentina',
-    'Lao' = 'Laos',
-    'Viet Nam' = 'Vietnam')
-  return(UN_country[x])
-}
-else if (y == 'ourworld') {
-  ourworld_country <- list(
-    'Argen' = 'Argentina',
-    'Lao Republic' = 'Laos',
-    'Viet_Nam' = 'Vietnam')
-  return(ourworld_country[x])
-}
-else 
-  print("please enter type of dataset (WHO/UN/ourworld)")
-  }
+
+
+country_transverter_test <- POP_demo_clean %>%
+  mutate(Country1 =(country_translate(Country))) %>% 
+  mutate(Country = ifelse(!is.na(Country1),Country1,Country))
   
-country.translate('Arg', 'UN')
-
-
-as.keyvalue(country, Argentina, UN)
-is.keyvalue(ex)
-
-
-
 
 # Write data
 # ------------------------------------------------------------------------------
