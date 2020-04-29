@@ -86,10 +86,8 @@ UN_extra_countries <- UN_pop_clean %>%
   count(Country, sort = T)
 
 
-
+#-------------------------------------------------------------------------------
 #Preparing for merging of datasets to JH - alligning var(country) to JH using country_translate()
--------------------------------------------------------------------------------
-
   
 adult_mortality_clean_aug <- adult_mortality_clean %>% 
   mutate(country_diff =(country_translate(country))) %>% 
@@ -127,6 +125,11 @@ health_infrastructure_clean_aug <- health_infrastructure_clean %>%
   select(-country_diff)
 
 household_pollution_clean_aug <- household_pollution_clean %>%
+  mutate(country_diff =(country_translate(country))) %>% 
+  mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
+  select(-country_diff)
+
+JH_conftime_clean_aug <- JH_conftime_clean %>%
   mutate(country_diff =(country_translate(country))) %>% 
   mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
   select(-country_diff)
@@ -171,7 +174,10 @@ mortality_pollution_related_clean_aug <- mortality_pollution_related_clean %>%
   mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
   select(-country_diff)
 
-nurses_midwifes_clean_aug <- nurses_midwifes_clean
+nurses_midwifes_clean_aug <- nurses_midwifes_clean %>% 
+  mutate(country_diff =(country_translate(country))) %>% 
+  mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
+  select(-country_diff)
 
 POP_demo_clean_aug <- POP_demo_clean %>%
   mutate(country_diff =(country_translate(country))) %>% 
@@ -197,7 +203,10 @@ UN_pop_clean_aug <- UN_pop_clean %>%
   mutate(country_diff =(country_translate(country))) %>% 
   mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
   select(-country_diff)
-  
+
+#-----------------------------------------------------------------------------
+#Performing left-join to JH dataset
+
 
 # Write data
 # ------------------------------------------------------------------------------
