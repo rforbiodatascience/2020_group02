@@ -66,10 +66,11 @@ COVID_test_clean <- COVID_test %>%
   separate(Entity, into = c("country", "waste"), sep ="-", ) %>% 
   select(country, Date, `Cumulative total`, `Cumulative total per thousand`)
 
--------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 ## WHO -Population demographics
 # Population size, median Pop age, urban distribution, % pop > 60 years and < 15 years. Dataset composed 2013, 2016 and 2020 - and collapsed by omitting the variable "Year" and NA. 
 #uses str_replace_all (and not only str_replace) because of more than one ws in population of China and India.
+
 POP_demo_clean <- POP_demo %>% 
   rename(country = Country) %>% 
   mutate(`Population (in thousands) total` = str_replace_all(`Population (in thousands) total`, " ", "")) %>%
@@ -80,9 +81,9 @@ POP_demo_clean <- POP_demo %>%
   summarise_each(funs(first(.[!is.na(.)])))
   
 # summarise_each(funs(first(.[!is.na(.)]))) er fundet via stackoverflow (https://stackoverflow.com/questions/28509462/how-to-collapse-many-records-into-one-while-removing-na-values) - virker men jeg forstår den ikke. Følg op på det! MCHR001
-  -------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
 ## Johns Hopkins COVID data
-  
 # Confirmed COVID-19 cases, in time series. 
 # Unifying latitude and longitude for transformation to state of capital, and tidying data by pivot_long
   
@@ -294,9 +295,8 @@ JH_conftime_clean <- JH_conftime %>%
     group_by(`Country/Region`, Lat, Long, date) %>% 
     summarise(`Recovered from COVID-19 (no.)` = sum(`Recovered from COVID-19 (no.)`)) %>% 
     rename(country = `Country/Region`)
-  
-------------------------------------------------------------------------------------------------
-  
+
+# ------------------------------------------------------------------------------  
 #UN datasets
 UN_pop_clean <- UN_pop %>%
   select(X2, Year, Series, Value) %>%
@@ -312,7 +312,6 @@ UN_gdp_clean <- UN_gdp %>%
   filter(Year == 2017, Series == "GDP in current prices (millions of US dollars)" | Series == "GDP per capita (US dollars)") %>%
   pivot_wider(names_from = Series, values_from = Value) %>%
   select(country, 'GDP in current prices (millions of US dollars)', 'GDP per capita (US dollars)')
-
 
 
 #Gender leader
