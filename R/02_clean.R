@@ -85,11 +85,10 @@ POP_demo_clean <- POP_demo %>%
   
 # Confirmed COVID-19 cases, in time series. 
 # Unifying latitude and longitude for transformation to state of capital, and tidying data by pivot_long
-JH_conftime_clean <- JH_conftime 
-
-JH_conftime_clean <- JH_conftime_clean %>% 
+  
+JH_conftime_clean <- JH_conftime %>% 
   unite(Lat, Long,
-              col = Lat_Long, sep = "/") %>% 
+              col = Lat_Long, sep = "/") %>%
     mutate(Lat_Long = case_when(
       str_detect(Lat_Long, "-35.4735/149.0124") ~ "-33.8688/151.2093", 
       str_detect(Lat_Long, "-28.0167/153.4") ~ "-33.8688/151.2093",  
@@ -140,8 +139,9 @@ JH_conftime_clean <- JH_conftime_clean %>%
       str_detect(Lat_Long, "24.974/101.487") ~ "40.1824/116.4142",
       str_detect(Lat_Long, "29.1832/120.0934") ~ "40.1824/116.4142",
       TRUE ~ Lat_Long)) %>% 
+ filter(`Province/State` %in% c("New South Wales", "British Columbia", "Beijing") | is.na(`Province/State`)) %>% 
   select(-`Province/State`) %>% 
-  separate(Lat_Long, into = c("Lat", "Long"), sep ="/", ) %>%
+  separate(Lat_Long, into = c("Lat", "Long"), sep ="/") %>%
   pivot_longer(names_to = "date", 
                values_to = "Number of confirmed COVID-19",
                cols = -c("Country/Region", "Lat", "Long"),
@@ -157,9 +157,8 @@ JH_conftime_clean <- JH_conftime_clean %>%
     
 # COVID-19 deaths, in time series. 
 # Unifying latitude and longitude for transformation to state of capital, and tidying data by pivot_long  
-  JH_deadtime_clean <- JH_deadtime 
-  
-  JH_deadtime_clean <- JH_deadtime_clean %>% 
+
+  JH_deadtime_clean <- JH_deadtime %>% 
     unite(Lat, Long,
           col = Lat_Long, sep = "/") %>% 
     mutate(Lat_Long = case_when(
@@ -212,6 +211,7 @@ JH_conftime_clean <- JH_conftime_clean %>%
       str_detect(Lat_Long, "24.974/101.487") ~ "40.1824/116.4142",
       str_detect(Lat_Long, "29.1832/120.0934") ~ "40.1824/116.4142",
       TRUE ~ Lat_Long)) %>% 
+    filter(`Province/State` %in% c("New South Wales", "British Columbia", "Beijing") | is.na(`Province/State`)) %>% 
     select(-`Province/State`) %>% 
     separate(Lat_Long, into = c("Lat", "Long"), sep ="/", ) %>%
     pivot_longer(names_to = "date", 
@@ -229,9 +229,7 @@ JH_conftime_clean <- JH_conftime_clean %>%
 # COVID-19 recovery, in time series. 
 # Unifying latitude and longitude for transformation to state of capital, and tidying data by pivot_long    
   
-  JH_recotime_clean <- JH_recotime 
-  
-  JH_recotime_clean <- JH_recotime_clean %>% 
+  JH_recotime_clean <- JH_recotime %>% 
     unite(Lat, Long,
           col = Lat_Long, sep = "/") %>% 
     mutate(Lat_Long = case_when(
@@ -284,6 +282,7 @@ JH_conftime_clean <- JH_conftime_clean %>%
       str_detect(Lat_Long, "24.974/101.487") ~ "40.1824/116.4142",
       str_detect(Lat_Long, "29.1832/120.0934") ~ "40.1824/116.4142",
       TRUE ~ Lat_Long)) %>% 
+    filter(`Province/State` %in% c("New South Wales", "British Columbia", "Beijing") | is.na(`Province/State`)) %>% 
     select(-`Province/State`) %>% 
     separate(Lat_Long, into = c("Lat", "Long"), sep ="/", ) %>%
     pivot_longer(names_to = "date", 
