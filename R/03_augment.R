@@ -7,7 +7,6 @@ rm(list = ls())
 library("tidyverse")
 library("readr")
 library("forcats")
-library("countrycode")
 library("purrr")
 
 
@@ -164,24 +163,117 @@ UN_extra_countries <- UN_pop_clean %>%
   count(Country, sort = T)
 
 
-#Function for alligning to Country to Johns Hopkins data
-#-------------------------------------------------------------------------------
 
+#Preparing for merging of datasets to JH - alligning var(country) to JH using country_translate()
+-------------------------------------------------------------------------------
 
-country_translate <- function(x){
-con <- c("Afghanistan" ="Afghanistan", "Bolivia (Plurinational State of)"= "Bolivia", "Brunei Darussalam" = "Brunei", "Comoros" = "not in JH", "Congo" = "Congo (Brazzaville)" , 
-         "Cook Islands" = "not in JH", "Côte d'Ivoire, Democratic People's Republic of Korea" = "not in JH" , "Democratic Republic of the Congo" = "Congo (Kinshasa)", 	"Iran (Islamic Republic of)" = "Iran",
-         "Kiribati" = "not in JH", "Lao People's Democratic Republic" = "Laos" , "Lesotho, Marshall Islands"= "not in JH", "Micronesia (Federated States of)" = "not in JH", "Myanmar"="Burma", "Nauru" = "not in JH", "Niue" = "not in JH",
-         "Palau" = "not in JH", "Republic of Korea" = "Korea, South", "Republic of Moldova" = "Moldova", "Republic of North Macedonia" = "North Macedonia", "Russian Federation"= "Russia", "Samoa" = "not in JH", 
-         "Solomon Islands" = "not in JH", "Syrian Arab Republic" = "Syria", "Tajikistan" = "not in JH", "Tonga"= "not in JH", "Turkmenistan" = "not in JH", "Tuvalu"="not in JH", "United Kingdom of Great Britain and Northern Ireland" = "United Kingdom", 
-         "United Republic of Tanzania" = "Tanzania", "United States of America" = "US", "Vanuatu" = "not in JH", "Venezuela (Bolivarian Republic)" = "Venezuela", "Viet Nam" = "Vietnam") 
-return(as.list(con[x]))
-}
+  
+adult_mortality_clean_aug <- adult_mortality_clean %>% 
+  mutate(country_diff =(country_translate(country))) %>% 
+  mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
+  select(-country_diff)
 
+air_pollution_clean_aug <- air_pollution_clean %>% 
+  mutate(country_diff =(country_translate(country))) %>% 
+  mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
+  select(-country_diff)
 
-country_transverter_test <- POP_demo_clean %>%
-  mutate(Country1 =(country_translate(Country))) %>% 
-  mutate(Country = ifelse(!is.na(Country1),Country1,Country))
+bmi_above30_clean_aug <- bmi_above30_clean %>%
+  mutate(country_diff =(country_translate(country))) %>% 
+  mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
+  select(-country_diff)
+
+COVID_test_clean_aug <- COVID_test_clean %>%
+  mutate(country_diff =(country_translate(country))) %>% 
+  mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
+  select(-country_diff)
+
+handwashing_facilities_clean_aug <- handwashing_facilities_clean %>%
+  mutate(country_diff =(country_translate(country))) %>% 
+  mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
+  select(-country_diff)
+
+health_expenditure_clean_aug <- health_expenditure_clean %>%
+  mutate(country_diff =(country_translate(country))) %>% 
+  mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
+  select(-country_diff)
+
+health_infrastructure_clean_aug <- health_infrastructure_clean %>%
+  mutate(country_diff =(country_translate(country))) %>% 
+  mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
+  select(-country_diff)
+
+household_pollution_clean_aug <- household_pollution_clean %>%
+  mutate(country_diff =(country_translate(country))) %>% 
+  mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
+  select(-country_diff)
+
+JH_deadtime_clean_aug <- JH_deadtime_clean %>%
+  mutate(country_diff =(country_translate(country))) %>% 
+  mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
+  select(-country_diff)
+
+JH_recotime_clean_aug <- JH_recotime_clean %>%
+  mutate(country_diff =(country_translate(country))) %>% 
+  mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
+  select(-country_diff)
+
+life_expectancy_clean_aug <- life_expectancy_clean %>%
+  mutate(country_diff =(country_translate(country))) %>% 
+  mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
+  select(-country_diff)
+
+measles_cases_clean_aug <- measles_cases_clean %>%
+  mutate(country_diff =(country_translate(country))) %>% 
+  mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
+  select(-country_diff)
+
+medical_doctors_clean_aug <- medical_doctors_clean %>%
+  mutate(country_diff =(country_translate(country))) %>% 
+  mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
+  select(-country_diff)
+
+mortality_causes_clean_aug <- mortality_causes_clean %>%
+  mutate(country_diff =(country_translate(country))) %>% 
+  mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
+  select(-country_diff)
+
+mortality_pollution_related_clean_aug <- mortality_pollution_related_clean %>%
+  mutate(country_diff =(country_translate(country))) %>% 
+  mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
+  select(-country_diff)
+
+mortality_pollution_related_clean_aug <- mortality_pollution_related_clean %>%
+  mutate(country_diff =(country_translate(country))) %>% 
+  mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
+  select(-country_diff)
+
+nurses_midwifes_clean_aug <- nurses_midwifes_clean
+
+POP_demo_clean_aug <- POP_demo_clean %>%
+  mutate(country_diff =(country_translate(country))) %>% 
+  mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
+  select(-country_diff)
+
+sex_leader_clean_aug <- sex_leader_clean %>%
+  mutate(country_diff =(country_translate(country))) %>% 
+  mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
+  select(-country_diff)
+
+smoking_clean_aug <- smoking_clean %>%
+  mutate(country_diff =(country_translate(country))) %>% 
+  mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
+  select(-country_diff)
+
+UN_gdp_clean_aug <- UN_gdp_clean %>%
+  mutate(country_diff =(country_translate(country))) %>% 
+  mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
+  select(-country_diff)
+
+UN_pop_clean_aug <- UN_pop_clean %>%
+  mutate(country_diff =(country_translate(country))) %>% 
+  mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
+  select(-country_diff)
   
 
 # Write data
