@@ -213,7 +213,7 @@ JH_conftime_clean <- JH_conftime %>%
       TRUE ~ Lat_Long)) %>% 
     filter(`Province/State` %in% c("New South Wales", "British Columbia", "Beijing") | is.na(`Province/State`)) %>% 
     select(-`Province/State`) %>% 
-    separate(Lat_Long, into = c("Lat", "Long"), sep ="/", ) %>%
+    separate(Lat_Long, into = c("Lat", "Long"), sep ="/") %>%
     pivot_longer(names_to = "date", 
                  values_to = "Number of COVID-19 related deaths",
                  cols = -c("Country/Region", "Lat", "Long"),
@@ -284,7 +284,7 @@ JH_conftime_clean <- JH_conftime %>%
       TRUE ~ Lat_Long)) %>% 
     filter(`Province/State` %in% c("New South Wales", "British Columbia", "Beijing") | is.na(`Province/State`)) %>% 
     select(-`Province/State`) %>% 
-    separate(Lat_Long, into = c("Lat", "Long"), sep ="/", ) %>%
+    separate(Lat_Long, into = c("Lat", "Long"), sep ="/") %>%
     pivot_longer(names_to = "date", 
                  values_to = "Recovered from COVID-19 (no.)",
                  cols = -c("Country/Region", "Lat", "Long"),
