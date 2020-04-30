@@ -391,6 +391,7 @@ life_expectancy_clean <- life_expectancy %>%
 BMI_above30_clean <- BMI_above30  %>% 
   separate(BMI_above30_all, into = c("BMI_above30_prevalence_all", "ref_int_all"), sep = " ") %>%
   select(Country, "BMI_above30_prevalence_all") %>%
+  filter(Country != "Sudan") %>% 
   rename(country = Country) %>% 
   mutate(BMI_above30_prevalence_all = as.numeric(BMI_above30_prevalence_all))
 
