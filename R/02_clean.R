@@ -60,7 +60,7 @@ BMI_above30 <- read_tsv(file = "data/01_BMI_above30_agestand_raw.tsv")
 # Wrangle data
 # ------------------------------------------------------------------------------
 ##Data in our world data
-#COVID-19 tests performed (cummulative data over time). Global data.
+#COVID-19 tests performed (cummulative data over time). Global data...
 
 COVID_test_clean <- COVID_test %>%
   separate(Entity, into = c("country", "waste"), sep ="-", ) %>% 
