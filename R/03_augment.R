@@ -64,28 +64,6 @@ country_differences <- bind_rows(list_of_dataframes, .id = "origin") %>%
   select(origin, country)
 
 
-
-#WHO datasets antijoin
-WHO_extra_countries <- POP_demo_clean %>% 
-  rename(country = Country) %>% 
-  anti_join(smoking_clean, by = 'country') %>% 
-  count(country, sort = T)
-
-#WHO-UN datasets antijoin
-UN_pop_clean <- UN_pop_clean %>% 
-  rename('Country' = 'Country_Region')
-
-WHO_UN_extra_countries <- POP_demo_clean %>% 
-  anti_join(UN_pop_clean, by = 'Country') %>% 
-  count(Country, sort = T)
-
-
-#UN JH datasets antijoin
-UN_extra_countries <- UN_pop_clean %>% 
-  anti_join(JH_conftime_clean, by = 'Country') %>% 
-  count(Country, sort = T)
-
-
 #-------------------------------------------------------------------------------
 #Preparing for merging of datasets to JH - alligning var(country) to JH using country_translate()
   
@@ -202,6 +180,7 @@ UN_pop_clean_aug <- UN_pop_clean %>%
 
 #-----------------------------------------------------------------------------
 #Performing left-join to JH dataset
+
 
 covid_join <- JH_conftime_clean_aug %>% 
   left_join(., JH_deadtime_clean_aug, by=c('country', "Lat", "Long", "date")) %>% 
