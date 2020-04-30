@@ -348,7 +348,6 @@ life_expectancy_clean <- life_expectancy %>%
 #read dataset to object
 #Renaming variables, removing gender-specifc rows and unnecessary variables 
   mortality_causes_clean <- mortality_causes %>% 
-  as_tibble(mortality_causes_clean) %>% 
   rename(Cause_1 = "...5", Cause_2 = "...6") %>% 
   filter(Sex=="Persons") %>% 
   select(-'Sex', -'GHE code', -'Member State
@@ -381,12 +380,10 @@ life_expectancy_clean <- life_expectancy %>%
   mutate_all(type.convert, as.is=TRUE) %>% 
   select('country', 'Respiratory Infectious', 'Malignant neoplasms', 'Cardiovascular diseases', 'Ischaemic heart disease', 'Respiratory diseases', 'Kidney diseases', 'Road injury')
 
-#check successful cleaning 
-mortality_causes_clean
 
 #Test of above regular expressions as strings
-writeLines("^\\w+\\.")
-writeLines("^\\.$")
+#writeLines("^\\w+\\.")
+#writeLines("^\\.$")
 
 
 
