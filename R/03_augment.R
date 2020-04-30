@@ -71,7 +71,8 @@ dfs_corr_countries <- dfs %>%
   map(~mutate(., country_diff = (country_translate(country))) %>% 
         mutate(country = if_else(!is.na(country_diff), country_diff, country)) %>% 
         select(-country_diff))
-  
+
+
 
 adult_mortality_clean_aug <- adult_mortality_clean %>% 
   mutate(country_diff =(country_translate(country))) %>% 
@@ -113,6 +114,11 @@ household_pollution_clean_aug <- household_pollution_clean %>%
   mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
   select(-country_diff)
 
+JH_conftime_clean_aug <- JH_conftime_clean %>%
+  mutate(country_diff =(country_translate(country))) %>% 
+  mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
+  select(-country_diff)
+
 JH_deadtime_clean_aug <- JH_deadtime_clean %>%
   mutate(country_diff =(country_translate(country))) %>% 
   mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
@@ -148,12 +154,11 @@ mortality_pollution_related_clean_aug <- mortality_pollution_related_clean %>%
   mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
   select(-country_diff)
 
-mortality_pollution_related_clean_aug <- mortality_pollution_related_clean %>%
+
+nurses_midwifes_clean_aug <- nurses_midwifes_clean %>% 
   mutate(country_diff =(country_translate(country))) %>% 
   mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
   select(-country_diff)
-
-nurses_midwifes_clean_aug <- nurses_midwifes_clean
 
 POP_demo_clean_aug <- POP_demo_clean %>%
   mutate(country_diff =(country_translate(country))) %>% 
@@ -179,8 +184,32 @@ UN_pop_clean_aug <- UN_pop_clean %>%
   mutate(country_diff =(country_translate(country))) %>% 
   mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
   select(-country_diff)
-  
 
+#-----------------------------------------------------------------------------
+#Performing left-join to JH dataset
+
+covid_join <- JH_conftime_clean_aug %>% 
+  left_join(., JH_deadtime_clean_aug, by=c('country', "Lat", "Long", "date")) %>% 
+  left_join(., JH_recotime_clean_aug, by=c('country', "Lat", "Long", "date")) %>%
+  left_join(., COVID_test_clean_aug, by=c('country', c("date" = "Date"))) %>%
+  left_join(., adult_mortality_clean_aug, by=c('country')) %>% 
+  left_join(., air_pollution_clean_aug, by=c('country')) %>% 
+  left_join(., bmi_above30_clean_aug, by=c('country')) %>%
+  left_join(., handwashing_facilities_clean_aug, by=c('country')) %>% 
+  left_join(., health_expenditure_clean_aug, by=c('country')) %>% 
+  left_join(., health_infrastructure_clean_aug, by=c('country')) %>% 
+  left_join(., life_expectancy_clean_aug, by=c('country')) %>%
+  left_join(., measles_cases_clean_aug, by=c('country')) %>% 
+  left_join(., medical_doctors_clean_aug, by=c('country')) %>% 
+  left_join(., mortality_pollution_related_clean_aug, by=c('country')) %>% 
+  left_join(., nurses_midwifes_clean_aug, by=c('country')) %>% 
+  left_join(., POP_demo_clean_aug, by=c('country')) %>% 
+  left_join(., sex_leader_clean_aug, by=c('country')) %>% 
+  left_join(., smoking_clean_aug, by=c('country')) %>% 
+  left_join(., UN_pop_clean_aug, by=c('country')) %>% 
+  left_join(., mortality_causes_clean_aug, by=c('country')) %>%  
+  left_join(., UN_gdp_clean_aug, by=c('country')) 
+   
 # Write data
 # ------------------------------------------------------------------------------
 write_tsv(x = my_data_clean_aug,
