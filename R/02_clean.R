@@ -60,7 +60,7 @@ BMI_above30 <- read_tsv(file = "data/01_BMI_above30_agestand_raw.tsv")
 # Wrangle data
 # ------------------------------------------------------------------------------
 ##Data in our world data
-#COVID-19 tests performed (cummulative data over time). Global data.
+#COVID-19 tests performed (cummulative data over time). Global data...
 
 COVID_test_clean <- COVID_test %>%
   separate(Entity, into = c("country", "waste"), sep ="-", ) %>% 
@@ -346,8 +346,21 @@ life_expectancy_clean <- life_expectancy %>%
 #CAUSE-SPECIFIC MORTALITY
 
 #read dataset to object
+<<<<<<< HEAD
 #Renaming variables, removing gender-specifc rows and unnecessary variables 
   mortality_causes_clean <- mortality_causes %>% 
+=======
+<<<<<<< HEAD
+#Renaming variables, removing gender-specifc rows and unnecessary variables
+
+mortality_causes_clean <- mortality_causes  %>% 
+=======
+#Kan ikke få scriptet til at køre -MCHR001
+#Renaming variables, removing gender-specifc rows and unnecessary variables 
+  mortality_causes_clean <- mortality_causes %>% 
+  as_tibble(mortality_causes_clean) %>% 
+>>>>>>> eb4404fb27f1bcbd964fa0e81aacb080ea1b1684
+>>>>>>> 8267c9dccfca9affb6e64098dd88e5aed3415e25
   rename(Cause_1 = "...5", Cause_2 = "...6") %>% 
   filter(Sex=="Persons") %>% 
   select(-'Sex', -'GHE code', -'Member State
