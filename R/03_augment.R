@@ -206,7 +206,5 @@ covid_join <- JH_conftime_clean_aug %>%
    
 # Write data
 # ------------------------------------------------------------------------------
-write_tsv(x = my_data_clean_aug,
-          path = "data/03_my_data_clean_aug.tsv")
 write_tsv(x = country_differences,
           path = "data/country_differences.tsv")
