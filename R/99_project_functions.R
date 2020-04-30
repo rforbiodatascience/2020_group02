@@ -134,7 +134,6 @@ country_translate <- function(x){
             "United States Virgin Islands" = "not in cleaned JH",
             "USA" = "US", 
             "Vanuatu" = "not in cleaned JH",
-            "Zanzibar" = "Tanzania", 
             "Venezuela (Bolivarian Republic of)" = "Venezuela",
             "Viet Nam" = "Vietnam",
             "Wallis and Futuna Islands" = "not in cleaned JH",
