@@ -305,8 +305,9 @@ UN_pop_clean <- UN_pop %>%
   pivot_wider(names_from = Series, values_from = Value) %>%
   select(country, 'Population density', 'Sex ratio (males per 100 females)', 'Population aged 60+ years old (percentage)')
 
+#Jeg kan ikke få dette scriptet til at køre - MCHR001
 UN_gdp_clean <- UN_gdp %>%
-  separate("X1", into = c("nr", "country", "Year", "Series", "Value", "footnotes", "source"), sep = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)")
+  separate("[T13.]_Region/Country/Area", into = c("nr", "country", "Year", "Series", "Value", "footnotes", "source"), sep = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)")
   UN_gdp_clean <-  as.data.frame(sapply(UN_gdp_clean, function(x) gsub("\"", "", x))) %>%
   filter(Year == 2017, Series == "GDP in current prices (millions of US dollars)" | Series == "GDP per capita (US dollars)") %>%
   pivot_wider(names_from = Series, values_from = Value) %>%
@@ -346,9 +347,16 @@ life_expectancy_clean <- life_expectancy %>%
 #CAUSE-SPECIFIC MORTALITY
 
 #read dataset to object
+<<<<<<< HEAD
 #Renaming variables, removing gender-specifc rows and unnecessary variables
 
 mortality_causes_clean <- mortality_causes  %>% 
+=======
+#Kan ikke få scriptet til at køre -MCHR001
+#Renaming variables, removing gender-specifc rows and unnecessary variables 
+  mortality_causes_clean <- mortality_causes %>% 
+  as_tibble(mortality_causes_clean) %>% 
+>>>>>>> eb4404fb27f1bcbd964fa0e81aacb080ea1b1684
   rename(Cause_1 = "...5", Cause_2 = "...6") %>% 
   filter(Sex=="Persons") %>% 
   select(-'Sex', -'GHE code', -'Member State
@@ -377,9 +385,8 @@ mortality_causes_clean <- mortality_causes  %>%
 
 #Turning character variables into numeric
   #mutate_all(na_if(.,"^\\.$")) 
-  mutate_all(~str_replace_all(., "^\\.$", NA_character_)) %>% 
-  mutate_all(type.convert, as.is=TRUE) %>% 
-  select('country', 'Respiratory Infectious', 'Malignant neoplasms', 'Cardiovascular diseases', 'Ischaemic heart disease', 'Respiratory diseases', 'Kidney diseases', 'Road injury')
+  mutate_all(~str_replace_all(., "^\\.$", "0")) %>% 
+  mutate_all(type.convert, as.is=TRUE)
 
 #check successful cleaning 
 mortality_causes_clean
