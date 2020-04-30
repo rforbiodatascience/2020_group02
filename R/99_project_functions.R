@@ -134,7 +134,6 @@ country_translate <- function(x){
             "United States Virgin Islands" = "not in cleaned JH",
             "USA" = "US", 
             "Vanuatu" = "not in cleaned JH",
-            "Zanzibar" = "Tanzania", 
             "Venezuela (Bolivarian Republic of)" = "Venezuela",
             "Viet Nam" = "Vietnam",
             "Wallis and Futuna Islands" = "not in cleaned JH",
@@ -142,7 +141,7 @@ country_translate <- function(x){
             "Western Africa" = "not in cleaned JH",
             "Western Asia" = "not in cleaned JH",
             "Western Europe" = "not in cleaned JH",
-            "Zanzibar" = "Tanzania")
+            "Zanzibar" = "not in cleaned JH")
   
   return(as.character(con[x]))
 }
