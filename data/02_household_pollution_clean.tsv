@@ -1,4 +1,4 @@
-Country	Proportion_using_clean_fuels
+country	proportion_using_clean_fuels
 Afghanistan	33
 Albania	78
 Algeria	78
@@ -26,13 +26,13 @@ Brazil	100
 Brunei Darussalam	100
 Bulgaria	100
 Burkina Faso	10
-Burundi	NA
+Burundi	1
 Cabo Verde	72
 Cambodia	20
 Cameroon	24
 Canada	100
-Central African Republic	NA
-Chad	NA
+Central African Republic	1
+Chad	1
 Chile	100
 China	57
 Colombia	94
@@ -46,7 +46,7 @@ Cuba	78
 Cyprus	100
 Czechia	100
 Democratic People's Republic of Korea	13
-Democratic Republic of the Congo	NA
+Democratic Republic of the Congo	1
 Denmark	100
 Djibouti	13
 Dominica	91
@@ -58,20 +58,20 @@ Equatorial Guinea	36
 Eritrea	19
 Estonia	100
 Eswatini	51
-Ethiopia	NA
+Ethiopia	1
 Fiji	44
 Finland	100
 France	100
 Gabon	76
-Gambia	NA
+Gambia	1
 Georgia	80
 Germany	100
 Ghana	26
 Greece	100
 Grenada	100
 Guatemala	43
-Guinea	NA
-Guinea-Bissau	NA
+Guinea	1
+Guinea-Bissau	1
 Guyana	77
 Haiti	5
 Honduras	54
@@ -96,15 +96,15 @@ Lao People's Democratic Republic	6
 Latvia	100
 Lebanon	NA
 Lesotho	32
-Liberia	NA
+Liberia	1
 Libya	NA
 Lithuania	100
 Luxembourg	100
-Madagascar	NA
-Malawi	NA
+Madagascar	1
+Malawi	1
 Malaysia	95
 Maldives	100
-Mali	NA
+Mali	1
 Malta	100
 Marshall Islands	57
 Mauritania	44
@@ -115,7 +115,7 @@ Monaco	100
 Mongolia	39
 Montenegro	66
 Morocco	94
-Mozambique	NA
+Mozambique	1
 Myanmar	23
 Namibia	40
 Nauru	88
@@ -123,7 +123,7 @@ Nepal	30
 Netherlands	100
 New Zealand	100
 Nicaragua	53
-Niger	NA
+Niger	1
 Nigeria	7
 Niue	93
 Norway	100
@@ -142,7 +142,7 @@ Republic of Korea	100
 Republic of Moldova	94
 Romania	88
 Russian Federation	100
-Rwanda	NA
+Rwanda	1
 Saint Kitts and Nevis	100
 Saint Lucia	100
 Saint Vincent and the Grenadines	100
@@ -153,14 +153,14 @@ Saudi Arabia	100
 Senegal	32
 Serbia	71
 Seychelles	100
-Sierra Leone	NA
+Sierra Leone	1
 Singapore	100
 Slovakia	100
 Slovenia	100
 Solomon Islands	9
-Somalia	NA
+Somalia	1
 South Africa	85
-South Sudan	NA
+South Sudan	1
 Spain	100
 Sri Lanka	29
 Sudan	43
@@ -179,11 +179,11 @@ Tunisia	100
 Turkey	NA
 Turkmenistan	100
 Tuvalu	54
-Uganda	NA
+Uganda	1
 Ukraine	95
 United Arab Emirates	100
 United Kingdom of Great Britain and Northern Ireland	100
-United Republic of Tanzania	NA
+United Republic of Tanzania	1
 United States of America	100
 Uruguay	100
 Uzbekistan	92
