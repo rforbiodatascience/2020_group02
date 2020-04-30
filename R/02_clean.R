@@ -377,7 +377,7 @@ life_expectancy_clean <- life_expectancy %>%
 
 #Turning character variables into numeric
   #mutate_all(na_if(.,"^\\.$")) 
-  mutate_all(~str_replace_all(., "^\\.$", "0")) %>% 
+  mutate_all(~str_replace_all(., "^\\.$", NA_character_)) %>% 
   mutate_all(type.convert, as.is=TRUE)
 
 #check successful cleaning 
