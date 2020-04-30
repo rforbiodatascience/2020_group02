@@ -305,7 +305,6 @@ UN_pop_clean <- UN_pop %>%
   pivot_wider(names_from = Series, values_from = Value) %>%
   select(country, 'Population density', 'Sex ratio (males per 100 females)', 'Population aged 60+ years old (percentage)')
 
-#Jeg kan ikke få dette scriptet til at køre - MCHR001
 UN_gdp_clean <- UN_gdp %>%
   separate("[T13.]_Region/Country/Area", into = c("nr", "country", "Year", "Series", "Value", "footnotes", "source"), sep = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)")
   UN_gdp_clean <-  as.data.frame(sapply(UN_gdp_clean, function(x) gsub("\"", "", x))) %>%

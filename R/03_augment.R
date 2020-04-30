@@ -221,11 +221,12 @@ covid_join <- JH_conftime_clean_aug %>%
   left_join(., POP_demo_clean_aug, by=c('country')) %>% 
   left_join(., sex_leader_clean_aug, by=c('country')) %>% 
   left_join(., smoking_clean_aug, by=c('country')) %>% 
-  left_join(., UN_pop_clean_aug, by=c('country'))
+  left_join(., UN_pop_clean_aug, by=c('country')) %>%
+  left_join(., UN_gdp_clean_aug, by=c('country')) 
 
 #fejler
  left_join(., mortality_causes_clean_aug, by=c('country')) 
- left_join(., UN_gdp_clean_aug, by=c('country')) 
+
    
 # Write data
 # ------------------------------------------------------------------------------
