@@ -306,7 +306,7 @@ UN_pop_clean <- UN_pop %>%
   select(country, 'Population density', 'Sex ratio (males per 100 females)', 'Population aged 60+ years old (percentage)')
 
 UN_gdp_clean <- UN_gdp %>%
-  separate("[T13.]_Region/Country/Area", into = c("nr", "country", "Year", "Series", "Value", "footnotes", "source"), sep = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)")
+  separate("X1", into = c("nr", "country", "Year", "Series", "Value", "footnotes", "source"), sep = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)")
   UN_gdp_clean <-  as.data.frame(sapply(UN_gdp_clean, function(x) gsub("\"", "", x))) %>%
   filter(Year == 2017, Series == "GDP in current prices (millions of US dollars)" | Series == "GDP per capita (US dollars)") %>%
   pivot_wider(names_from = Series, values_from = Value) %>%
