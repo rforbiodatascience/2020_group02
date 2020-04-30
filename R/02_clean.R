@@ -346,9 +346,9 @@ life_expectancy_clean <- life_expectancy %>%
 #CAUSE-SPECIFIC MORTALITY
 
 #read dataset to object
-#Renaming variables, removing gender-specifc rows and unnecessary variables 
-  mortality_causes_clean <- mortality_causes %>% 
-  as_tibble(mortality_causes_clean) %>% 
+#Renaming variables, removing gender-specifc rows and unnecessary variables
+
+mortality_causes_clean <- mortality_causes  %>% 
   rename(Cause_1 = "...5", Cause_2 = "...6") %>% 
   filter(Sex=="Persons") %>% 
   select(-'Sex', -'GHE code', -'Member State
