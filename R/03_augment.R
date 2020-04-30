@@ -65,30 +65,15 @@ country_differences <- bind_rows(list_of_dataframes, .id = "origin") %>%
 
 
 
-#WHO datasets antijoin
-WHO_extra_countries <- POP_demo_clean %>% 
-  rename(country = Country) %>% 
-  anti_join(smoking_clean, by = 'country') %>% 
-  count(country, sort = T)
-
-#WHO-UN datasets antijoin
-UN_pop_clean <- UN_pop_clean %>% 
-  rename('Country' = 'Country_Region')
-
-WHO_UN_extra_countries <- POP_demo_clean %>% 
-  anti_join(UN_pop_clean, by = 'Country') %>% 
-  count(Country, sort = T)
-
-
-#UN JH datasets antijoin
-UN_extra_countries <- UN_pop_clean %>% 
-  anti_join(JH_conftime_clean, by = 'Country') %>% 
-  count(Country, sort = T)
-
-
-#-------------------------------------------------------------------------------
 #Preparing for merging of datasets to JH - alligning var(country) to JH using country_translate()
-  
+-------------------------------------------------------------------------------
+dfs_corr_countries <- dfs %>%
+  map(~mutate(., country_diff = (country_translate(country))) %>% 
+        mutate(country = if_else(!is.na(country_diff), country_diff, country)) %>% 
+        select(-country_diff))
+
+
+
 adult_mortality_clean_aug <- adult_mortality_clean %>% 
   mutate(country_diff =(country_translate(country))) %>% 
   mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
