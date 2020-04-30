@@ -142,7 +142,7 @@ country_translate <- function(x){
             "Western Africa" = "not in cleaned JH",
             "Western Asia" = "not in cleaned JH",
             "Western Europe" = "not in cleaned JH",
-            "Zanzibar" = "Tanzania")
+            "Zanzibar" = "not in cleaned JH")
   
   return(as.character(con[x]))
 }
