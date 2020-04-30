@@ -64,9 +64,16 @@ country_differences <- bind_rows(list_of_dataframes, .id = "origin") %>%
   select(origin, country)
 
 
-#-------------------------------------------------------------------------------
+
 #Preparing for merging of datasets to JH - alligning var(country) to JH using country_translate()
-  
+-------------------------------------------------------------------------------
+dfs_corr_countries <- dfs %>%
+  map(~mutate(., country_diff = (country_translate(country))) %>% 
+        mutate(country = if_else(!is.na(country_diff), country_diff, country)) %>% 
+        select(-country_diff))
+
+
+
 adult_mortality_clean_aug <- adult_mortality_clean %>% 
   mutate(country_diff =(country_translate(country))) %>% 
   mutate(country = ifelse(!is.na(country_diff),country_diff,country)) %>% 
