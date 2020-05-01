@@ -103,7 +103,65 @@ covid_join <- JH_conftime_clean %>%
 covid_join <- covid_join %>% 
   arrange(country, date)
 
+#Generate outcome variables
+#------------------------------------------------------------------------------
+
+covid_join <- covid_join %>% 
+  mutate(confirmed_cases_per_100000 = (`Number of confirmed COVID-19`/(`Population (in thousands) total`/100))) %>%
+  mutate(confirmed_cases_per_100000 = round(confirmed_cases_per_100000, 2))
+
+first_case_by_country <- covid_join %>% 
+  group_by(country) %>% 
+  filter(`Number of confirmed COVID-19` > 0) %>%
+  arrange(date) %>% 
+  summarise(first_case=head(date,1))
+
+hundred_cases_by_country <- covid_join %>% 
+  group_by(country) %>% 
+  filter(`Number of confirmed COVID-19` > 100) %>%
+  arrange(date) %>% 
+  summarise(hundred_cases=head(date,1))
+
+thousand_cases_by_country <- covid_join %>% 
+  group_by(country) %>% 
+  filter(`Number of confirmed COVID-19` > 1000) %>%
+  arrange(date) %>% 
+  summarise(thousand_cases=head(date,1))
+
+first_death_by_country <- covid_join %>% 
+  group_by(country) %>% 
+  filter(`Number of COVID-19 related deaths` > 0) %>%
+  arrange(date) %>% 
+  summarise(first_death=head(date,1))
+
+hundred_deaths_by_country <- covid_join %>% 
+  group_by(country) %>% 
+  filter(`Number of COVID-19 related deaths` > 100) %>%
+  arrange(date) %>% 
+  summarise(hundred_deaths=head(date,1))
+
+thousand_deaths_by_country <- covid_join %>% 
+  group_by(country) %>% 
+  filter(`Number of COVID-19 related deaths` > 1000) %>%
+  arrange(date) %>% 
+  summarise(thousand_deaths=head(date,1))
+
+
+covid_join <- covid_join %>% 
+  left_join(., first_case_by_country, by=c('country')) %>% 
+  left_join(., first_death_by_country, by=c('country')) %>%
+  left_join(., hundred_cases_by_country, by=c('country')) %>% 
+  left_join(., hundred_deaths_by_country, by=c('country')) %>% 
+  left_join(., thousand_cases_by_country, by=c('country')) %>% 
+  left_join(., thousand_deaths_by_country, by=c('country')) 
+
+covid_join <- covid_join %>% 
+  mutate(days_to_hundred_cases = hundred_cases - first_case) %>% 
+  mutate(days_to_thousand_cases = thousand_cases - first_case) %>% 
+  mutate(days_from_100_cases_to_100_deaths = hundred_deaths - hundred_cases) %>% 
+  mutate(days_from_dec1_to_100_cases = hundred_cases - ymd(20191201))
    
+
 # Write data
 # ------------------------------------------------------------------------------
 write_tsv(x = country_differences,
