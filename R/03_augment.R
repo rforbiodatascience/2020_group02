@@ -100,6 +100,9 @@ covid_join <- JH_conftime_clean %>%
   left_join(., UN_gdp_clean, by=c('country')) %>%
   left_join(., COVID_test_clean, by=c('country', c("date" = "Date"))) 
 
+covid_join <- covid_join %>% 
+  arrange(country, date)
+
    
 # Write data
 # ------------------------------------------------------------------------------
