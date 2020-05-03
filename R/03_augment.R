@@ -112,8 +112,10 @@ covid_join <- covid_join %>%
   mutate(dead_cases_per_100000 = `Number of COVID-19 related deaths`/(`Population (in thousands) total`/100)) %>%  
   mutate(dead_cases_per_100000 = round(dead_cases_per_100000, 2)) %>%         
   mutate(test_cases_per_100000 = `cumulative_covid_test`/(`Population (in thousands) total`/100)) %>% 
-  mutate(test_cases_per_100000 = round(test_cases_per_100000, 1))
-
+  mutate(test_cases_per_100000 = round(test_cases_per_100000, 1)) %>% 
+  mutate(recov_cases_per_100000 = `Recovered from COVID-19 (no.)`/(`Population (in thousands) total`/100)) %>% 
+  mutate(recov_cases_per_100000 = round(recov_cases_per_100000, 2))
+  
 first_case_by_country <- covid_join %>% 
   group_by(country) %>% 
   filter(`Number of confirmed COVID-19` > 0) %>%
