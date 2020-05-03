@@ -62,9 +62,13 @@ BMI_above30 <- read_tsv(file = "data/01_BMI_above30_agestand_raw.tsv")
 ##Data in our world data
 #COVID-19 tests performed (cummulative data over time). Global data.
 
-COVID_test_clean <- COVID_test %>%
+COVID_test_clean <- COVID_test %>% 
   separate(Entity, into = c("country", "waste"), sep ="-", ) %>% 
-  select(country, Date, `Cumulative total`, `Cumulative total per thousand`)
+  select(`country`, Date, `Cumulative total`) %>% 
+  group_by(country, Date) %>% 
+  summarise(`Cumulative total` = sum(`Cumulative total`)) %>% 
+  rename("cumulative_covid_test" = `Cumulative total`)
+  
 
 # ------------------------------------------------------------------------------
 ## WHO -Population demographics
@@ -140,14 +144,45 @@ JH_conftime_clean <- JH_conftime %>%
       str_detect(Lat_Long, "24.974/101.487") ~ "40.1824/116.4142",
       str_detect(Lat_Long, "29.1832/120.0934") ~ "40.1824/116.4142",
       TRUE ~ Lat_Long)) %>% 
- filter(`Province/State` %in% c("New South Wales", "British Columbia", "Beijing") | is.na(`Province/State`)) %>% 
+  filter(!`Province/State` %in% c(
+    "Faroe Islands", 
+    "Greenland", 
+    "French Guiana", 
+    "French Polynesia", 
+    "French Polynesia", 
+    "Guadeloupe", 
+    "Mayotte",
+    "New Caledonia",
+    "Reunion",
+    "Saint Barthelemy", 
+    "St Martin", 
+    "Martinique",
+    "Aruba",
+    "Curacao", 
+    "Bermuda", 
+    "Cayman Islands", 
+    "Channel Islands", 
+    "Gibraltar", 
+    "Isle of Man", 
+    "Recovered",
+    "Diamond Princess", 
+    "Northwest Territories",
+    "Yukon", 
+    "Anguilla", 
+    "British Virgin Islands", 
+    "Turks and Caicos Islands", 
+    "Bonaire, Sint Eustatius and Saba", 
+    "Falkland Islands (Malvinas)",
+    "Saint Pierre and Miquelon",
+    "Sint Maarten", 
+    "Montserrat")) %>%
   select(-`Province/State`) %>% 
   separate(Lat_Long, into = c("Lat", "Long"), sep ="/") %>%
   pivot_longer(names_to = "date", 
                values_to = "Number of confirmed COVID-19",
                cols = -c("Country/Region", "Lat", "Long"),
              names_ptypes = (date = date())
-             )
+  )
  
   JH_conftime_clean <- JH_conftime_clean %>%
   group_by(`Country/Region`, Lat, Long, date) %>% 
@@ -212,7 +247,38 @@ JH_conftime_clean <- JH_conftime %>%
       str_detect(Lat_Long, "24.974/101.487") ~ "40.1824/116.4142",
       str_detect(Lat_Long, "29.1832/120.0934") ~ "40.1824/116.4142",
       TRUE ~ Lat_Long)) %>% 
-    filter(`Province/State` %in% c("New South Wales", "British Columbia", "Beijing") | is.na(`Province/State`)) %>% 
+    filter(!`Province/State` %in% c(
+      "Faroe Islands", 
+      "Greenland", 
+      "French Guiana", 
+      "French Polynesia", 
+      "French Polynesia", 
+      "Guadeloupe", 
+      "Mayotte",
+      "New Caledonia",
+      "Reunion",
+      "Saint Barthelemy", 
+      "St Martin", 
+      "Martinique",
+      "Aruba",
+      "Curacao", 
+      "Bermuda", 
+      "Cayman Islands", 
+      "Channel Islands", 
+      "Gibraltar", 
+      "Isle of Man", 
+      "Recovered",
+      "Diamond Princess", 
+      "Northwest Territories",
+      "Yukon", 
+      "Anguilla", 
+      "British Virgin Islands", 
+      "Turks and Caicos Islands", 
+      "Bonaire, Sint Eustatius and Saba", 
+      "Falkland Islands (Malvinas)",
+      "Saint Pierre and Miquelon",
+      "Sint Maarten", 
+      "Montserrat")) %>% 
     select(-`Province/State`) %>% 
     separate(Lat_Long, into = c("Lat", "Long"), sep ="/") %>%
     pivot_longer(names_to = "date", 
@@ -283,7 +349,38 @@ JH_conftime_clean <- JH_conftime %>%
       str_detect(Lat_Long, "24.974/101.487") ~ "40.1824/116.4142",
       str_detect(Lat_Long, "29.1832/120.0934") ~ "40.1824/116.4142",
       TRUE ~ Lat_Long)) %>% 
-    filter(`Province/State` %in% c("New South Wales", "British Columbia", "Beijing") | is.na(`Province/State`)) %>% 
+    filter(!`Province/State` %in% c(
+      "Faroe Islands", 
+      "Greenland", 
+      "French Guiana", 
+      "French Polynesia", 
+      "French Polynesia", 
+      "Guadeloupe", 
+      "Mayotte",
+      "New Caledonia",
+      "Reunion",
+      "Saint Barthelemy", 
+      "St Martin", 
+      "Martinique",
+      "Aruba",
+      "Curacao", 
+      "Bermuda", 
+      "Cayman Islands", 
+      "Channel Islands", 
+      "Gibraltar", 
+      "Isle of Man", 
+      "Recovered",
+      "Diamond Princess", 
+      "Northwest Territories",
+      "Yukon", 
+      "Anguilla", 
+      "British Virgin Islands", 
+      "Turks and Caicos Islands", 
+      "Bonaire, Sint Eustatius and Saba", 
+      "Falkland Islands (Malvinas)",
+      "Saint Pierre and Miquelon",
+      "Sint Maarten", 
+      "Montserrat")) %>% 
     select(-`Province/State`) %>% 
     separate(Lat_Long, into = c("Lat", "Long"), sep ="/") %>%
     pivot_longer(names_to = "date", 

@@ -100,7 +100,98 @@ covid_join <- JH_conftime_clean %>%
   left_join(., UN_gdp_clean, by=c('country')) %>%
   left_join(., COVID_test_clean, by=c('country', c("date" = "Date"))) 
 
-   
+covid_join <- covid_join %>% 
+  arrange(country, date)
+
+#Generate outcome variables
+#------------------------------------------------------------------------------
+
+covid_join <- covid_join %>% 
+  mutate(confirmed_cases_per_100000 = (`Number of confirmed COVID-19`/(`Population (in thousands) total`/100))) %>%
+  mutate(confirmed_cases_per_100000 = round(confirmed_cases_per_100000, 2)) %>% 
+  mutate(dead_cases_per_100000 = `Number of COVID-19 related deaths`/(`Population (in thousands) total`/100)) %>%  
+  mutate(dead_cases_per_100000 = round(dead_cases_per_100000, 2)) %>%         
+  mutate(test_cases_per_100000 = `cumulative_covid_test`/(`Population (in thousands) total`/100)) %>% 
+  mutate(test_cases_per_100000 = round(test_cases_per_100000, 1)) %>% 
+  mutate(recov_cases_per_100000 = `Recovered from COVID-19 (no.)`/(`Population (in thousands) total`/100)) %>% 
+  mutate(recov_cases_per_100000 = round(recov_cases_per_100000, 2))
+  
+first_case_by_country <- covid_join %>% 
+  group_by(country) %>% 
+  filter(`Number of confirmed COVID-19` > 0) %>%
+  arrange(date) %>% 
+  summarise(first_case=head(date,1))
+
+hundred_cases_by_country <- covid_join %>% 
+  group_by(country) %>% 
+  filter(`Number of confirmed COVID-19` > 100) %>%
+  arrange(date) %>% 
+  summarise(hundred_cases=head(date,1))
+
+thousand_cases_by_country <- covid_join %>% 
+  group_by(country) %>% 
+  filter(`Number of confirmed COVID-19` > 1000) %>%
+  arrange(date) %>% 
+  summarise(thousand_cases=head(date,1))
+
+first_death_by_country <- covid_join %>% 
+  group_by(country) %>% 
+  filter(`Number of COVID-19 related deaths` > 0) %>%
+  arrange(date) %>% 
+  summarise(first_death=head(date,1))
+
+hundred_deaths_by_country <- covid_join %>% 
+  group_by(country) %>% 
+  filter(`Number of COVID-19 related deaths` > 100) %>%
+  arrange(date) %>% 
+  summarise(hundred_deaths=head(date,1))
+
+thousand_deaths_by_country <- covid_join %>% 
+  group_by(country) %>% 
+  filter(`Number of COVID-19 related deaths` > 1000) %>%
+  arrange(date) %>% 
+  summarise(thousand_deaths=head(date,1))
+
+
+covid_join <- covid_join %>% 
+  left_join(., first_case_by_country, by=c('country')) %>% 
+  left_join(., first_death_by_country, by=c('country')) %>%
+  left_join(., hundred_cases_by_country, by=c('country')) %>% 
+  left_join(., hundred_deaths_by_country, by=c('country')) %>% 
+  left_join(., thousand_cases_by_country, by=c('country')) %>% 
+  left_join(., thousand_deaths_by_country, by=c('country')) 
+
+covid_join <- covid_join %>% 
+  mutate(days_to_hundred_cases = hundred_cases - first_case) %>% 
+  mutate(days_to_thousand_cases = thousand_cases - first_case) %>% 
+  mutate(days_from_100_cases_to_100_deaths = hundred_deaths - hundred_cases) %>% 
+  mutate(days_from_dec1_to_100_cases = hundred_cases - ymd(20191201)) %>% 
+  mutate(date_28_days_after_100_cases = hundred_cases + 28) 
+
+deaths_28_days_after_100_cases_by_country <- covid_join %>% 
+  group_by(country) %>% 
+  filter(date >= date_28_days_after_100_cases) %>% 
+  arrange(date) %>% 
+  summarise(deaths_28_days_after_100_cases = head(`Number of COVID-19 related deaths`,1))
+  
+covid_join <- covid_join %>% 
+  left_join(., deaths_28_days_after_100_cases_by_country, by=c('country')) %>% 
+  mutate(deaths_28_days_per_100000 = deaths_28_days_after_100_cases/(`Population (in thousands) total`/100)) %>% 
+  mutate(deaths_28_days_per_100000 = round(deaths_28_days_per_100000, 2))
+
+#Generating tertiles of covariates
+covid_join <- covid_join %>% 
+  mutate(deaths_28_days_ter = ntile(deaths_28_days_after_100_cases, 3)) %>% 
+  mutate(deaths_28_days_per_100000_ter = ntile(deaths_28_days_per_100000, 3)) %>% 
+  mutate(adult_mortality_rate_ter = ntile(adult_mortality_rate, 3)) %>% 
+  mutate(concentration_fine_particles_ter = ntile(concentration_fine_particles, 3)) %>%
+  mutate(BMI_above30_prevalence_all_ter = ntile(BMI_above30_prevalence_all, 3)) %>% 
+  mutate(current_health_expenditure_per_person_USD_ter = ntile(current_health_expenditure_per_person_USD, 3)) %>% 
+  mutate(density_of_hospitals_ter = ntile(density_of_hospitals, 3)) %>% 
+  mutate(life_expectancy_ter = ntile(life_expectancy, 3)) %>% 
+  mutate(density_medical_doctors_ter = ntile(density_of_medical_doctors, 3)) %>% 
+  mutate(prevalence_smoking_ter = ntile(prevalence_smoking, 3))
+
 # Write data
 # ------------------------------------------------------------------------------
 write_tsv(x = country_differences,
