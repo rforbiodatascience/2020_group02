@@ -188,9 +188,9 @@ covid_join <- covid_join %>%
   mutate(BMI_above30_prevalence_all_ter = as_factor(ntile(BMI_above30_prevalence_all, 3))) %>% 
   mutate(current_health_expenditure_per_person_USD_ter = as_factor(ntile(current_health_expenditure_per_person_USD, 3))) %>% 
   mutate(density_of_hospitals_ter = as_factor(ntile(density_of_hospitals, 3))) %>% 
-  mutate(life_expectancy_ter = as_factor(ntile(life_expectancy, 3))) %>% 
+  mutate(life_expectancy_ter = fct_relevel(as_factor(ntile(life_expectancy, 3)), sort)) %>% 
   mutate(density_medical_doctors_ter = as_factor(ntile(density_of_medical_doctors, 3))) %>% 
-  mutate(prevalence_smoking_ter = as_factor(ntile(prevalence_smoking, 3)))  
+  mutate(prevalence_smoking_ter = as_factor(ntile(prevalence_smoking, 3))) 
 
 
 # Write data
