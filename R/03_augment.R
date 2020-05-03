@@ -175,7 +175,9 @@ deaths_28_days_after_100_cases_by_country <- covid_join %>%
   summarise(deaths_28_days_after_100_cases = head(`Number of COVID-19 related deaths`,1))
   
 covid_join <- covid_join %>% 
-  left_join(., deaths_28_days_after_100_cases_by_country, by=c('country')) 
+  left_join(., deaths_28_days_after_100_cases_by_country, by=c('country')) %>% 
+  mutate(deaths_28_days_per_100000 = deaths_28_days_after_100_cases/(`Population (in thousands) total`/100)) %>% 
+  mutate(deaths_28_days_per_100000 = round(deaths_28_days_per_100000, 2))
 
    
 
