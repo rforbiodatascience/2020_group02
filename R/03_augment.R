@@ -165,7 +165,18 @@ covid_join <- covid_join %>%
   mutate(days_to_hundred_cases = hundred_cases - first_case) %>% 
   mutate(days_to_thousand_cases = thousand_cases - first_case) %>% 
   mutate(days_from_100_cases_to_100_deaths = hundred_deaths - hundred_cases) %>% 
-  mutate(days_from_dec1_to_100_cases = hundred_cases - ymd(20191201))
+  mutate(days_from_dec1_to_100_cases = hundred_cases - ymd(20191201)) %>% 
+  mutate(date_28_days_after_100_cases = hundred_cases + 28) 
+
+deaths_28_days_after_100_cases_by_country <- covid_join %>% 
+  group_by(country) %>% 
+  filter(date >= date_28_days_after_100_cases) %>% 
+  arrange(date) %>% 
+  summarise(deaths_28_days_after_100_cases = head(`Number of COVID-19 related deaths`,1))
+  
+covid_join <- covid_join %>% 
+  left_join(., deaths_28_days_after_100_cases_by_country, by=c('country')) 
+
    
 
 # Write data
