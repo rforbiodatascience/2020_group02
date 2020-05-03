@@ -8,7 +8,7 @@ library("tidyverse")
 library("readr")
 library("forcats")
 library("purrr")
-
+library("survivalAnalysis")
 
 # Define functions
 # ------------------------------------------------------------------------------
@@ -191,6 +191,26 @@ covid_join <- covid_join %>%
   mutate(life_expectancy_ter = ntile(life_expectancy, 3)) %>% 
   mutate(density_medical_doctors_ter = ntile(density_of_medical_doctors, 3)) %>% 
   mutate(prevalence_smoking_ter = ntile(prevalence_smoking, 3))
+
+
+#kaplan-meier curves for survival - example plot with density of medical doctors
+kaplan_meier <- covid_join %>% 
+  filter(date == '2020-04-16') %>%  
+  mutate(event = if_else(!is.na(hundred_deaths), 1, 0)) %>% 
+  mutate(time = if_else(event == 0, (date - first_case),(hundred_deaths - first_case)))
+
+kaplan_meier %>% analyse_survival(vars(time, event), by=factor(density_medical_doctors_ter)) ->
+  km_result
+print(km_result)
+kaplan_meier_plot(km_result,
+                  break.time.by=10,
+                  xlab="days",
+                  legend.title="Density of medical doctors",
+                  hazard.ratio=T,
+                  risk.table=TRUE,
+                  table.layout="clean",
+                  ggtheme=ggplot2::theme_bw(10))
+
 
 # Write data
 # ------------------------------------------------------------------------------
