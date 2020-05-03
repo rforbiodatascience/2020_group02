@@ -181,16 +181,17 @@ covid_join <- covid_join %>%
 
 #Generating tertiles of covariates
 covid_join <- covid_join %>% 
-  mutate(deaths_28_days_ter = ntile(deaths_28_days_after_100_cases, 3)) %>% 
-  mutate(deaths_28_days_per_100000_ter = ntile(deaths_28_days_per_100000, 3)) %>% 
-  mutate(adult_mortality_rate_ter = ntile(adult_mortality_rate, 3)) %>% 
-  mutate(concentration_fine_particles_ter = ntile(concentration_fine_particles, 3)) %>%
-  mutate(BMI_above30_prevalence_all_ter = ntile(BMI_above30_prevalence_all, 3)) %>% 
-  mutate(current_health_expenditure_per_person_USD_ter = ntile(current_health_expenditure_per_person_USD, 3)) %>% 
-  mutate(density_of_hospitals_ter = ntile(density_of_hospitals, 3)) %>% 
-  mutate(life_expectancy_ter = ntile(life_expectancy, 3)) %>% 
-  mutate(density_medical_doctors_ter = ntile(density_of_medical_doctors, 3)) %>% 
-  mutate(prevalence_smoking_ter = ntile(prevalence_smoking, 3))
+  mutate(deaths_28_days_ter = as_factor(ntile(deaths_28_days_after_100_cases, 3))) %>% 
+  mutate(deaths_28_days_per_100000_ter = as_factor(ntile(deaths_28_days_per_100000, 3))) %>% 
+  mutate(adult_mortality_rate_ter = as_factor(ntile(adult_mortality_rate, 3))) %>% 
+  mutate(concentration_fine_particles_ter = as_factor(ntile(concentration_fine_particles, 3))) %>%
+  mutate(BMI_above30_prevalence_all_ter = as_factor(ntile(BMI_above30_prevalence_all, 3))) %>% 
+  mutate(current_health_expenditure_per_person_USD_ter = as_factor(ntile(current_health_expenditure_per_person_USD, 3))) %>% 
+  mutate(density_of_hospitals_ter = as_factor(ntile(density_of_hospitals, 3))) %>% 
+  mutate(life_expectancy_ter = as_factor(ntile(life_expectancy, 3))) %>% 
+  mutate(density_medical_doctors_ter = as_factor(ntile(density_of_medical_doctors, 3))) %>% 
+  mutate(prevalence_smoking_ter = as_factor(ntile(prevalence_smoking, 3)))  
+
 
 # Write data
 # ------------------------------------------------------------------------------
