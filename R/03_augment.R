@@ -204,14 +204,13 @@ kaplan_meier %>% analyse_survival(vars(time, event), by=factor(density_medical_d
   km_result
 print(km_result)
 kaplan_meier_plot(km_result,
-                  break.time.by=10,
-                  xlab="days",
+                  break.time.by=15.25,
+                  xlab="months",
                   legend.title="Density of medical doctors",
                   hazard.ratio=T,
                   risk.table=TRUE,
                   table.layout="clean",
                   ggtheme=ggplot2::theme_bw(10))
-
 
 # Write data
 # ------------------------------------------------------------------------------
