@@ -183,7 +183,9 @@ covid_join <- covid_join %>%
 #cleaning variable names 
 covid_join <- covid_join %>% 
   rename_all(~str_to_lower(.)) %>% 
-  rename_all(~str_replace_all(., " ", "_"))
+  rename_all(~str_replace_all(., " ", "_")) %>% 
+  rename_all(~str_replace_all(., "\\(", "_")) %>% 
+  rename_all(~str_replace_all(., "\\)", "_")) 
 
 
 #Generating tertiles of covariates
