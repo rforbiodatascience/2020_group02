@@ -91,6 +91,33 @@ deaths_vs_median_age/deaths_vs_life_exp +
     subtitle = "Higher proportion of COVID-19 deaths in countries with a higher proportion of people > 40 years and higher life expectancy in years"
   )
 
+
+#kaplan-meier curves for survival - example with time to 100 deaths and density of medical doctors
+kaplan_meier <- covid_join %>% 
+  filter(date == '2020-04-16') %>%  
+  mutate(event = if_else(!is.na(hundred_deaths), 1, 0)) %>% 
+  mutate(time = if_else(event == 0, (date - first_case),(hundred_deaths - first_case)))
+
+#summary and plot
+kaplan_meier %>% analyse_survival(vars(time, event), by=factor(density_medical_doctors_ter)) ->
+  km_result
+print(km_result)
+
+#Kaplan meier plot saved as .png
+png("km_medical_doctors.png", width=8.5,height = 6.5,unit='in',res=300)
+kaplan_meier_plot(km_result,
+                  break.time.by=15.25,
+                  xlab="months",
+                  legend.title="Density of medical doctors",
+                  hazard.ratio=T,
+                  risk.table=TRUE,
+                  table.layout="clean",
+                  ggtheme=ggplot2::theme_bw(10))
+
+dev.off()
+
+
+
 # Write data
 # ------------------------------------------------------------------------------
 write_tsv(...)
