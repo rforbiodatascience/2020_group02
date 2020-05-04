@@ -21,7 +21,7 @@ covid_aug <- read_tsv(file = "data/03_covid_aug.tsv")
 
 
 #kaplan-meier curves for survival - example with time to 100 deaths and density of medical doctors
-kaplan_meier <- covid_join %>% 
+kaplan_meier <- covid_aug %>% 
   group_by(country) %>% 
   slice(which.max(date)) %>%  
   ungroup() %>% 
@@ -47,6 +47,17 @@ kaplan_meier_plot(km_result,
                   ggtheme=ggplot2::theme_bw(10))
 
 dev.off()
+
+
+#PCA analysis - virker ikke endnu
+covid_pca <- covid_aug %>% 
+  group_by(country) %>% 
+  slice(which.max(date)) %>%  
+  ungroup() %>% 
+  select(-(1:4), -sex, -starts_with(c("first", "hundred", "thousand", "date"))) %>% 
+  prcomp(center = TRUE, scale. = TRUE)
+covid_pca
+
 
 # Write data
 # ------------------------------------------------------------------------------
