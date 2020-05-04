@@ -14,6 +14,7 @@ library("survivalAnalysis")
 # ------------------------------------------------------------------------------
 source(file = "R/99_project_functions.R")
 
+
 # Load data
 # ------------------------------------------------------------------------------
 adult_mortality_clean <- read_tsv(file = "data/02_adult_mortality_clean.tsv")
@@ -192,9 +193,11 @@ covid_join <- covid_join %>%
   mutate(density_medical_doctors_ter = as_factor(ntile(density_of_medical_doctors, 3))) %>% 
   mutate(prevalence_smoking_ter = as_factor(ntile(prevalence_smoking, 3))) 
 
-
-
-
+#cleaning variable names 
+covid_join <- covid_join %>% 
+  rename_all(~str_to_lower(.)) %>% 
+  rename_all(~str_replace_all(., " ", "_"))
+  
 
 # Write data
 # ------------------------------------------------------------------------------
