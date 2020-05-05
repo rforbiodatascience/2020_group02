@@ -21,7 +21,7 @@ library("readxl")
 
 ##Data in our world data
 #COVID-19 tests performed. Global data
-COVID_test_raw <- read_csv2(file = "data/_raw/Our world in data/covid-testing-all-observations.csv")
+COVID_test_raw <- read_csv(file = "data/_raw/Our world in data/covid-testing-all-observations.csv")
 
 
 ## Johns Hopkins COVID data

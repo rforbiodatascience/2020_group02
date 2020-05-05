@@ -17,16 +17,39 @@ library("modelr")
 # ------------------------------------------------------------------------------
 covid_aug <- read_tsv(file = "data/03_covid_aug.tsv",
                       col_types = cols(thousand_deaths = col_date(),
-                                       deaths_28_days_ter = col_factor(),
-                                       deaths_28_days_per_100000_ter = col_factor(),
                                        adult_mortality_rate_ter = col_factor(),
                                        concentration_fine_particles_ter = col_factor(),
-                                       BMI_above30_prevalence_all_ter = col_factor(),
-                                       current_health_expenditure_per_person_USD_ter = col_factor(),
+                                       bmi_above30_prevalence_all_ter = col_factor(),
+                                       current_health_expenditure_per_person_usd_ter = col_factor(),
+                                       proportion_basic_handwashing_facilities_ter = col_factor(),
+                                       current_health_expenditure_per_person_usd_ter = col_factor(),
                                        density_of_hospitals_ter = col_factor(),
                                        life_expectancy_ter = col_factor(),
-                                       density_medical_doctors_ter = col_factor(),
-                                       prevalence_smoking_ter = col_factor()))
+                                       healthy_life_expectancy_ter = col_factor(),
+                                       measles_reported_cases_ter = col_factor(),
+                                       density_of_medical_doctors_ter = col_factor(),
+                                       pollution_attributable_death_rate_ter = col_factor(),
+                                       pollution_attributable_death_rate_std_ter = col_factor(),
+                                       density_of_nurses_midwifes_ter = col_factor(),
+                                       'population__in_thousands__total_ter' = col_factor(),
+                                       'population_proportion_under_15__%__ter' = col_factor(),
+                                       'population_proportion_over_60__%__ter' = col_factor(),
+                                       'population_median_age__years__ter' = col_factor(),
+                                       'population_living_in_urban_areas__%__ter' = col_factor(),
+                                       prevalence_smoking_ter = col_factor(),
+                                       population_density_ter = col_factor(),
+                                       'sex_ratio__males_per_100_females__ter' = col_factor(),
+                                       'population_aged_60+_years_old__percentage__ter' = col_factor(),
+                                       respiratory_infectious_ter = col_factor(),
+                                       malignant_neoplasms_ter = col_factor(),
+                                       cardiovascular_diseases_ter = col_factor(),
+                                       ischaemic_heart_disease_ter = col_factor(),
+                                       respiratory_diseases_ter = col_factor(),
+                                       kidney_diseases_ter = col_factor(),
+                                       road_injury_ter = col_factor(),
+                                       'gdp_in_current_prices__millions_of_us_dollars__ter' = col_factor(),
+                                       'gdp_per_capita__us_dollars__ter' = col_factor(),
+                                       cumulative_covid_test_ter = col_factor()))
 
 
 #Which factors affect number of COVID-19 confirmed cases and COVID-19 related deaths across countries?
@@ -50,126 +73,23 @@ mean_cov
 
 
 #Summary statistics for variables
-list_of_cov <- names(covid_aug)[60:67]
+list_of_cov <- names(covid_aug)[58:70]
+plot_list <- list()
 for(i in list_of_cov){
-  png("results/[i].png", width=8.5,height = 6.5,unit='in',res=300)
-  plt <- ggplot(covid_aug_by_country, aes_string(x=i, y = 'deaths_28_days_per_100000')) +
+  plot_name <- i
+  plt <- ggplot(covid_aug_by_country, aes_string(x=i, y = 'days_from_100_cases_to_100_deaths')) +
     geom_boxplot()
+  plot_list[[i]] = plt
+}
+
+for(i in list_of_cov){
+  file_name = paste("results/", i, ".png", sep="")
+  png(file_name, width=8.5, height = 6.5,unit='in',res=300)
+  print(plot_list[[i]])
   dev.off()
-  print(plt)
 }
 
 
-
-covid_aug %>%
-  group_by(country) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(mapping = aes(x = deaths_28_days_per_100000), na.rm = TRUE) +
-  geom_histogram(binwidth = 2) 
-
-covid_aug %>%
-  group_by(country) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(mapping = aes(y = deaths_28_days_per_100000, x = density_of_medical_doctors), na.rm = TRUE ) +
-  geom_point(alpha = 0.5, size = 3) 
-
-covid_aug %>%
-  group_by(country) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(mapping = aes(x = density_medical_doctors_ter, y = deaths_28_days_after_100_cases)) +
-  geom_boxplot()
-
-covid_aug %>%
-  group_by(country) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(mapping = aes(x = density_medical_doctors_ter, y = deaths_28_days_after_100_cases)) +
-  geom_boxplot()
-
-covid_aug %>%
-  group_by(country) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(mapping = aes(y = deaths_28_days_per_100000, x = BMI_above30_prevalence_all), na.rm = TRUE ) +
-  geom_point(alpha = 0.5, size = 3) 
-
-covid_aug %>%
-  group_by(country) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(mapping = aes(x = BMI_above30_prevalence_all_ter, y = deaths_28_days_per_100000)) +
-  geom_boxplot()
-
-covid_aug %>%
-  group_by(country) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(mapping = aes(y = deaths_28_days_per_100000, x = life_expectancy), na.rm = TRUE ) +
-  geom_point(alpha = 0.5, size = 3) 
-
-covid_aug %>%
-  group_by(country) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(mapping = aes(x = life_expectancy_ter, y = deaths_28_days_per_100000)) +
-  geom_boxplot()
-
-covid_aug %>%
-  group_by(country) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(mapping = aes(y = deaths_28_days_per_100000, x = current_health_expenditure_per_person_USD), na.rm = TRUE ) +
-  geom_point(alpha = 0.5, size = 3)
-
-covid_aug %>%
-  group_by(country) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(mapping = aes(x = current_health_expenditure_per_person_USD_ter, y = deaths_28_days_after_100_cases)) +
-  geom_boxplot()
-
-covid_aug %>%
-  group_by(country) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(mapping = aes(y = deaths_28_days_per_100000, x = density_of_hospitals), na.rm = TRUE ) +
-  geom_point(alpha = 0.5, size = 3)
-
-covid_aug %>%
-  group_by(country) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(mapping = aes(x = density_of_hospitals_ter, y = deaths_28_days_per_100000)) +
-  geom_boxplot()
-
-covid_aug %>%
-  group_by(country) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(mapping = aes(y = deaths_28_days_per_100000, x = prevalence_smoking), na.rm = TRUE ) +
-  geom_point(alpha = 0.5, size = 3)
-
-covid_aug %>%
-  group_by(country) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(mapping = aes(x = prevalence_smoking_ter, y = deaths_28_days_per_100000)) +
-  geom_boxplot()
-
-covid_aug %>%
-  group_by(country) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(mapping = aes(y = deaths_28_days_after_100_cases, x = sex), na.rm = TRUE ) +
-  geom_bar(stat = "identity")
-
-covid_aug %>%
-  group_by(country) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(mapping = aes(y = deaths_28_days_per_100000, x = sex), na.rm = TRUE ) +
-  geom_bar(stat = "identity")
-
-covid_aug %>%
-  group_by(country) %>% 
-  filter(deaths_28_days_per_100000>0) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(mapping = aes(x = country, y = deaths_28_days_per_100000)) +
-  geom_boxplot()
-
-covid_aug %>%
-  group_by(country) %>% 
-  filter(deaths_28_days_per_100000>0) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(mapping = aes(x = country, y = deaths_28_days_per_100000)) +
-  geom_bar(stat = "Identity")
 
 #Deaths 28 days after first 100 cases - crude and standardized for population size - as a function of country
 covid_aug %>%
