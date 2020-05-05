@@ -37,7 +37,7 @@ kaplan_meier %>% analyse_survival(vars(time, event), by=factor(density_medical_d
 print(km_result)
 
 #Kaplan meier plot saved as .png
-png("results/km_medical_doctors.png", width=8.5,height = 6.5,unit='in',res=300)
+png("results/04_analysis_iii/km_medical_doctors.png", width=8.5,height = 6.5,unit='in',res=300)
 kaplan_meier_plot(km_result,
                   break.time.by=15.25,
                   xlab="months",
@@ -128,7 +128,7 @@ pl_pca_2 <- covid_pca_aug %>%
   geom_point()
 
 
-png("results/pca_deaths.png", width=8.5,height = 6.5,unit='in',res=300)
+png("results/04_analysis_iii/pca_deaths.png", width=8.5,height = 6.5,unit='in',res=300)
 
 (pl_pca_1+pl_pca_2)
 
@@ -183,7 +183,7 @@ pl3_abs <- covid_pca_aug_k_org_pca %>%
   geom_point() +
   theme(legend.position = "bottom")
 
-png("results/pca_cluster_deaths.png", width=8.5,height = 6.5,unit='in',res=300)
+png("results/04_analysis_iii/pca_cluster_deaths.png", width=8.5,height = 6.5,unit='in',res=300)
 
 (pl1_abs + pl2_abs + pl3_abs)
 
@@ -212,7 +212,7 @@ pl3_rel <- covid_pca_aug_k_org_pca %>%
 
 
 
-png("results/pca_cluster_rel_deaths.png", width=8.5,height = 6.5,unit='in',res=300)
+png("results/04_analysis_iii/pca_cluster_rel_deaths.png", width=8.5,height = 6.5,unit='in',res=300)
 
 (pl1_rel + pl2_rel + pl3_rel)
 
