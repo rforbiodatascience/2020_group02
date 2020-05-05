@@ -6,6 +6,7 @@ rm(list = ls())
 # ------------------------------------------------------------------------------
 library("tidyverse")
 library("patchwork")
+library("leaflet")
 
 # Define functions
 # ------------------------------------------------------------------------------
@@ -71,7 +72,7 @@ conf_cases_vs_urban / conf_deaths_vs_urban / conf_recov_vs_urban +
 deaths_vs_median_age <- covid_aug %>%
   group_by(country) %>% 
   slice(which.max(date)) %>% 
-    ggplot(conf_cases_vs_urban, mapping = aes(y = dead_cases_per_100000, x = population_median_age_years), na.rm = TRUE ) +
+  ggplot(conf_cases_vs_urban, mapping = aes(y = dead_cases_per_100000, x = population_median_age_years), na.rm = TRUE ) +
   geom_point(alpha = 0.5, size = 3)+
   ylim(0,60)
 
@@ -91,8 +92,47 @@ deaths_vs_median_age/deaths_vs_life_exp +
     subtitle = "Higher proportion of COVID-19 deaths in countries with a higher proportion of people > 40 years and higher life expectancy in years"
   )
 
+#-----------------------------------------------------------------
+# Covid-19 map
+
+# Selecting fortotal no of deaths
+
+covid_death_map <- covid_aug %>% 
+  group_by(country) %>% 
+  slice(which.max(date)) %>% 
+  select(country, lat, long, `number_of_covid-19_related_deaths`, dead_cases_per_100000) %>% 
+  filter(!is.na(dead_cases_per_100000))
 
 
+#Creating pop-ups to map
+
+covid_death_map <- covid_death_map %>% 
+  mutate(popup_info = paste("Country:", country, 
+                            "<br/>", 
+                            "Total no. of COVID- 19 related deaths:", `number_of_covid-19_related_deaths`, "<br/>", "No. COVID- 19 related deaths regulated to pop. size :", dead_cases_per_100000))
+         
+
+## Making the map, selceting map layout in http://leaflet-extras.github.io/leaflet-providers/preview/index.html 
+#Deaths per population size (deaths pr. 100.000)#"Esri.WorldGrayCanvas"
+
+covid_death_map_pop <- covid_death_map  %>% 
+  leaflet() %>%
+  addProviderTiles(provider = "Stamen.TerrainBackground" ) %>% 
+  addCircles(covid_death_map, weight = 1, color = "red", opacity = 2,
+             lng = ~long, lat = ~lat, radius = ~dead_cases_per_100000 * 5000
+             , popup = ~popup_info)
+
+covid_death_map_pop
+
+#Total no. deaths pr. country
+
+covid_death_map_total <- covid_death_map %>% 
+  leaflet() %>%
+  addProviderTiles(provider = "Stamen.TerrainBackground" ) %>% 
+  addCircles(covid_death_map, weight = 1, color = "red", opacity = 2,
+             lng = ~long, lat = ~lat, radius = ~`number_of_covid-19_related_deaths` * 30
+             , popup = ~popup_info)
+covid_death_map_total
 
 # Write data
 # ------------------------------------------------------------------------------
