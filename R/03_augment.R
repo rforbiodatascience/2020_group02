@@ -190,7 +190,8 @@ covid_join <- covid_join %>%
   rename_all(~str_replace_all(., "\\)", "_")) %>% 
   rename_all(~str_replace_all(., "%", "")) %>% 
   rename_all(~str_replace_all(., "\\+", "")) %>% 
-  rename_all(~str_replace_all(., "__", "_")) 
+  rename_all(~str_replace_all(., "__", "_")) %>% 
+  rename_all(~str_replace_all(., "_+$", ""))
 
 
 
