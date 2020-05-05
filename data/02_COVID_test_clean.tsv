@@ -956,7 +956,7 @@ Ethiopia 	2020-04-28	15668
 Ethiopia 	2020-04-29	16434
 Ethiopia 	2020-04-30	17842
 Ethiopia 	2020-05-04	24088
-Ethiopia 	NA	0
+Ethiopia 	NA	NA
 Finland 	2020-02-27	9
 Finland 	2020-02-28	367
 Finland 	2020-02-29	382
@@ -1281,7 +1281,7 @@ India 	2020-04-30	830201
 India 	2020-05-01	902654
 India 	2020-05-02	976363
 India 	2020-05-03	1046450
-Indonesia 	NA	0
+Indonesia 	NA	NA
 Iran 	2020-04-05	189790
 Iran 	2020-04-08	220975
 Iran 	2020-04-09	231393
@@ -1460,7 +1460,7 @@ Italy 	2020-05-01	3452058
 Italy 	2020-05-02	3538701
 Italy 	2020-05-03	3610683
 Italy 	2020-05-04	3671313
-Japan 	NA	0
+Japan 	NA	NA
 Kazakhstan 	2020-03-13	126
 Kazakhstan 	2020-03-14	445
 Kazakhstan 	2020-03-15	652
@@ -1553,7 +1553,7 @@ Kenya 	2020-04-30	20268
 Kenya 	2020-05-01	21702
 Kenya 	2020-05-02	22897
 Kenya 	2020-05-03	23780
-Kenya 	NA	0
+Kenya 	NA	NA
 Latvia 	2020-02-29	116
 Latvia 	2020-03-01	126
 Latvia 	2020-03-02	163
@@ -1663,7 +1663,7 @@ Lithuania 	2020-05-01	132768
 Lithuania 	2020-05-02	138270
 Lithuania 	2020-05-03	141678
 Lithuania 	2020-05-04	144029
-Lithuania 	NA	0
+Lithuania 	NA	NA
 Luxembourg 	2020-04-01	18690
 Luxembourg 	2020-04-03	21463
 Luxembourg 	2020-04-04	22793
@@ -1739,7 +1739,7 @@ Malaysia 	2020-05-01	168784
 Malaysia 	2020-05-02	184213
 Malaysia 	2020-05-03	195833
 Malaysia 	2020-05-04	205598
-Malaysia 	NA	0
+Malaysia 	NA	NA
 Mexico 	2020-01-01	5
 Mexico 	2020-01-02	21
 Mexico 	2020-01-03	39
@@ -2549,7 +2549,7 @@ Qatar 	2020-05-01	97726
 Qatar 	2020-05-02	101728
 Qatar 	2020-05-03	104435
 Qatar 	2020-05-04	106795
-Qatar 	NA	0
+Qatar 	NA	NA
 Romania 	2020-03-12	1921
 Romania 	2020-03-13	2545
 Romania 	2020-03-14	2929
@@ -3079,7 +3079,7 @@ South Korea 	2020-05-01	623069
 South Korea 	2020-05-02	627562
 South Korea 	2020-05-03	630973
 South Korea 	2020-05-04	633921
-Spain 	NA	0
+Spain 	NA	NA
 Sweden 	2020-03-01	1400
 Sweden 	2020-03-08	5700
 Sweden 	2020-03-15	14700
@@ -3393,7 +3393,7 @@ Turkey 	2020-04-30	1033617
 Turkey 	2020-05-01	1075048
 Turkey 	2020-05-03	1135367
 Turkey 	2020-05-04	1171138
-Turkey 	NA	0
+Turkey 	NA	NA
 Uganda 	2020-04-06	3160
 Uganda 	2020-04-07	3310
 Uganda 	2020-04-08	3524
@@ -3420,7 +3420,7 @@ Uganda 	2020-04-30	31348
 Uganda 	2020-05-01	33802
 Uganda 	2020-05-02	36286
 Uganda 	2020-05-03	39216
-Uganda 	NA	0
+Uganda 	NA	NA
 Ukraine 	2020-04-09	20608
 Ukraine 	2020-04-10	23522
 Ukraine 	2020-04-13	35153
@@ -3717,7 +3717,7 @@ Vietnam 	2020-04-25	212142
 Vietnam 	2020-04-26	212965
 Vietnam 	2020-04-27	213743
 Vietnam 	2020-04-29	261004
-Vietnam 	NA	0
+Vietnam 	NA	NA
 Zimbabwe 	2020-03-15	14
 Zimbabwe 	2020-03-23	15
 Zimbabwe 	2020-03-25	100
