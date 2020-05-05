@@ -54,7 +54,7 @@ covid_pca <- covid_aug %>%
   group_by(country) %>% 
   slice(which.max(date)) %>%  
   ungroup() %>% 
-  select(-(1:4), -sex, -starts_with(c("first", "hundred", "thousand", "date"))) %>% 
+  select(-c(1:4), -sex, -cumulative_covid_test, -test_cases_per_100000, -starts_with(c("first", "hundred", "thousand", "date"))) %>% 
   prcomp(center = TRUE, scale. = TRUE)
 covid_pca
 
