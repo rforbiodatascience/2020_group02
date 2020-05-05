@@ -6,8 +6,8 @@ rm(list = ls())
 # ------------------------------------------------------------------------------
 library("tidyverse")
 library("patchwork")
-library(survivalAnalysis)
-library(broom)
+library("survivalAnalysis")
+library("broom")
 
 # Define functions
 # ------------------------------------------------------------------------------
@@ -36,7 +36,6 @@ kaplan_meier %>% analyse_survival(vars(time, event), by=factor(density_medical_d
   km_result
 print(km_result)
 
-#Kaplan meier plot saved as .png
 png("results/04_analysis_iii/km_medical_doctors.png", width=8.5,height = 6.5,unit='in',res=300)
 kaplan_meier_plot(km_result,
                   break.time.by=15.25,
@@ -55,7 +54,8 @@ dev.off()
 
 #PCA analysis
 
-#Filtering and performing PCA based on country demographics
+#Filtering to avoid missing data and removing non-numeric columns
+#Performing PCA based on country demographics
 covid_pca <- covid_aug %>%
   filter(!is.na(concentration_fine_particles)) %>% 
   filter(!is.na(bmi_above30_prevalence_all)) %>% 
@@ -76,10 +76,17 @@ covid_pca
 covid_pca %>% tidy("pcs")
 
 #Plot of PCA significance of individual PCs
-covid_pca %>% tidy("pcs") %>% 
+PC_sign <- covid_pca %>% tidy("pcs") %>% 
   ggplot(aes(x = PC, y = percent)) +
   geom_col() +
   theme_bw()
+
+png("results/04_analysis_iii/PC_significance.png", width=8.5,height = 6.5,unit='in',res=300)
+
+PC_sign
+
+dev.off()
+
 
 #Check outlier - it is China
 covid_pca %>% tidy("samples") %>%  filter(row == 35)
