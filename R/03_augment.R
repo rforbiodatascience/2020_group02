@@ -168,6 +168,7 @@ covid_join <- covid_join %>%
   mutate(days_to_hundred_cases = hundred_cases - first_case) %>% 
   mutate(days_to_thousand_cases = thousand_cases - first_case) %>% 
   mutate(days_from_100_cases_to_100_deaths = hundred_deaths - hundred_cases) %>% 
+  mutate(`days_from_100_cases_to_1000_deaths` = thousand_deaths - hundred_cases) %>% 
   mutate(days_from_dec1_to_100_cases = hundred_cases - ymd(20191201)) %>% 
   mutate(date_28_days_after_100_cases = hundred_cases + 28) 
 
