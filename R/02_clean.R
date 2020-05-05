@@ -24,8 +24,7 @@ source(file = "R/99_project_functions.R")
 #Funktion til latitude og longitude data for lande med flere regioner
 #Load samtlige datasæt i toppen
 
-COVID_test <- read_tsv(file = "data/01_COVID_test.tsv", 
-                       col_types = cols(Date = col_date(format="%d-%m-%Y")))
+COVID_test <- read_tsv(file = "data/01_COVID_test.tsv")
 
 JH_conftime <- read_tsv(file = "data/01_JH_conftime.tsv")
 JH_deadtime <- read_tsv(file = "data/01_JH_deadtime.tsv")
