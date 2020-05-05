@@ -89,7 +89,7 @@ for(i in list_of_cov){
 }
 
 for(i in list_of_cov){
-  file_name = paste("results/Deaths_", i, ".png", sep="")
+  file_name = paste("results/04_analysis_ii/Deaths_", i, ".png", sep="")
   png(file_name, width=8.5, height = 6.5,unit='in',res=300)
   print(plot_list[[i]])
   dev.off()
@@ -109,7 +109,7 @@ for(i in list_of_cov){
 }
 
 for(i in list_of_cov){
-  file_name = paste("results/Cases_", i, ".png", sep="")
+  file_name = paste("results/04_analysis_ii/Cases_", i, ".png", sep="")
   png(file_name, width=8.5, height = 6.5,unit='in',res=300)
   print(plot_list2[[i]])
   dev.off()
