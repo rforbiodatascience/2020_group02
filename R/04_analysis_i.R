@@ -22,7 +22,7 @@ covid_aug <- read_tsv(file = "data/03_covid_aug.tsv")
 tibble_shiny <- covid_aug %>% 
   group_by(country) %>% 
   slice(which.max(date)) %>% 
-  select(country, dead_cases_per_100000, confirmed_cases_per_100000, `population_median_age_(years)`, density_of_hospitals, life_expectancy, `population_living_in_urban_areas_(%)`)
+  select(country, dead_cases_per_100000, confirmed_cases_per_100000, population_median_age_years, density_of_hospitals, life_expectancy, population_living_in_urban_areas)
 
 
 
@@ -40,20 +40,20 @@ tibble_shiny <- covid_aug %>%
 conf_cases_vs_urban <- covid_aug %>%
   group_by(country) %>% 
   slice(which.max(date)) %>% 
-  ggplot(conf_cases_vs_urban,mapping = aes(y = confirmed_cases_per_100000, x = `population_living_in_urban_areas_(%)`, na.rm = TRUE)) +
+  ggplot(conf_cases_vs_urban,mapping = aes(y = confirmed_cases_per_100000, x = population_living_in_urban_areas, na.rm = TRUE)) +
   geom_point(alpha = 0.5, size = 3) 
   
 
 conf_deaths_vs_urban <- covid_aug %>%
   group_by(country) %>% 
   slice(which.max(date)) %>% 
-  ggplot(conf_deaths_vs_urban, mapping = aes(y = dead_cases_per_100000 , x = `population_living_in_urban_areas_(%)`, na.rm = TRUE)) +
+  ggplot(conf_deaths_vs_urban, mapping = aes(y = dead_cases_per_100000 , x = population_living_in_urban_areas, na.rm = TRUE)) +
   geom_point(alpha = 0.5, size = 3 )
 
 conf_recov_vs_urban <- covid_aug %>%
   group_by(country) %>% 
   slice(which.max(date)) %>% 
-  ggplot(conf_recov_vs_urban, mapping = aes(y = recov_cases_per_100000  , x = `population_living_in_urban_areas_(%)`, na.rm = TRUE)) +
+  ggplot(conf_recov_vs_urban, mapping = aes(y = recov_cases_per_100000  , x = population_living_in_urban_areas, na.rm = TRUE)) +
   geom_point(alpha = 0.5, size = 3)
 
 # Utilizing the patchwork package for plot assembly
@@ -71,7 +71,7 @@ conf_cases_vs_urban / conf_deaths_vs_urban / conf_recov_vs_urban +
 deaths_vs_median_age <- covid_aug %>%
   group_by(country) %>% 
   slice(which.max(date)) %>% 
-    ggplot(conf_cases_vs_urban, mapping = aes(y = dead_cases_per_100000, x = `population_median_age_(years)`), na.rm = TRUE ) +
+    ggplot(conf_cases_vs_urban, mapping = aes(y = dead_cases_per_100000, x = population_median_age_years), na.rm = TRUE ) +
   geom_point(alpha = 0.5, size = 3)+
   ylim(0,60)
 
