@@ -19,6 +19,7 @@ levels <- c("1", "2", "3")
 covid_aug <- read_tsv(file = "data/03_covid_aug.tsv",
                       col_types = cols(thousand_deaths = col_date(),
                                        `days_from_100_cases_to_1000_deaths` = col_double(),
+                                       sex = col_factor(),
                                        adult_mortality_rate_ter = col_factor(levels = levels),
                                        concentration_fine_particles_ter = col_factor(levels = levels),
                                        bmi_above30_prevalence_all_ter = col_factor(levels = levels),
@@ -124,6 +125,18 @@ kruskal.test(days_from_dec1_to_100_cases ~ bmi_above30_prevalence_all_ter, data 
 kruskal.test(days_from_dec1_to_100_cases ~ prevalence_smoking_ter, data = covid_aug_by_country)
 kruskal.test(days_from_dec1_to_100_cases ~ concentration_fine_particles_ter, data = covid_aug_by_country)
 kruskal.test(days_from_dec1_to_100_cases ~ pollution_attributable_death_rate_std_ter, data = covid_aug_by_country)
+kruskal.test(days_from_dec1_to_100_cases ~ adult_mortality_rate_ter, data = covid_aug_by_country)
+kruskal.test(days_from_dec1_to_100_cases ~ life_expectancy_ter, data = covid_aug_by_country)
+kruskal.test(days_from_dec1_to_100_cases ~ cardiovascular_diseases_ter, data = covid_aug_by_country)
+kruskal.test(days_from_dec1_to_100_cases ~ respiratory_diseases_ter, data = covid_aug_by_country)
+kruskal.test(days_from_dec1_to_100_cases ~ respiratory_infectious_ter, data = covid_aug_by_country)
+kruskal.test(days_from_dec1_to_100_cases ~ kidney_diseases_ter, data = covid_aug_by_country)
+kruskal.test(days_from_dec1_to_100_cases ~ malignant_neoplasms_ter, data = covid_aug_by_country)
+kruskal.test(days_from_dec1_to_100_cases ~ road_injury_ter, data = covid_aug_by_country)
+
+
+kruskal.test(days_from_dec1_to_100_cases ~ sex, data = covid_aug_by_country)
+
 
 kruskal.test(days_from_100_cases_to_100_deaths ~ adult_mortality_rate_ter, data = covid_aug_by_country)
 kruskal.test(days_from_100_cases_to_100_deaths ~ prevalence_smoking_ter, data = covid_aug_by_country)
@@ -152,6 +165,15 @@ plot_list2$current_health_expenditure_per_person_usd_ter + plot_list2$density_of
 plot_list2$bmi_above30_prevalence_all_ter + plot_list2$prevalence_smoking_ter + 
   plot_list2$concentration_fine_particles_ter + plot_list2$pollution_attributable_death_rate_std_ter +
   plot_annotation(title = 'Association between public health and the spread of COVID-19',
+                  subtitle = 'Defined as number of days from December 1st 2019 to reaching 100 cases per country')
+
+
+# Descriptive plot - spread of COVID-19 - mortality -----------------------
+(plot_list2$adult_mortality_rate_ter + plot_list2$life_expectancy_ter + 
+  plot_list2$cardiovascular_diseases_ter + plot_list2$respiratory_diseases_ter) /
+  (plot_list2$respiratory_infectious_ter + plot_list2$kidney_diseases_ter +
+  plot_list2$malignant_neoplasms_ter + plot_list2$road_injury_ter) +
+  plot_annotation(title = 'Association between life expectancy and mortality and the spread of COVID-19',
                   subtitle = 'Defined as number of days from December 1st 2019 to reaching 100 cases per country')
 
 
