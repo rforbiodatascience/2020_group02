@@ -67,13 +67,6 @@ covid_aug_by_country <- covid_aug %>%
 # Exploratory data analyses
 # ------------------------------------------------------------------------------
 
-mean_cov <- covid_aug %>% 
-  map_dbl(mean, na.rm = T) %>% 
-  round(digits = 2)
-mean_cov
-
-
-
 #Summary statistics for variables
 list_of_cov <- names(covid_aug)[59:91]
 plot_list <- list()
@@ -83,6 +76,7 @@ for(i in list_of_cov){
     drop_na(i) %>% 
     ggplot(aes_string(x=i, y = 'days_from_100_cases_to_100_deaths')) +
     geom_boxplot() +
+    labs(y = "Days from 100 cases \n until 100 deaths") +
     theme_bw()
   plot_list[[i]] = plt
   print(plot_list[[i]])
@@ -104,6 +98,7 @@ for(i in list_of_cov){
     drop_na(i) %>% 
     ggplot(aes_string(x=i, y = 'days_from_dec1_to_100_cases')) +
     geom_boxplot() +
+    labs(y = "Days from Dec 1st 2019 \n until 100 cases") +
     theme_bw()
   plot_list2[[i]] = plt
 }
@@ -115,6 +110,21 @@ for(i in list_of_cov){
   dev.off()
 }
 
+kruskal.test(days_from_dec1_to_100_cases ~ population_median_age_years_ter, data = covid_aug_by_country)
+kruskal.test(days_from_dec1_to_100_cases ~ population_proportion_under_15_ter, data = covid_aug_by_country)
+kruskal.test(days_from_dec1_to_100_cases ~ population_proportion_over_60_ter, data = covid_aug_by_country)
+kruskal.test(days_from_dec1_to_100_cases ~ population_density_ter, data = covid_aug_by_country)
+kruskal.test(days_from_dec1_to_100_cases ~ population_living_in_urban_areas_ter, data = covid_aug_by_country)
+kruskal.test(days_from_dec1_to_100_cases ~ gdp_per_capita_us_dollars_ter, data = covid_aug_by_country)
+kruskal.test(days_from_dec1_to_100_cases ~ current_health_expenditure_per_person_usd_ter, data = covid_aug_by_country)
+kruskal.test(days_from_dec1_to_100_cases ~ density_of_hospitals_ter, data = covid_aug_by_country)
+kruskal.test(days_from_dec1_to_100_cases ~ density_of_medical_doctors_ter, data = covid_aug_by_country)
+kruskal.test(days_from_dec1_to_100_cases ~ density_of_nurses_midwifes_ter, data = covid_aug_by_country)
+kruskal.test(days_from_dec1_to_100_cases ~ bmi_above30_prevalence_all_ter, data = covid_aug_by_country)
+kruskal.test(days_from_dec1_to_100_cases ~ prevalence_smoking_ter, data = covid_aug_by_country)
+kruskal.test(days_from_dec1_to_100_cases ~ concentration_fine_particles_ter, data = covid_aug_by_country)
+kruskal.test(days_from_dec1_to_100_cases ~ pollution_attributable_death_rate_std_ter, data = covid_aug_by_country)
+
 kruskal.test(days_from_100_cases_to_100_deaths ~ adult_mortality_rate_ter, data = covid_aug_by_country)
 kruskal.test(days_from_100_cases_to_100_deaths ~ prevalence_smoking_ter, data = covid_aug_by_country)
 kruskal.test(days_from_100_cases_to_100_deaths ~ respiratory_diseases_ter, data = covid_aug_by_country)
@@ -124,7 +134,26 @@ kruskal.test(days_from_100_cases_to_100_deaths ~ population_in_thousands_total_t
 
 
 #Patchwork package for combining plots
-plot_list2$population_proportion_over_60_ter + plot_list$population_proportion_over_60_ter
+
+# Descriptive plots - spread of COVID-19 - population demographics ------------------------------
+plot_list2$population_median_age_years_ter + plot_list2$population_proportion_under_15_ter + 
+  plot_list2$population_proportion_over_60_ter + plot_list2$population_density_ter + 
+  plot_list2$population_living_in_urban_areas_ter + plot_list2$gdp_per_capita_us_dollars_ter + 
+  plot_annotation(title = 'Association between population demographics and the spread of COVID-19',
+                  subtitle = 'Defined as number of days from December 1st 2019 to reaching 100 cases per country')
+
+# Descriptive plot - spread of COVID-19 - health system -------------------
+plot_list2$current_health_expenditure_per_person_usd_ter + plot_list2$density_of_hospitals_ter + 
+  plot_list2$density_of_medical_doctors_ter + plot_list2$density_of_nurses_midwifes_ter +
+  plot_annotation(title = 'Association between capacity of health systems and the spread of COVID-19',
+                  subtitle = 'Defined as number of days from December 1st 2019 to reaching 100 cases per country')
+
+# Descriptive plot - spread of COVID-19 - public health -------------------
+plot_list2$bmi_above30_prevalence_all_ter + plot_list2$prevalence_smoking_ter + 
+  plot_list2$concentration_fine_particles_ter + plot_list2$pollution_attributable_death_rate_std_ter +
+  plot_annotation(title = 'Association between public health and the spread of COVID-19',
+                  subtitle = 'Defined as number of days from December 1st 2019 to reaching 100 cases per country')
+
 
 
 #Deaths 28 days after first 100 cases - crude and standardized for population size - as a function of country
