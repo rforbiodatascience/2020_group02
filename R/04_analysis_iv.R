@@ -4,13 +4,14 @@ rm(list = ls())
 
 # Load libraries
 # ------------------------------------------------------------------------------
-library("tidyverse")
 install.packages("gganimate")
 install.packages("gifski")
 install.packages("gapminder")
+
+library("tidyverse")
 library(gganimate)
 library(gifski)
-library("av")
+library(gapminder)
 
 
 # Define functions
@@ -24,6 +25,12 @@ covid_aug <- read_tsv(file = "data/03_covid_aug.tsv")
 # Wrangle data
 # ------------------------------------------------------------------------------
 
+#TO DO
+# 1) Make nice plots for png-files
+# 2) Make comparable gifs
+# 3) Make it work for every variable
+# 4) Make shiny-app
+# 5) consider coloring according to quartiles for gdp; or sizening according to gdp
 
 #Plotting development of cases and deaths for each country
 
@@ -56,18 +63,25 @@ covid_aug_by_country <- covid_aug %>%
     ggtitle("Development of Corona-pandemic by country") +
     guides(size="none", alpha="none")
   
-  
-  ggplot(covid_aug, aes(y = `number_of_confirmed_covid-19`, x = density_of_medical_doctors)) +
+ 
+#Making files for each date 
+ plot_test <- ggplot(covid_aug, aes(y = `number_of_confirmed_covid-19`, x = density_of_medical_doctors)) +
     geom_point(aes(color=sex, size=population_in_thousands_total, alpha=0.6)) + 
     scale_size(range = c(.1, 16), name="Population") +
-    ylab("Days from 100 cases to 100 deaths") +
+    ylab("Confirmed Covid-19 cases") +
     xlab("Density of medical doctors (unit)") +
     ggtitle("Development of Corona-pandemic by country") +
     guides(size="none", alpha="none") + 
   transition_time(date) +
     labs(title = "Date: {frame_time}")
-    
-  
+
+#Animate and present the files in  a gif
+ animate(plot_test, duration = 10, fps = 10, width = 450, height = 450, renderer = gifski_renderer())
+ # save as a GIF
+ anim_save("results/04_analysis_iv/hj_plot_test.gif")
+ 
+ 
+
   ggplot(covid_aug_by_country, aes(y = days_from_dec1_to_100_cases, x = density_of_medical_doctors)) +
     geom_point(aes(color=sex, size=population_in_thousands_total))
   
