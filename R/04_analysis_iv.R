@@ -188,7 +188,7 @@ gif_plot <-ggplot(covid_aug2, aes_string(x="covid_cases", y = "covid_deaths")) +
  #Animate and present the files in  a gif
  animate(gif_plot_log, duration = 10, fps = 10, width = 450, height = 450, renderer = gifski_renderer())
  # save as a GIF
- anim_save("results/04_analysis_iv/hj_plot_test.gif")
+ anim_save("results/04_analysis_iv/hj_plot_test_log.gif")
  
  
 
