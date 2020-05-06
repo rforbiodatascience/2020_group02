@@ -57,10 +57,11 @@ plot_list <- list()
 
 for(i in list_colnames){
   plot_name <- i
+  i_var = as.name(i)
   km_res <- kaplan_meier %>% 
-    drop_na(i) %>% 
-    analyse_survival(vars(time, event), by = factor(i))
-    km_plot <- kaplan_meier_plot(km_res,
+#  drop_na(i) %>% 
+  analyse_survival(vars(time, event), by = factor(kaplan_meier[[i_var]]))
+  km_plot <- kaplan_meier_plot(km_res,
                                  break.time.by=15.25,
                                  xlab="months",
                                  legend.title=i,
@@ -72,7 +73,7 @@ for(i in list_colnames){
     plot_list[[i]] = km_plot
     print(plot_list[[i]])
   }
-  
+
   for(i in list_colnames){
     file_name = paste("results/04_analysis_iii/KM_", i, ".png", sep="")
     png(file_name, width=8.5, height = 6.5,unit='in',res=300)
@@ -80,19 +81,7 @@ for(i in list_colnames){
     dev.off()
   }
   
-  
-  png("results/04_analysis_iii/km_medical_doctors.png", width=8.5,height = 6.5,unit='in',res=300)
-  kaplan_meier_plot(km_result,
-                    break.time.by=15.25,
-                    xlab="months",
-                    legend.title="Density of medical doctors",
-                    hazard.ratio=T,
-                    risk.table=TRUE,
-                    table.layout="clean",
-                    ggtheme=ggplot2::theme_bw(10))
-  
-  dev.off()
-  
+
   
 
 
