@@ -168,12 +168,12 @@ gif_plot <-ggplot(covid_aug2, aes_string(x="covid_cases", y = "covid_deaths")) +
   transition_time(date) +
     labs(title = "Date: {frame_time}")
 #Animate and present the files in  a gif
- animate(gif_plot, duration = 20, fps = 10, width = 450, height = 450, renderer = gifski_renderer())
+ animate(gif_plot, duration = 10, fps = 10, width = 450, height = 450, renderer = gifski_renderer())
  # save as a GIF
  anim_save("results/04_analysis_iv/hj_plot_test.gif")
  
  #Making gif showing progression of corona for each country - log-axis
- gif_plot <-ggplot(covid_aug2, aes_string(x="covid_cases", y = "covid_deaths")) +
+ gif_plot_log <-ggplot(covid_aug2, aes_string(x="covid_cases", y = "covid_deaths")) +
    geom_point(aes(color=log(gdp_per_capita_us_dollars), size=population_in_thousands_total, alpha=0.5)) + 
    scale_size(range = c(0.5, 20), name="Population", labels = NULL) +
    scale_colour_gradientn(colours=topo.colors(5), name = "GDP per capita") +
@@ -186,7 +186,7 @@ gif_plot <-ggplot(covid_aug2, aes_string(x="covid_cases", y = "covid_deaths")) +
    transition_time(date) +
    labs(title = "Date: {frame_time}")
  #Animate and present the files in  a gif
- animate(gif_plot, duration = 10, fps = 10, width = 450, height = 450, renderer = gifski_renderer())
+ animate(gif_plot_log, duration = 10, fps = 10, width = 450, height = 450, renderer = gifski_renderer())
  # save as a GIF
  anim_save("results/04_analysis_iv/hj_plot_test.gif")
  
