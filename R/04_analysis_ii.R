@@ -228,23 +228,6 @@ dev.off()
 
 
 
-#Deaths 28 days after first 100 cases - crude and standardized for population size - as a function of country
-covid_aug %>%
-  group_by(country) %>% 
-  filter(deaths_28_days_per_100000>1) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(mapping = aes(x=reorder(country, deaths_28_days_per_100000), y = deaths_28_days_per_100000)) +
-  geom_bar(stat = "Identity") +
-  theme(axis.text.x=element_text(angle=40,hjust=1,vjust=0.5))
-
-covid_aug %>%
-  group_by(country) %>% 
-  filter(deaths_28_days_after_100_cases>50) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(mapping = aes(x=reorder(country, deaths_28_days_after_100_cases), y = deaths_28_days_after_100_cases)) +
-  geom_bar(stat = "Identity") +
-  theme(axis.text.x=element_text(angle=40,hjust=1,vjust=0.5))
-
 
 #Days from 100 cases to 100 deaths - as a function of country
 covid_aug %>%
@@ -271,13 +254,6 @@ covid_aug %>%
   #scale_fill_manual( values = c( "yes"="red", "no"="darkgray" ), guide = FALSE ) +
   theme(panel.background = element_rect(fill = "white"), axis.text.x=element_text(angle=40,hjust=1,vjust=0.5))
 
-# Utilizing the patchwork package for plot assembly
-
-conf_cases_vs_urban / conf_deaths_vs_urban / conf_recov_vs_urban + 
-  plot_annotation(
-    title = "COVID-19 confirmed cases, COVID-19 deaths, COVID-19 recovered (cummulative April 16th) vs. urbanisation in countries", 
-    subtitle = "No correlation, all variables increases in highly urbanised countries"
-  )
 
 # Write data
 # ------------------------------------------------------------------------------
