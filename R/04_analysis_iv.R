@@ -1,0 +1,233 @@
+# Clear workspace
+# ------------------------------------------------------------------------------
+rm(list = ls())
+
+# Load libraries
+# ------------------------------------------------------------------------------
+library("tidyverse")
+library("patchwork")
+library("survivalAnalysis")
+library("broom")
+
+# Define functions
+# ------------------------------------------------------------------------------
+# source(file = "R/99_project_functions.R")
+
+# Load data
+# ------------------------------------------------------------------------------
+covid_aug <- read_tsv(file = "data/03_covid_aug.tsv")
+
+# Wrangle data
+# ------------------------------------------------------------------------------
+
+
+#kaplan-meier curves for survival - example with time to 100 deaths and density of medical doctors
+kaplan_meier <- covid_aug %>% 
+  group_by(country) %>% 
+  slice(which.max(date)) %>%  
+  ungroup() %>% 
+  mutate(event = if_else(!is.na(hundred_deaths), 1, 0)) %>% 
+  mutate(time = if_else(event == 0, (date - hundred_cases),(days_from_100_cases_to_100_deaths))) %>% 
+  filter(!is.na(time))
+
+#summary and plot
+#hvis man vil have kategorien "missing" med kan man bruge fct_explicit_na() i stedet for factor
+kaplan_meier %>% analyse_survival(vars(time, event), by=factor(density_medical_doctors_ter)) ->
+  km_result
+print(km_result)
+
+png("results/04_analysis_iii/km_medical_doctors.png", width=8.5,height = 6.5,unit='in',res=300)
+kaplan_meier_plot(km_result,
+                  break.time.by=15.25,
+                  xlab="months",
+                  legend.title="Density of medical doctors",
+                  hazard.ratio=T,
+                  risk.table=TRUE,
+                  table.layout="clean",
+                  ggtheme=ggplot2::theme_bw(10))
+
+dev.off()
+
+
+
+
+
+#PCA analysis
+
+#Filtering to avoid missing data and removing non-numeric columns
+#Performing PCA based on country demographics
+covid_pca <- covid_aug %>%
+  filter(!is.na(concentration_fine_particles)) %>% 
+  filter(!is.na(bmi_above30_prevalence_all)) %>% 
+  filter(!is.na(current_health_expenditure_per_person_usd)) %>% 
+  filter(!is.na(density_of_medical_doctors)) %>% 
+  filter(!is.na(life_expectancy)) %>% 
+  filter(!is.na(population_aged_60_years_old_percentage)) %>% 
+  filter(!is.na(population_density)) %>% 
+  filter(!is.na(cardiovascular_diseases)) %>% 
+  group_by(country) %>% 
+  slice(which.max(date)) %>%  
+  ungroup() %>% 
+  select_if(colSums(is.na(.)) == 0) %>% 
+  select(-('country':'adult_mortality_rate'), -country, -date, -first_case, -ends_with("ter"), -confirmed_cases_per_100000, -dead_cases_per_100000) %>% 
+  prcomp(center = TRUE, scale. = TRUE)
+covid_pca
+
+covid_pca %>% tidy("pcs")
+
+#Plot of PCA significance of individual PCs
+PC_sign <- covid_pca %>% tidy("pcs") %>% 
+  ggplot(aes(x = PC, y = percent)) +
+  geom_col() +
+  theme_bw()
+
+png("results/04_analysis_iii/PC_significance.png", width=8.5,height = 6.5,unit='in',res=300)
+
+PC_sign
+
+dev.off()
+
+
+#Check outlier - it is China
+covid_pca %>% tidy("samples") %>%  filter(row == 35)
+
+#Naming of filtered dataset for augmenting
+#For some reason china appears twice in covid_aug??? That's why it appears black on the tertile and light on the binary
+#The wrong China is removed manually below until we find error
+covid_filtered <- covid_aug %>%
+  filter(!is.na(concentration_fine_particles)) %>% 
+  filter(!is.na(bmi_above30_prevalence_all)) %>% 
+  filter(!is.na(current_health_expenditure_per_person_usd)) %>% 
+  filter(!is.na(density_of_medical_doctors)) %>% 
+  filter(!is.na(life_expectancy)) %>% 
+  filter(!is.na(population_aged_60_years_old_percentage)) %>% 
+  filter(!is.na(population_density)) %>% 
+  filter(!is.na(cardiovascular_diseases)) %>% 
+  filter(lat != 37.8099) %>% 
+  group_by(country) %>% 
+  slice(which.max(date)) %>%
+  mutate(binary_death = if_else(!is.na(hundred_deaths), 1, 0)) %>% 
+  mutate(tertile_deaths = case_when(
+   `number_of_covid-19_related_deaths` < 100  ~ 0,
+   `number_of_covid-19_related_deaths` > 99 & `number_of_covid-19_related_deaths` < 1000 ~ 1,
+   `number_of_covid-19_related_deaths` > 999 ~ 2)) %>% 
+  mutate(tertile_rel_deaths = case_when(
+    `dead_cases_per_100000` < 1  ~ 0,
+    `dead_cases_per_100000` > 0.999 & `dead_cases_per_100000` < 10 ~ 1,
+    `dead_cases_per_100000` > 9.99 ~ 2)) %>% 
+    
+  ungroup() %>% 
+  select_if(colSums(is.na(.)) == 0) %>% 
+  select(-('country':'adult_mortality_rate'), -date, -first_case, -ends_with("ter"), -confirmed_cases_per_100000, -dead_cases_per_100000)
+  
+
+#Augmenting PCA data with dataset (filtered)
+covid_pca_aug <- covid_pca %>% augment(covid_filtered)
+covid_pca_aug
+
+#plotting PCA with coloring by tertile absolute and relative COVID-19 variable (deaths<100/100-1000/>1000 and deaths per 100.000 <1/1-10/>10)
+pl_pca_1 <- covid_pca_aug %>% 
+  ggplot(aes(x = .fittedPC1, y = .fittedPC2, colour = tertile_deaths)) +
+  geom_point()
+
+pl_pca_2 <- covid_pca_aug %>% 
+  ggplot(aes(x = .fittedPC1, y = .fittedPC2, colour = tertile_rel_deaths)) +
+  geom_point()
+
+
+png("results/04_analysis_iii/pca_deaths.png", width=8.5,height = 6.5,unit='in',res=300)
+
+(pl_pca_1+pl_pca_2)
+
+dev.off()
+
+#Clustering - n=3 - cluster size 12, 2 and 150
+covid_k_org <- covid_pca_aug %>%
+  kmeans(centers = 3)
+covid_k_org
+
+#augmenting clustering data with PCA and dataset
+covid_pca_aug_k_org <- covid_k_org %>%
+  augment(covid_pca_aug) %>% 
+  rename(cluster_org = .cluster)
+covid_pca_aug_k_org
+
+#Clustering based on PCA - cluster size 95, 67 and 2
+covid_k_pca <- covid_pca_aug_k_org %>%
+  select(.fittedPC1, .fittedPC2) %>%
+  kmeans(centers = 3)
+covid_k_pca
+
+#augmenting cluster based on PCA to filtered dataset with "raw" cluster and PCA analyses
+covid_pca_aug_k_org_pca <- covid_k_pca %>%
+  augment(covid_pca_aug_k_org) %>% 
+  rename(cluster_pca = .cluster)
+covid_pca_aug_k_org_pca
+
+#creating plots
+
+#Comparative plots for absolute deaths
+#We see a nice congruence between cluster, PCA and COVID, but
+#The three outliers are China (row 35, -25,-9), US (row 160, -5,-8), and India (row 73, -22,-5)
+#This suggests that the connection is mainly based on country size, reflecting a quick reach of 1000 cases
+
+
+#Plot PCA - colour by COVID deaths
+pl1_abs <- covid_pca_aug_k_org_pca %>%
+  ggplot(aes(x = .fittedPC1, y = .fittedPC2, colour = tertile_deaths)) +
+  geom_point() +
+  theme(legend.position = "bottom")
+
+#Plot PCA - colour by cluster analysis
+pl2_abs <- covid_pca_aug_k_org_pca %>%
+  ggplot(aes(x = .fittedPC1, y = .fittedPC2, colour = cluster_org)) +
+  geom_point() +
+  theme(legend.position = "bottom")
+
+#Plot PCA - colour by cluster based on PCA
+pl3_abs <- covid_pca_aug_k_org_pca %>%
+  ggplot(aes(x = .fittedPC1, y = .fittedPC2, colour = cluster_pca)) +
+  geom_point() +
+  theme(legend.position = "bottom")
+
+png("results/04_analysis_iii/pca_cluster_deaths.png", width=8.5,height = 6.5,unit='in',res=300)
+
+(pl1_abs + pl2_abs + pl3_abs)
+
+dev.off()
+
+#Therefore repeting the analysis using dead_cases_per_100000
+#This shows less congruence between PCA/cluster and COVID-19
+
+#Plot PCA - colour by relative COVID deaths
+pl1_rel <- covid_pca_aug_k_org_pca %>%
+  ggplot(aes(x = .fittedPC1, y = .fittedPC2, colour = tertile_rel_deaths)) +
+  geom_point() +
+  theme(legend.position = "bottom")
+
+#Plot PCA - colour by cluster analysis
+pl2_rel <- covid_pca_aug_k_org_pca %>%
+  ggplot(aes(x = .fittedPC1, y = .fittedPC2, colour = cluster_org)) +
+  geom_point() +
+  theme(legend.position = "bottom")
+
+#Plot PCA - colour by cluster based on PCA
+pl3_rel <- covid_pca_aug_k_org_pca %>%
+  ggplot(aes(x = .fittedPC1, y = .fittedPC2, colour = cluster_pca)) +
+  geom_point() +
+  theme(legend.position = "bottom")
+
+
+
+png("results/04_analysis_iii/pca_cluster_rel_deaths.png", width=8.5,height = 6.5,unit='in',res=300)
+
+(pl1_rel + pl2_rel + pl3_rel)
+
+dev.off()
+
+
+
+# Write data
+# ------------------------------------------------------------------------------
+write_tsv(...)
+ggsave(...)
