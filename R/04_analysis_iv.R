@@ -20,6 +20,7 @@ covid_aug <- read_tsv(file = "data/03_covid_aug.tsv")
 
 
 #Plotting development of cases and deaths for each country
+
 ggplot(covid_aug, aes(x=date, y=`number_of_confirmed_covid-19`, group=country)) +
   geom_line()
 ggplot(covid_aug, aes(x=date, y=`number_of_covid-19_related_deaths`, group=country, color=sex)) +
