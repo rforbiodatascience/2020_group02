@@ -5,6 +5,12 @@ rm(list = ls())
 # Load libraries
 # ------------------------------------------------------------------------------
 library("tidyverse")
+install.packages("gganimate")
+install.packages("gifski")
+install.packages("gapminder")
+library(gganimate)
+library(gifski)
+library("av")
 
 
 # Define functions
@@ -38,6 +44,29 @@ covid_aug_by_country <- covid_aug %>%
   ggplot(covid_aug_by_country, aes(y = days_from_100_cases_to_100_deaths, x = density_of_medical_doctors)) +
   geom_point(aes(color=sex, size=population_in_thousands_total))
   
+  ggplot(covid_aug_by_country, aes(y = days_from_100_cases_to_100_deaths, x = gdp_per_capita_us_dollars)) +
+    geom_point(aes(color=sex, size=population_in_thousands_total, alpha=0.6)) + 
+    scale_size(range = c(.1, 16), name="Population")
+  
+  ggplot(covid_aug_by_country, aes(y = days_from_100_cases_to_100_deaths, x = density_of_medical_doctors)) +
+    geom_point(aes(color=sex, size=population_in_thousands_total, alpha=0.6)) + 
+    scale_size(range = c(.1, 16), name="Population") +
+    ylab("Days from 100 cases to 100 deaths") +
+    xlab("Density of medical doctors (unit)") +
+    ggtitle("Development of Corona-pandemic by country") +
+    guides(size="none", alpha="none")
+  
+  
+  ggplot(covid_aug, aes(y = `number_of_confirmed_covid-19`, x = density_of_medical_doctors)) +
+    geom_point(aes(color=sex, size=population_in_thousands_total, alpha=0.6)) + 
+    scale_size(range = c(.1, 16), name="Population") +
+    ylab("Days from 100 cases to 100 deaths") +
+    xlab("Density of medical doctors (unit)") +
+    ggtitle("Development of Corona-pandemic by country") +
+    guides(size="none", alpha="none") + 
+  transition_time(date) +
+    labs(title = "Date: {frame_time}")
+    
   
   ggplot(covid_aug_by_country, aes(y = days_from_dec1_to_100_cases, x = density_of_medical_doctors)) +
     geom_point(aes(color=sex, size=population_in_thousands_total))
@@ -55,7 +84,6 @@ covid_aug %>%
 
 
 install.packages("plotly")
-library(ggplot2)
 library(plotly)
 gg <- ggplot(covid_aug, aes(density_of_medical_doctors, days_from_100_cases_to_100_deaths, color = sex, frame = date, size = population_in_thousands_total, ids=country)) +
   geom_point()
