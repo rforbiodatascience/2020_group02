@@ -31,7 +31,6 @@ covid_aug_by_country <- covid_aug %>%
 
 #TO DO
 # 1) Legend for plots
-# 2) Make comparable gifs
 # 4) Make shiny-app
 
 #Plotting development of cases and deaths for each country
@@ -192,29 +191,6 @@ gif_plot <-ggplot(covid_aug2, aes_string(x="covid_cases", y = "covid_deaths")) +
  anim_save("results/04_analysis_iv/hj_plot_test.gif")
  
  
-
-  ggplot(covid_aug_by_country, aes(y = days_from_dec1_to_100_cases, x = density_of_medical_doctors)) +
-    geom_point(aes(color=sex, size=population_in_thousands_total))
-  
-  
-
-covid_aug %>%
-  group_by(country) %>% 
-  slice(which.max(date)) %>%
-  ggplot(covid_aug, mapping = aes(y = days_from_100_cases_to_100_deaths, x = density_of_medical_doctors), size = "population_in_thousands_total", color = "sex") +
-  geom_point()
-
-#covid_aug_hj <- covid_aug %>%
-  mutate(date, as_date(date))
-
-
-
-gg <- ggplot(covid_aug, aes(x = density_of_medical_doctors, y = `number_of_confirmed_covid-19`, color = sex, frame = date, size = population_in_thousands_total, ids=country)) +
-  geom_point()
-ggplotly(plot_test) %>% 
-  highlight("plotly_hover")
-
-
 
 
 # Write data
