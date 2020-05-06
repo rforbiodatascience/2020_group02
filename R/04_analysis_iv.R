@@ -35,8 +35,7 @@ covid_aug_by_country <- covid_aug %>%
 #plotting depending variable (x-axis) possibly affecting corona outbreak (y-axis)
 
   ggplot(covid_aug_by_country, aes(y = days_from_100_cases_to_100_deaths, x = density_of_medical_doctors)) +
-  geom_point(aes(color=sex, size=population_in_thousands_total)) +
-    geom_smooth(method="loess")
+  geom_point(aes(color=sex, size=population_in_thousands_total))
   
   
   ggplot(covid_aug_by_country, aes(y = days_from_dec1_to_100_cases, x = density_of_medical_doctors)) +
@@ -50,14 +49,18 @@ covid_aug %>%
   ggplot(covid_aug, mapping = aes(y = days_from_100_cases_to_100_deaths, x = density_of_medical_doctors), size = "population_in_thousands_total", color = "sex") +
   geom_point()
 
+#covid_aug_hj <- covid_aug %>%
+  mutate(date, as_date(date))
+
 
 install.packages("plotly")
+library(ggplot2)
 library(plotly)
-g <- crosstalk::SharedData$new(gapminder, ~continent)
-gg <- ggplot(covid_aug_by_country, aes(density_of_medical_doctors, days_from_100_cases_to_100_deaths, color = sex, frame = date)) +
-  geom_point(aes(size = population_in_thousands_total, ids=country))
+gg <- ggplot(covid_aug, aes(density_of_medical_doctors, days_from_100_cases_to_100_deaths, color = sex, frame = date, size = population_in_thousands_total, ids=country)) +
+  geom_point()
 ggplotly(gg) %>% 
   highlight("plotly_hover")
+
 
 
 
