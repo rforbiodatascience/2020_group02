@@ -49,7 +49,7 @@ kaplan_meier_plot(km_result,
 dev.off()
 
 
-#KM plots for all tertiled variables - virker ikke
+#KM plots for all tertiled variables
 
 list_colnames <- names(kaplan_meier)[59:76]
 
@@ -64,6 +64,7 @@ for(i in list_colnames){
   km_plot <- kaplan_meier_plot(km_res,
                                  break.time.by=15.25,
                                  xlab="months",
+                                 ylab="Cumulative survival (<100 deaths)",
                                  legend.title=i,
                                  hazard.ratio=T,
                                  risk.table=TRUE,
@@ -118,9 +119,6 @@ PC_sign
 
 dev.off()
 
-
-#Check outlier - it is China
-covid_pca %>% tidy("samples") %>%  filter(row == 35)
 
 #Naming of filtered dataset for augmenting
 #For some reason china appears twice in covid_aug??? That's why it appears black on the tertile and light on the binary

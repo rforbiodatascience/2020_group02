@@ -194,6 +194,17 @@ covid_join <- covid_join %>%
   rename_all(~str_replace_all(., "__", "_")) %>% 
   rename_all(~str_replace_all(., "_+$", ""))
 
+#changing disease cases to relative
+covid_join <- covid_join %>% 
+  mutate(respiratory_infectious = (respiratory_infectious/population_in_thousands_total*100)) %>% 
+  mutate(malignant_neoplasms = (malignant_neoplasms/population_in_thousands_total*100)) %>% 
+  mutate(cardiovascular_diseases = (cardiovascular_diseases/population_in_thousands_total*100)) %>% 
+  mutate(ischaemic_heart_disease = (ischaemic_heart_disease/population_in_thousands_total*100)) %>% 
+  mutate(respiratory_diseases = (respiratory_diseases/population_in_thousands_total*100)) %>% 
+  mutate(kidney_diseases = (kidney_diseases/population_in_thousands_total*100)) %>% 
+  mutate(road_injury = (road_injury/population_in_thousands_total*100))
+  
+#'Kidney diseases', 'Road injury'  
 
 
 #Generating tertiles of covariates
