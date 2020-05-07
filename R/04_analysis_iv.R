@@ -53,6 +53,17 @@ ggplot(covid_aug_by_country, aes_string(x="population_aged_60_years_old_percenta
   guides(alpha="none")
   
 
+#plotting depending variable (x-axis) possibly affecting corona outbreak (y-axis)
+ggplot(covid_aug_by_country, aes_string(x="respiratory_diseases", y = 'days_from_dec1_to_100_cases')) +
+  geom_point(aes(color=log(gdp_per_capita_us_dollars), size=population_in_thousands_total, alpha=0.5)) + 
+  geom_smooth(model=lm) +
+  scale_size(range = c(0.5, 20), name="Population", labels = NULL) +
+  scale_colour_gradientn(colours=topo.colors(5), name = "GDP per capita") +
+  ylab("days_from_dec1_to_100_cases") +
+  xlab("Resp Disases") +
+  ggtitle("Development of Corona-pandemic by country") +
+  guides(alpha="none")
+
 
 #Making list for looping all variables against selected outcomes
 list_of_cov_hj <- names(covid_aug)[8:40]
