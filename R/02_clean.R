@@ -473,8 +473,7 @@ life_expectancy_clean <- life_expectancy %>%
 #Turning character variables into numeric
   mutate_all(~str_replace_all(., "^\\.$", NA_character_)) %>% 
   mutate_all(type.convert, as.is=TRUE) %>% 
-  select('country', 'Respiratory Infectious', 'Malignant neoplasms', 'Cardiovascular diseases', 'Ischaemic heart disease', 'Respiratory diseases', 'Kidney diseases', 'Road injury')
-
+  select('country', 'Respiratory Infectious', 'Malignant neoplasms', 'Cardiovascular diseases', 'Ischaemic heart disease', 'Respiratory diseases', 'Kidney diseases', 'Road injury') 
 
 #Test of above regular expressions as strings
 #writeLines("^\\w+\\.")
