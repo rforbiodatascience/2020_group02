@@ -141,6 +141,7 @@ for(i in list_of_cov){
 
 
 kruskal.test(days_from_dec1_to_100_cases ~ sex, data = covid_aug_by_country)
+kruskal.test(days_from_100_cases_to_100_deaths ~ sex, data = covid_aug_by_country)
 
 
 
