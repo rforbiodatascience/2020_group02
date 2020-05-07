@@ -2,10 +2,12 @@
 # This is a Shiny web application. You can run the application by clicking
 # the 'Run App' button above.
 #
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
+#---------------------------------------------------------
+
+##Loading files 
+
+covid_aug <- read_tsv(file = "03_covid_aug.tsv")
+df_shiny <- read_tsv(file = "df_shiny.tsv")
 
 library(shiny)
 library(tidyverse)
@@ -14,10 +16,10 @@ library(tidyverse)
 #and Covid-19 tests performed until April 16th. 
 
 ui <- fluidPage(
-    titlePanel("COVID-19 data until April 16th"),
+    titlePanel("COVID-19 data until May 4th"),
     sidebarLayout(
         sidebarPanel(
-            selectInput(inputId = "country", "Select a country", choices = tibble_shiny$country, selected = "Denmark" ),
+            selectInput(inputId = "country", "Select a country", choices = df_shiny$country, selected = "Denmark" ),
         ),
       
         
@@ -31,20 +33,19 @@ ui <- fluidPage(
 )
 server <- function(input, output, session){
     output$covid_data <- renderTable({
-         country_filter <- subset(tibble_shiny, tibble_shiny$country == input$country)
-           
-        
+         country_filter <- subset(df_shiny, df_shiny$country == input$country)
+
     })
     
     output$plot1 <-renderPlot({
         filter_plot <- subset(covid_aug, covid_aug$country == input$country) 
-        ggplot(filter_plot, mapping = aes (x = date, y = confirmed_cases_per_100000, na.rm = TRUE, selected = "Denmark")) +
-            geom_area(color = "red", fill = "red") +
+        ggplot(filter_plot, selected = "Denmark" ) +
+            geom_area(mapping = aes (x = date, y = confirmed_cases_per_100000, na.rm = TRUE), color = "red", fill = "red", show.legend = "confirmed_cases_per_100000") +
+            geom_area(mapping = aes (x = date, y = test_cases_per_100000, na.rm = TRUE), color = "green", fill = "green", alpha = 0.3) +
             labs(x = "",
                  y = "Cases and tests per 100.000",
-                 title = "Confirmed COVID-19 cases") + 
-          geom_area(filter_plot, mapping = aes (x = date, y = test_cases_per_100000), na.rm = TRUE,  color = "green", fill = "green", alpha = 0.3) +
-          theme_minimal(base_size = 14)
+                 title = "COVID-19 cases and tests related to population size (per 100.000)")+
+             theme_minimal(base_size = 14 )
         
         
     })

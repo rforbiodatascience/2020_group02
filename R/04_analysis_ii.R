@@ -70,7 +70,20 @@ covid_aug_by_country <- covid_aug %>%
 
 #Summary statistics for variables
 list_of_cov <- names(covid_aug)[59:91]
-plot_list <- list()
+
+pvalue_list1 <- list()
+for(i in list_of_cov) {
+  pvalue <- cuzickTest(days_from_100_cases_to_100_deaths ~ covid_aug_by_country[[i]], data = covid_aug_by_country)
+  pvalue_list1[[i]] = pvalue
+}
+
+pvalue_list1_digits <- list()
+for (i in list_of_cov) {
+  pvalue_digits1 <- signif(pvalue_list1[[i]][["p.value"]], digits = 2)
+  pvalue_list1_digits[[i]] = pvalue_digits1
+}
+
+plot_list1 <- list()
 for(i in list_of_cov){
   plot_name <- i
   plt <- covid_aug_by_country %>% 
@@ -78,19 +91,32 @@ for(i in list_of_cov){
     ggplot(aes_string(x=i, y = 'days_from_100_cases_to_100_deaths')) +
     geom_boxplot() +
     labs(y = "Days from 100 cases \n until 100 deaths") +
+    annotate("text", x=2.5, y=60, label = (paste0("P for trend = ", pvalue_list1_digits[[i]])), size=4) +
     theme_bw()
-  plot_list[[i]] = plt
-  print(plot_list[[i]])
+  plot_list1[[i]] = plt
+  print(plot_list1[[i]])
 }
 
 for(i in list_of_cov){
   file_name = paste("results/04_analysis_ii/Deaths_", i, ".png", sep="")
   png(file_name, width=8.5, height = 6.5,unit='in',res=300)
-  print(plot_list[[i]])
+  print(plot_list1[[i]])
   dev.off()
 }
 
 
+
+pvalue_list2 <- list()
+for(i in list_of_cov) {
+  pvalue <- cuzickTest(days_from_dec1_to_100_cases ~ covid_aug_by_country[[i]], data = covid_aug_by_country)
+  pvalue_list2[[i]] = pvalue
+}
+
+pvalue_list2_digits <- list()
+for (i in list_of_cov) {
+  pvalue_digits2 <- signif(pvalue_list2[[i]][["p.value"]], digits = 2)
+  pvalue_list2_digits[[i]] = pvalue_digits2
+}
 
 plot_list2 <- list()
 for(i in list_of_cov){
@@ -100,8 +126,10 @@ for(i in list_of_cov){
     ggplot(aes_string(x=i, y = 'days_from_dec1_to_100_cases')) +
     geom_boxplot() +
     labs(y = "Days from Dec 1st 2019 \n until 100 cases") +
+    annotate("text", x=2.5, y=160, label = (paste0("P for trend = ", pvalue_list2_digits[[i]])), size=4) +
     theme_bw()
   plot_list2[[i]] = plt
+  print(plot_list2[[i]])
 }
 
 for(i in list_of_cov){
@@ -111,116 +139,121 @@ for(i in list_of_cov){
   dev.off()
 }
 
-kruskal.test(days_from_dec1_to_100_cases ~ population_median_age_years_ter, data = covid_aug_by_country)
-kruskal.test(days_from_dec1_to_100_cases ~ population_proportion_under_15_ter, data = covid_aug_by_country)
-kruskal.test(days_from_dec1_to_100_cases ~ population_proportion_over_60_ter, data = covid_aug_by_country)
-kruskal.test(days_from_dec1_to_100_cases ~ population_density_ter, data = covid_aug_by_country)
-kruskal.test(days_from_dec1_to_100_cases ~ population_living_in_urban_areas_ter, data = covid_aug_by_country)
-kruskal.test(days_from_dec1_to_100_cases ~ gdp_per_capita_us_dollars_ter, data = covid_aug_by_country)
-kruskal.test(days_from_dec1_to_100_cases ~ current_health_expenditure_per_person_usd_ter, data = covid_aug_by_country)
-kruskal.test(days_from_dec1_to_100_cases ~ density_of_hospitals_ter, data = covid_aug_by_country)
-kruskal.test(days_from_dec1_to_100_cases ~ density_of_medical_doctors_ter, data = covid_aug_by_country)
-kruskal.test(days_from_dec1_to_100_cases ~ density_of_nurses_midwifes_ter, data = covid_aug_by_country)
-kruskal.test(days_from_dec1_to_100_cases ~ bmi_above30_prevalence_all_ter, data = covid_aug_by_country)
-kruskal.test(days_from_dec1_to_100_cases ~ prevalence_smoking_ter, data = covid_aug_by_country)
-kruskal.test(days_from_dec1_to_100_cases ~ concentration_fine_particles_ter, data = covid_aug_by_country)
-kruskal.test(days_from_dec1_to_100_cases ~ pollution_attributable_death_rate_std_ter, data = covid_aug_by_country)
-kruskal.test(days_from_dec1_to_100_cases ~ adult_mortality_rate_ter, data = covid_aug_by_country)
-kruskal.test(days_from_dec1_to_100_cases ~ life_expectancy_ter, data = covid_aug_by_country)
-kruskal.test(days_from_dec1_to_100_cases ~ cardiovascular_diseases_ter, data = covid_aug_by_country)
-kruskal.test(days_from_dec1_to_100_cases ~ respiratory_diseases_ter, data = covid_aug_by_country)
-kruskal.test(days_from_dec1_to_100_cases ~ respiratory_infectious_ter, data = covid_aug_by_country)
-kruskal.test(days_from_dec1_to_100_cases ~ kidney_diseases_ter, data = covid_aug_by_country)
-kruskal.test(days_from_dec1_to_100_cases ~ malignant_neoplasms_ter, data = covid_aug_by_country)
-kruskal.test(days_from_dec1_to_100_cases ~ road_injury_ter, data = covid_aug_by_country)
-
 
 kruskal.test(days_from_dec1_to_100_cases ~ sex, data = covid_aug_by_country)
 
 
-kruskal.test(days_from_100_cases_to_100_deaths ~ adult_mortality_rate_ter, data = covid_aug_by_country)
-kruskal.test(days_from_100_cases_to_100_deaths ~ prevalence_smoking_ter, data = covid_aug_by_country)
-kruskal.test(days_from_100_cases_to_100_deaths ~ respiratory_diseases_ter, data = covid_aug_by_country)
-kruskal.test(days_from_100_cases_to_100_deaths ~ population_density_ter, data = covid_aug_by_country)
-kruskal.test(days_from_100_cases_to_100_deaths ~ population_proportion_over_60_ter, data = covid_aug_by_country)
-kruskal.test(days_from_100_cases_to_100_deaths ~ population_in_thousands_total_ter, data = covid_aug_by_country)
 
 
-#Patchwork package for combining plots
+# Patchwork package for combining plots -----------------------------------
 
 # Descriptive plots - spread of COVID-19 - population demographics ------------------------------
+png("results/04_analysis_ii/Spread of COVID-19 by population demographics.png",
+    width=12, height = 8,unit='in',res=300)
 plot_list2$population_median_age_years_ter + plot_list2$population_proportion_under_15_ter + 
   plot_list2$population_proportion_over_60_ter + plot_list2$population_density_ter + 
   plot_list2$population_living_in_urban_areas_ter + plot_list2$gdp_per_capita_us_dollars_ter + 
   plot_annotation(title = 'Association between population demographics and the spread of COVID-19',
-                  subtitle = 'Defined as number of days from December 1st 2019 to reaching 100 cases per country')
+                  subtitle = 'Defined as number of days from December 1st 2019 to reaching 100 cases per country') 
+dev.off()
 
 # Descriptive plot - spread of COVID-19 - health system -------------------
+png("results/04_analysis_ii/Spread of COVID-19 by capacity of health systems.png",
+    width=12, height = 8,unit='in',res=300)
 plot_list2$current_health_expenditure_per_person_usd_ter + plot_list2$density_of_hospitals_ter + 
   plot_list2$density_of_medical_doctors_ter + plot_list2$density_of_nurses_midwifes_ter +
   plot_annotation(title = 'Association between capacity of health systems and the spread of COVID-19',
                   subtitle = 'Defined as number of days from December 1st 2019 to reaching 100 cases per country')
+dev.off()
 
 # Descriptive plot - spread of COVID-19 - public health -------------------
+png("results/04_analysis_ii/Spread of COVID-19 by public health factors.png",
+    width=12, height = 8,unit='in',res=300)
 plot_list2$bmi_above30_prevalence_all_ter + plot_list2$prevalence_smoking_ter + 
   plot_list2$concentration_fine_particles_ter + plot_list2$pollution_attributable_death_rate_std_ter +
-  plot_annotation(title = 'Association between public health and the spread of COVID-19',
+  plot_annotation(title = 'Association between public health factors and the spread of COVID-19',
                   subtitle = 'Defined as number of days from December 1st 2019 to reaching 100 cases per country')
-
+dev.off()
 
 # Descriptive plot - spread of COVID-19 - mortality -----------------------
+png("results/04_analysis_ii/Spread of COVID-19 by life expectancy and mortality.png",
+    width=12, height = 10,unit='in',res=300)
 (plot_list2$adult_mortality_rate_ter + plot_list2$life_expectancy_ter + 
   plot_list2$cardiovascular_diseases_ter + plot_list2$respiratory_diseases_ter) /
   (plot_list2$respiratory_infectious_ter + plot_list2$kidney_diseases_ter +
   plot_list2$malignant_neoplasms_ter + plot_list2$road_injury_ter) +
   plot_annotation(title = 'Association between life expectancy and mortality and the spread of COVID-19',
                   subtitle = 'Defined as number of days from December 1st 2019 to reaching 100 cases per country')
+dev.off()
+
+# Descriptive plots - death from COVID-19 - population demographics ------------------------------
+png("results/04_analysis_ii/Death from COVID-19 by population demographics.png",
+    width=12, height = 8,unit='in',res=300)
+plot_list1$population_median_age_years_ter + plot_list1$population_proportion_under_15_ter + 
+  plot_list1$population_proportion_over_60_ter + plot_list1$population_density_ter + 
+  plot_list1$population_living_in_urban_areas_ter + plot_list1$gdp_per_capita_us_dollars_ter + 
+  plot_annotation(title = 'Association between population demographics and death from COVID-19',
+                  subtitle = 'Defined as number of days from reaching 100 cases until reaching 100 deaths per country') 
+dev.off()
+
+# Descriptive plot - death from COVID-19 - health system -------------------
+png("results/04_analysis_ii/Death from COVID-19 by capacity of health systems.png",
+    width=12, height = 8,unit='in',res=300)
+plot_list1$current_health_expenditure_per_person_usd_ter + plot_list1$density_of_hospitals_ter + 
+  plot_list1$density_of_medical_doctors_ter + plot_list1$density_of_nurses_midwifes_ter +
+  plot_annotation(title = 'Association between capacity of health systems and death from COVID-19',
+                  subtitle = 'Defined as number of days from reaching 100 cases until reaching 100 deaths per country')
+dev.off()
+
+# Descriptive plot - death from COVID-19 - public health -------------------
+png("results/04_analysis_ii/Death from COVID-19 by public health factors.png",
+    width=12, height = 8,unit='in',res=300)
+plot_list1$bmi_above30_prevalence_all_ter + plot_list1$prevalence_smoking_ter + 
+  plot_list1$concentration_fine_particles_ter + plot_list1$pollution_attributable_death_rate_std_ter +
+  plot_annotation(title = 'Association between public health factors and death from COVID-19',
+                  subtitle = 'Defined as number of days from reaching 100 cases until reaching 100 deaths per country')
+dev.off()
+
+# Descriptive plot - death from COVID-19 - mortality -----------------------
+png("results/04_analysis_ii/Death from COVID-19 by life expectancy and mortality.png",
+    width=12, height = 10,unit='in',res=300)
+(plot_list1$adult_mortality_rate_ter + plot_list1$life_expectancy_ter + 
+    plot_list1$cardiovascular_diseases_ter + plot_list1$respiratory_diseases_ter) /
+  (plot_list1$respiratory_infectious_ter + plot_list1$kidney_diseases_ter +
+     plot_list1$malignant_neoplasms_ter + plot_list1$road_injury_ter) +
+  plot_annotation(title = 'Association between life expectancy and mortality and death from COVID-19',
+                  subtitle = 'Defined as number of days from reaching 100 cases until reaching 100 deaths per country')
+dev.off()
 
 
 
-#Deaths 28 days after first 100 cases - crude and standardized for population size - as a function of country
-covid_aug %>%
-  group_by(country) %>% 
-  filter(deaths_28_days_per_100000>1) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(mapping = aes(x=reorder(country, deaths_28_days_per_100000), y = deaths_28_days_per_100000)) +
-  geom_bar(stat = "Identity") +
-  theme(axis.text.x=element_text(angle=40,hjust=1,vjust=0.5))
-
-covid_aug %>%
-  group_by(country) %>% 
-  filter(deaths_28_days_after_100_cases>50) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(mapping = aes(x=reorder(country, deaths_28_days_after_100_cases), y = deaths_28_days_after_100_cases)) +
-  geom_bar(stat = "Identity") +
-  theme(axis.text.x=element_text(angle=40,hjust=1,vjust=0.5))
 
 
 #Days from 100 cases to 100 deaths - as a function of country
 covid_aug %>%
   group_by(country) %>% 
   filter(days_from_100_cases_to_100_deaths != "NA") %>% 
+  mutate(highlight = ifelse( country == "Denmark", "yes", "no" )) %>% 
   slice(which.max(date)) %>% 
-  ggplot(mapping = aes(x=reorder(country, -days_from_100_cases_to_100_deaths), y = days_from_100_cases_to_100_deaths)) +
+  ggplot(mapping = aes(x=reorder(country, -days_from_100_cases_to_100_deaths), y = days_from_100_cases_to_100_deaths, fill = highlight )) +
   geom_bar(stat = "Identity") +
-  theme(axis.text.x=element_text(angle=40,hjust=1,vjust=0.5))
+  labs(y = "Days from 100 cases until 100 deaths") +
+  scale_fill_manual( values = c( "yes"="red", "no"="darkgray" ), guide = FALSE ) +
+  theme(panel.background = element_rect(fill = "white"), axis.text.x=element_text(angle=40,hjust=0.75,vjust=0.75)) 
 
 #Days from December 1st to 100 cases - as a function of country
-plot1 <- covid_aug %>%
+covid_aug %>%
   group_by(country) %>% 
   filter(days_from_dec1_to_100_cases != "NA") %>% 
+  mutate(highlight = ifelse( country == "Denmark", "yes", "no" )) %>%
+  drop_na(life_expectancy_ter) %>% 
   slice(which.max(date)) %>% 
-  ggplot(mapping = aes(x=reorder(country, -days_from_dec1_to_100_cases), y = days_from_dec1_to_100_cases)) +
+  ggplot(mapping = aes(x=reorder(country, -days_from_dec1_to_100_cases), y = days_from_dec1_to_100_cases, fill = sex)) +
   geom_bar(stat = "Identity") +
-  theme(axis.text.x=element_text(angle=40,hjust=1,vjust=0.5))
+  labs(y = "Days from December 1st 2019 until 100 cases") +
+  #scale_fill_manual( values = c( "yes"="red", "no"="darkgray" ), guide = FALSE ) +
+  theme(panel.background = element_rect(fill = "white"), axis.text.x=element_text(angle=40,hjust=1,vjust=0.5))
 
-# Utilizing the patchwork package for plot assembly
-
-conf_cases_vs_urban / conf_deaths_vs_urban / conf_recov_vs_urban + 
-  plot_annotation(
-    title = "COVID-19 confirmed cases, COVID-19 deaths, COVID-19 recovered (cummulative April 16th) vs. urbanisation in countries", 
-    subtitle = "No correlation, all variables increases in highly urbanised countries"
-  )
 
 # Write data
 # ------------------------------------------------------------------------------

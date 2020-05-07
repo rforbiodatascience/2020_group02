@@ -213,5 +213,9 @@ for(i in list_of_cov) {
 write_tsv(x = country_differences,
           path = "data/country_differences.tsv")
 
+
 write_tsv(x = covid_join,
           path = "data/03_covid_aug.tsv")
+
+write_tsv(x = covid_join,
+          path = "covid_app/03_covid_aug.tsv")
