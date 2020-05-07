@@ -7,6 +7,8 @@ rm(list = ls())
 library("tidyverse")
 library("patchwork")
 library("leaflet")
+library("htmlwidgets")
+library("htmltools")
 
 # Define functions
 # ------------------------------------------------------------------------------
@@ -18,13 +20,13 @@ covid_aug <- read_tsv(file = "data/03_covid_aug.tsv")
 
 # Wrangle data
 # ------------------------------------------------------------------------------
-##Tibble for Shiny app - see shiny app
+##Tibble for Shiny app - see covid-app
 
-tibble_shiny <- covid_aug %>% 
+df_shiny <- covid_aug %>% 
   group_by(country) %>% 
   slice(which.max(date)) %>% 
-  select(country, dead_cases_per_100000, confirmed_cases_per_100000, population_median_age_years, density_of_hospitals, life_expectancy, population_living_in_urban_areas)
-
+  select(country, dead_cases_per_100000, confirmed_cases_per_100000, population_median_age_years, density_of_hospitals, life_expectancy, population_living_in_urban_areas) %>% 
+  mutate_if(is.numeric, round, digits=1) 
 
 
 # Model data
@@ -57,8 +59,8 @@ conf_recov_vs_urban <- covid_aug %>%
   ggplot(conf_recov_vs_urban, mapping = aes(y = recov_cases_per_100000  , x = population_living_in_urban_areas, na.rm = TRUE)) +
   geom_point(alpha = 0.5, size = 3)
 
-# Utilizing the patchwork package for plot assembly
 
+# Utilizing the patchwork package for plot assembly
 conf_cases_vs_urban / conf_deaths_vs_urban / conf_recov_vs_urban + 
   plot_annotation(
     title = "COVID-19 confirmed cases, COVID-19 deaths, COVID-19 recovered (cummulative April 16th) vs. urbanisation in countries", 
@@ -95,7 +97,7 @@ deaths_vs_median_age/deaths_vs_life_exp +
 #-----------------------------------------------------------------
 # Covid-19 map
 
-# Selecting fortotal no of deaths
+# Selecting for total no. of deaths
 
 covid_death_map <- covid_aug %>% 
   group_by(country) %>% 
@@ -119,10 +121,12 @@ covid_death_map_pop <- covid_death_map  %>%
   leaflet() %>%
   addProviderTiles(provider = "Stamen.TerrainBackground" ) %>% 
   addCircles(covid_death_map, weight = 1, color = "red", opacity = 2,
-             lng = ~long, lat = ~lat, radius = ~dead_cases_per_100000 * 5000
+             lng = ~long, lat = ~lat, radius = ~`dead_cases_per_100000` * 5000
              , popup = ~popup_info)
 
-covid_death_map_pop
+
+saveWidget(covid_death_map_pop, 'covid_death_map_pop.html')
+
 
 #Total no. deaths pr. country
 
@@ -130,11 +134,15 @@ covid_death_map_total <- covid_death_map %>%
   leaflet() %>%
   addProviderTiles(provider = "Stamen.TerrainBackground" ) %>% 
   addCircles(covid_death_map, weight = 1, color = "red", opacity = 2,
-             lng = ~long, lat = ~lat, radius = ~`number_of_covid-19_related_deaths` * 30
-             , popup = ~popup_info)
-covid_death_map_total
+             lng = ~long, lat = ~lat, radius = ~`number_of_covid-19_related_deaths` * 20
+             , popup = ~popup_info) 
+
+saveWidget(covid_death_map_total, 'covid_death_map_total.html')
 
 # Write data
 # ------------------------------------------------------------------------------
-write_tsv(...)
+write_tsv(x = df_shiny,
+           path = "covid_app/df_shiny.tsv")
+
+
 ggsave(...)
