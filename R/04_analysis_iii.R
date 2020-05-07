@@ -82,8 +82,6 @@ for(i in list_colnames){
   }
   
 
-  
-
 
 #PCA analysis
 
