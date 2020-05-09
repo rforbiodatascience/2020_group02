@@ -5,10 +5,9 @@ rm(list = ls())
 # Load libraries
 # ------------------------------------------------------------------------------
 library("tidyverse")
-library("patchwork")
 library("leaflet")
 library("htmlwidgets")
-library("htmltools")
+
 
 # Define functions
 # ------------------------------------------------------------------------------
@@ -20,129 +19,104 @@ covid_aug <- read_tsv(file = "data/03_covid_aug.tsv")
 
 # Wrangle data
 # ------------------------------------------------------------------------------
-##Tibble for Shiny app - see covid-app
+##Df for Shiny app - see covid-app
+#Overview of COVID-19 confirmed cases, COVID-19 realted deaths and COVID-19 tests performed for selected countries -  see shiny app
 
-df_shiny <- covid_aug %>% 
-  group_by(country) %>% 
-  slice(which.max(date)) %>% 
-  select(country, dead_cases_per_100000, confirmed_cases_per_100000, population_median_age_years, density_of_hospitals, life_expectancy, population_living_in_urban_areas) %>% 
-  mutate_if(is.numeric, round, digits=1) 
-
-
-# Model data
-# ------------------------------------------------------------------------------
-#my_data_clean_aug %>% ...
 
 # Visualise data
 # ------------------------------------------------------------------------------
+# Covid-19 maps
 
-#Overview of COVID-19 confirmed cases, COVID-19 realted deaths and COVID-19 tests performed for selected countries -  see shiny app
+# Selecting for total no. of deaths, dead_cases_per_100000, days_from_100_cases_to_100_deaths, days_from_dec1_to_100_cases 
 
-# Is there a correlation between Covid-19 confirmed cases, deaths and recoveries and % people living in urban areas?
-
-conf_cases_vs_urban <- covid_aug %>%
+covid_map <- covid_aug %>% 
   group_by(country) %>% 
   slice(which.max(date)) %>% 
-  ggplot(conf_cases_vs_urban,mapping = aes(y = confirmed_cases_per_100000, x = population_living_in_urban_areas, na.rm = TRUE)) +
-  geom_point(alpha = 0.5, size = 3) 
-  
-
-conf_deaths_vs_urban <- covid_aug %>%
-  group_by(country) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(conf_deaths_vs_urban, mapping = aes(y = dead_cases_per_100000 , x = population_living_in_urban_areas, na.rm = TRUE)) +
-  geom_point(alpha = 0.5, size = 3 )
-
-conf_recov_vs_urban <- covid_aug %>%
-  group_by(country) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(conf_recov_vs_urban, mapping = aes(y = recov_cases_per_100000  , x = population_living_in_urban_areas, na.rm = TRUE)) +
-  geom_point(alpha = 0.5, size = 3)
+  select(country, lat, long, `number_of_covid-19_related_deaths`, dead_cases_per_100000, days_from_100_cases_to_100_deaths, days_from_dec1_to_100_cases) 
 
 
-# Utilizing the patchwork package for plot assembly
-conf_cases_vs_urban / conf_deaths_vs_urban / conf_recov_vs_urban + 
-  plot_annotation(
-    title = "COVID-19 confirmed cases, COVID-19 deaths, COVID-19 recovered (cummulative April 16th) vs. urbanisation in countries", 
-    subtitle = "No correlation, all variables increases in highly urbanised countries. San Marino has the highest proportion of deaths and confimed cases"
-  )
-
-#-----------------------------------------------------------------------------
-
-# Is there a correlation between 1) Covid-19 confirmed deaths and 2) Covid-19 recoveries and age of population?
-
-deaths_vs_median_age <- covid_aug %>%
-  group_by(country) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(conf_cases_vs_urban, mapping = aes(y = dead_cases_per_100000, x = population_median_age_years), na.rm = TRUE ) +
-  geom_point(alpha = 0.5, size = 3)+
-  ylim(0,60)
-
-
-
-deaths_vs_life_exp <- covid_aug %>%
-  group_by(country) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(conf_cases_vs_urban, mapping = aes(y = dead_cases_per_100000 , x = life_expectancy), na.rm = TRUE, ) +
-  geom_point(alpha = 0.5, size = 3) + 
-  ylim(0,60)
-
-
-deaths_vs_median_age/deaths_vs_life_exp + 
-  plot_annotation(
-    title = "COVID-19 deaths (cummulative April 16th) vs. age of population in countries", 
-    subtitle = "Higher proportion of COVID-19 deaths in countries with a higher proportion of people > 40 years and higher life expectancy in years"
-  )
-
-#-----------------------------------------------------------------
-# Covid-19 map
-
-# Selecting for total no. of deaths
-
-covid_death_map <- covid_aug %>% 
-  group_by(country) %>% 
-  slice(which.max(date)) %>% 
-  select(country, lat, long, `number_of_covid-19_related_deaths`, dead_cases_per_100000) %>% 
-  filter(!is.na(dead_cases_per_100000))
-
-
-#Creating pop-ups to map
-
-covid_death_map <- covid_death_map %>% 
-  mutate(popup_info = paste("Country:", country, 
+##Pop-ups
+#Creating pop-ups to maps for total no. of deaths, dead_cases_per_100000
+covid_map <- covid_map %>% 
+  mutate(popup_death = paste("Country:", country, 
                             "<br/>", 
-                            "Total no. of COVID- 19 related deaths:", `number_of_covid-19_related_deaths`, "<br/>", "No. COVID- 19 related deaths regulated to pop. size :", dead_cases_per_100000))
-         
+                            "Total no. of COVID-19 related deaths:", `number_of_covid-19_related_deaths`, "<br/>", "No. COVID-19 related deaths (per 100.000):", dead_cases_per_100000))
 
-## Making the map, selceting map layout in http://leaflet-extras.github.io/leaflet-providers/preview/index.html 
-#Deaths per population size (deaths pr. 100.000)#"Esri.WorldGrayCanvas"
 
-covid_death_map_pop <- covid_death_map  %>% 
+## Making the maps, selceting map layout in http://leaflet-extras.github.io/leaflet-providers/preview/index.html 
+#Deaths per population size (deaths pr. 100.000)
+
+map_dead_cases_per_100000 <- covid_map %>% 
+  filter(!is.na(dead_cases_per_100000)) %>% 
   leaflet() %>%
   addProviderTiles(provider = "Stamen.TerrainBackground" ) %>% 
-  addCircles(covid_death_map, weight = 1, color = "red", opacity = 2,
+  addCircles(covid_map, weight = 1, color = "red", opacity = 2,
              lng = ~long, lat = ~lat, radius = ~`dead_cases_per_100000` * 5000
-             , popup = ~popup_info)
+             , popup = ~popup_death)
 
 
-saveWidget(covid_death_map_pop, 'covid_death_map_pop.html')
+#Mapping total no. deaths pr. country
 
-
-#Total no. deaths pr. country
-
-covid_death_map_total <- covid_death_map %>% 
+map_number_of_covid_19_related_deaths <- covid_map %>% 
+  filter(!is.na(`number_of_covid-19_related_deaths`)) %>% 
   leaflet() %>%
   addProviderTiles(provider = "Stamen.TerrainBackground" ) %>% 
-  addCircles(covid_death_map, weight = 1, color = "red", opacity = 2,
+  addCircles(covid_map, weight = 1, color = "red", opacity = 2,
              lng = ~long, lat = ~lat, radius = ~`number_of_covid-19_related_deaths` * 20
-             , popup = ~popup_info) 
+             , popup = ~popup_death) 
 
-saveWidget(covid_death_map_total, 'covid_death_map_total.html')
+
+
+#Mapping days from 1st december to 100 confirmed cases, as range.
+
+#Filtering NAs from variables to be plotted. Adding a new variable (covid_map_cuts) that indexing no. of days from Dec 1st to first 100 confirmed COVID in ranges (40-80; 80-120; .. days)
+map_days_from_dec1_to_100_cases <- covid_map  %>% 
+  filter(!is.na(days_from_dec1_to_100_cases)) %>% 
+  mutate(covid_map_cuts = cut(days_from_dec1_to_100_cases, c(40, 80, 120, 150, Inf), labels = c("< 80 days", "80-120 days", "120-150 days", ">150 days")))
+ 
+#Choosing color/palet for range intervals for mapping. 
+pal = colorFactor(palette = c("red", "orange", "yellow", "green"), alpha = TRUE, domain = map_days_from_dec1_to_100_cases$covid_map_cuts)
+
+# Mapping data with colour related to range index also adding labels and legeends.
+map_days_from_dec1_to_100_cases  %>% 
+  leaflet() %>%
+  addProviderTiles(provider = "Stamen.TerrainBackground" ) %>% 
+  addCircles(covid_map,
+             lng = ~long, lat = ~lat, color = ~pal(covid_map_cuts), weight = 20, radius = 20, opacity = 1, 
+             label = paste(map_days_from_dec1_to_100_cases$country, "- days from December 1st to 100 COVID-19 cases:", map_days_from_dec1_to_100_cases$days_from_dec1_to_100_cases)) %>% 
+  addLegend(title = "COVID-19: days from December 1st to first 100 confirmed cases ", pal = pal, values = map_days_from_dec1_to_100_cases$covid_map_cuts)
+
+
+
+#Mapping days from first 100 cases to 100 deaths, as range.
+
+#Filtering NAs from variables to be plotted. Adding a new variable (covid_map_cuts-death) that indexing - no. of days from  100 confirmed cases to 100 deaths - in ranges (days)
+
+map_days_from_100_cases_to_100_deaths <- covid_map  %>% 
+  filter(!is.na(days_from_100_cases_to_100_deaths)) %>% 
+  mutate(covid_map_cuts_death = cut(days_from_100_cases_to_100_deaths, c(5, 10, 20, 30, 40, Inf), labels = c("< 10 days", "10-20 days", "20-30 days", "30-40", ">40 days")))
+
+map_days_from_100_cases_to_100_deaths
+
+#Choosing color/palet for range intervals for mapping. 
+  pal = colorFactor(palette = c("red", "orange", "yellow", "green", "white"), alpha = TRUE, domain = map_days_from_100_cases_to_100_deaths$covid_map_cuts_death)
+
+# Mapping data with colour related to range index also adding labels and legeends.
+  map_days_from_100_cases_to_100_deaths %>% 
+  leaflet() %>%
+  addProviderTiles(provider = "Stamen.TerrainBackground" ) %>% 
+  addCircles(covid_map,
+             lng = ~long, lat = ~lat, color = ~pal(covid_map_cuts_death), weight = 20, radius = 20, opacity = 1, 
+             label = paste(map_days_from_100_cases_to_100_deaths$country, "- days from first 100 confimed cases to 100 deaths:", map_days_from_100_cases_to_100_deaths$days_from_100_cases_to_100_deaths)) %>% 
+  addLegend(title = "COVID-19: days from first 100 confirmed cases to 100 deaths",
+            pal = pal, values = map_days_from_100_cases_to_100_deaths$covid_map_cuts_death)
 
 # Write data
 # ------------------------------------------------------------------------------
 write_tsv(x = df_shiny,
            path = "covid_app/df_shiny.tsv")
 
-
-ggsave(...)
+saveWidget(widget = map_dead_cases_per_100000, file = "map_dead_cases_per_100000.html")
+saveWidget(widget = map_number_of_covid_19_related_deaths, file = "map_number_of_covid_19_related_deaths.html")
+saveWidget(widget = map_days_from_dec1_to_100_cases, file = "map_days_from_dec1_to_100_cases.html")
+saveWidget(widget = map_days_from_100_cases_to_100_deaths, file = "map_days_from_100_cases_to_100_deaths.html")
