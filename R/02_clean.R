@@ -1,96 +1,70 @@
-# Clear workspace
-# ------------------------------------------------------------------------------
+
 rm(list = ls())
 
-# Load libraries
-# ------------------------------------------------------------------------------
-#Check om dette kan slås sammen til færre pakker
+# Load libraries ----------------------------------------------------------
 library("tidyverse")
-library("stringr")
 library("lubridate")
 library("readxl") 
-library("readr")
-library("tidyr")
 
-# Define functions
-# ------------------------------------------------------------------------------
-source(file = "R/99_project_functions.R")
-
-# Load data
-# ------------------------------------------------------------------------------
+# Load data ---------------------------------------------------------------
 #Tilføj til readme fil at vi har besluttet at anvende nyeste datapunkt for hvert variabel
 #Check "summarise_each(funs(first(.[!is.na(.)])))" brugt i population demographics
 #Check muligheden for at supplere data med ældre non-missing values, hvis nyeste værdi er missing (Smoking)
 #Funktion til latitude og longitude data for lande med flere regioner
 #Load samtlige datasæt i toppen
-
-COVID_test <- read_tsv(file = "data/01_COVID_test.tsv")
-
-JH_conftime <- read_tsv(file = "data/01_JH_conftime.tsv")
-JH_deadtime <- read_tsv(file = "data/01_JH_deadtime.tsv")
-JH_recotime <- read_tsv(file = "data/01_JH_recotime.tsv")
-
-POP_demo <- read_tsv(file = "data/01_POP_demo.tsv")
-
+covid_test <- read_tsv(file = "data/01_covid_test.tsv")
+jh_conftime <- read_tsv(file = "data/01_jh_conftime.tsv")
+jh_deadtime <- read_tsv(file = "data/01_jh_deadtime.tsv")
+jh_recotime <- read_tsv(file = "data/01_jh_recotime.tsv")
+pop_demo <- read_tsv(file = "data/01_pop_demo.tsv")
 adult_mortality <- read_tsv(file = "data/01_adult_mortality_load.tsv")
 life_expectancy <- read_tsv(file = "data/01_life_expectancy_load.tsv")
 mortality_causes <- read_tsv(file = "data/01_mortality_causes_load.tsv")
-
 air_pollution <- read_tsv(file = "data/01_air_pollution_load.tsv")
 handwashing_facilities <- read_tsv(file = "data/01_handwashing_facilities_load.tsv")
 household_pollution <- read_tsv(file = "data/01_household_pollution_load.tsv")
 measles_cases <- read_tsv(file = "data/01_measles_cases_load.tsv")
 mortality_pollution_related <- read_tsv(file = "data/01_mortality_pollution_related_load.tsv")
-
 health_expenditure <- read_tsv(file = "data/01_health_expenditure_load.tsv")
 health_infrastructure <- read_tsv(file = "data/01_health_infrastructure_load.tsv")
 medical_doctors <- read_tsv(file = "data/01_medical_doctors_load.tsv")
 nurses_midwifes <- read_tsv(file = "data/01_nurses_midwifes_load.tsv")
-
 smoking <- read_tsv(file = "data/01_smoking_load.tsv")
-
-UN_pop <- read_tsv(file = "data/01_UN_pop_raw.tsv")
-UN_gdp <- read_tsv(file = "data/01_UN_gdp_raw.tsv")
-
+un_pop <- read_tsv(file = "data/01_un_pop_raw.tsv")
+un_gdp <- read_tsv(file = "data/01_un_gdp_raw.tsv")
 sex_leader <- read_tsv(file = "data/01_sex_leader_raw.tsv")
+bmi_above30 <- read_tsv(file = "data/01_bmi_above30_agestand_raw.tsv")
 
-BMI_above30 <- read_tsv(file = "data/01_BMI_above30_agestand_raw.tsv")
-
-# Wrangle data
-# ------------------------------------------------------------------------------
-##Data in our world data
-#COVID-19 tests performed (cummulative data over time). Global data.
-
-COVID_test_clean <- COVID_test %>% 
+# Wrangle data ------------------------------------------------------------
+##OWD - COVID-19 tests performed, in time series. 
+#removing comment after country.
+covid_test_clean <- covid_test %>% 
   separate(Entity, into = c("country", "waste"), sep ="-", ) %>% 
   select(`country`, Date, `Cumulative total`) %>% 
   group_by(country, Date) %>% 
+  
+#summarising to prevent dublets of country names
   summarise(`Cumulative total` = sum(`Cumulative total`)) %>% 
   rename("cumulative_covid_test" = `Cumulative total`)
+
+##WHO - population demographics
+#Dataset composed of several years - only 2013, 2016 og 2020 is holding variables of interest. 
+pop_demo_clean <- pop_demo %>% 
+  rename(country = Country) %>%
   
-
-# ------------------------------------------------------------------------------
-## WHO -Population demographics
-# Population size, median Pop age, urban distribution, % pop > 60 years and < 15 years. Dataset composed 2013, 2016 and 2020 - and collapsed by omitting the variable "Year" and NA. 
-#uses str_replace_all (and not only str_replace) because of more than one ws in population of China and India.
-
-POP_demo_clean <- POP_demo %>% 
-  rename(country = Country) %>% 
+#replaces ws in population size
   mutate(`Population (in thousands) total` = str_replace_all(`Population (in thousands) total`, " ", "")) %>%
   select(-c(`Population living on &lt;$1 (PPP int. $) a day (%)`)) %>%
   filter(Year %in% c("2020", "2013", "2016")) %>% 
   select(-Year) %>% 
   group_by(country) %>%
+  
+#collapsing rows by extracting the first value that is not NA 
   summarise_each(funs(first(.[!is.na(.)])))
-  
-# summarise_each(funs(first(.[!is.na(.)]))) er fundet via stackoverflow (https://stackoverflow.com/questions/28509462/how-to-collapse-many-records-into-one-while-removing-na-values) - virker men jeg forstår den ikke. Følg op på det! MCHR001
 
-# ------------------------------------------------------------------------------
-## Johns Hopkins COVID data
-# Confirmed COVID-19 cases, in time series. 
-# Unifying latitude and longitude for transformation to state of capital, and tidying data by pivot_long
-  
-JH_conftime_clean <- JH_conftime %>% 
+#JH - confirmed COVID-19 cases, in time series
+#Unifying latitude and longitude for transformation to state of capital, removing colonial states/provinces and tidying data by pivot_long
+jh_conftime_clean <- jh_conftime %>% 
   unite(Lat, Long,
               col = Lat_Long, sep = "/") %>%
     mutate(Lat_Long = case_when(
@@ -121,7 +95,7 @@ JH_conftime_clean <- JH_conftime %>%
       str_detect(Lat_Long, "39.549/116.1306") ~ "40.1824/116.4142",
       str_detect(Lat_Long, "47.862/127.7615") ~ "40.1824/116.4142",
       str_detect(Lat_Long, "33.882/113.614") ~ "40.1824/116.4142",
-      str_detect(Lat_Long,"37.8099/101.0583"~ "40.1824/116.4142",
+      str_detect(Lat_Long,"37.8099/101.0583") ~ "40.1824/116.4142",
       str_detect(Lat_Long, "22.3/114.2") ~ "40.1824/116.4142",
       str_detect(Lat_Long, "30.9756/112.2707") ~ "40.1824/116.4142",
       str_detect(Lat_Long, "27.6104/111.7088") ~ "40.1824/116.4142",
@@ -182,19 +156,16 @@ JH_conftime_clean <- JH_conftime %>%
                values_to = "Number of confirmed COVID-19",
                cols = -c("Country/Region", "Lat", "Long"),
              names_ptypes = (date = date())
-  )
+             )
  
-  JH_conftime_clean <- JH_conftime_clean %>%
+  jh_conftime_clean <- jh_conftime_clean %>%
   group_by(`Country/Region`, Lat, Long, date) %>% 
   summarise(`Number of confirmed COVID-19` = sum(`Number of confirmed COVID-19`)) %>% 
     rename(country = `Country/Region`)
 
-  
-    
-# COVID-19 deaths, in time series. 
-# Unifying latitude and longitude for transformation to state of capital, and tidying data by pivot_long  
-
-  JH_deadtime_clean <- JH_deadtime %>% 
+#JH -deaths due to COVID-19, in time series
+#Unifying latitude and longitude for transformation to state of capital, removing colonial states/provinces and tidying data by pivot_long
+  jh_deadtime_clean <- jh_deadtime %>% 
     unite(Lat, Long,
           col = Lat_Long, sep = "/") %>% 
     mutate(Lat_Long = case_when(
@@ -226,7 +197,7 @@ JH_conftime_clean <- JH_conftime %>%
       str_detect(Lat_Long, "47.862/127.7615") ~ "40.1824/116.4142",
       str_detect(Lat_Long, "33.882/113.614") ~ "40.1824/116.4142",
       str_detect(Lat_Long, "22.3/114.2") ~ "40.1824/116.4142",
-      str_detect(Lat_Long,"37.8099/101.0583"~ "40.1824/116.4142",
+      str_detect(Lat_Long,"37.8099/101.0583") ~ "40.1824/116.4142",
       str_detect(Lat_Long, "30.9756/112.2707") ~ "40.1824/116.4142",
       str_detect(Lat_Long, "27.6104/111.7088") ~ "40.1824/116.4142",
       str_detect(Lat_Long, "44.0935/113.9448") ~ "40.1824/116.4142",
@@ -288,16 +259,14 @@ JH_conftime_clean <- JH_conftime %>%
                  names_ptypes = (date = date())
     )
   
-  JH_deadtime_clean <- JH_deadtime_clean %>%
+jh_deadtime_clean <- jh_deadtime_clean %>%
     group_by(`Country/Region`, Lat, Long, date) %>% 
     summarise(`Number of COVID-19 related deaths` = sum(`Number of COVID-19 related deaths`)) %>% 
     rename(country = `Country/Region`)
   
-
-# COVID-19 recovery, in time series. 
-# Unifying latitude and longitude for transformation to state of capital, and tidying data by pivot_long    
-  
-  JH_recotime_clean <- JH_recotime %>% 
+#JH - Recovered from COVID-19, in time series
+#Unifying latitude and longitude for transformation to state of capital, removing colonial states/provinces and tidying data by pivot_long
+jh_recotime_clean <- jh_recotime %>% 
     unite(Lat, Long,
           col = Lat_Long, sep = "/") %>% 
     mutate(Lat_Long = case_when(
@@ -328,7 +297,7 @@ JH_conftime_clean <- JH_conftime %>%
       str_detect(Lat_Long, "39.549/116.1306") ~ "40.1824/116.4142",
       str_detect(Lat_Long, "47.862/127.7615") ~ "40.1824/116.4142",
       str_detect(Lat_Long, "33.882/113.614") ~ "40.1824/116.4142",
-      str_detect(Lat_Long,"37.8099/101.0583"~ "40.1824/116.4142",
+      str_detect(Lat_Long,"37.8099/101.0583") ~ "40.1824/116.4142",
       str_detect(Lat_Long, "22.3/114.2") ~ "40.1824/116.4142",
       str_detect(Lat_Long, "30.9756/112.2707") ~ "40.1824/116.4142",
       str_detect(Lat_Long, "27.6104/111.7088") ~ "40.1824/116.4142",
@@ -389,28 +358,27 @@ JH_conftime_clean <- JH_conftime %>%
                  values_to = "Recovered from COVID-19 (no.)",
                  cols = -c("Country/Region", "Lat", "Long"),
                  names_ptypes = (date = date()))
-  
-  JH_recotime_clean <- JH_recotime_clean %>%
+
+jh_recotime_clean <- jh_recotime_clean %>%
     group_by(`Country/Region`, Lat, Long, date) %>% 
     summarise(`Recovered from COVID-19 (no.)` = sum(`Recovered from COVID-19 (no.)`)) %>% 
     rename(country = `Country/Region`)
 
-# ------------------------------------------------------------------------------  
-#UN datasets
-UN_pop_clean <- UN_pop %>%
+#UN - population demographics data
+un_pop_clean <- un_pop %>%
   select(X2, Year, Series, Value) %>%
   rename("country" = "X2") %>%
   filter(Year == 2019, Series == "Population density" | Series == "Sex ratio (males per 100 females)" | Series == "Population aged 60+ years old (percentage)") %>%
   pivot_wider(names_from = Series, values_from = Value) %>%
   select(country, 'Population density', 'Sex ratio (males per 100 females)', 'Population aged 60+ years old (percentage)')
 
-UN_gdp_clean <- UN_gdp %>%
+#UN - gross domestic product (gdp) data
+un_gdp_clean <- un_gdp %>%
   separate("X1", into = c("nr", "country", "Year", "Series", "Value", "footnotes", "source"), sep = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)")
-  UN_gdp_clean <-  as.data.frame(sapply(UN_gdp_clean, function(x) gsub("\"", "", x))) %>%
+  un_gdp_clean <-  as.data.frame(sapply(un_gdp_clean, function(x) gsub("\"", "", x))) %>%
   filter(Year == 2017, Series == "GDP in current prices (millions of US dollars)" | Series == "GDP per capita (US dollars)") %>%
   pivot_wider(names_from = Series, values_from = Value) %>%
   select(country, 'GDP in current prices (millions of US dollars)', 'GDP per capita (US dollars)')
-
 
 #Gender leader
 sex_leader_clean <- sex_leader %>% 
@@ -419,19 +387,14 @@ sex_leader_clean <- sex_leader %>%
                          `male` == 0 ~ "female")) %>%
   select(country, sex)
 
-
-##WHO - mortality
-#--------------------------------------------------------------------------------------------
-#Adult mortality
+#WHO - adult mortality. Corresponds to the probability of dying between age 15 and 60 per 1000 individuals in 2016
 adult_mortality_clean <- adult_mortality %>% 
   filter(Year == 2016) %>% 
   select(Country, "Adult mortality rate (probability of dying between 15 and 60 years per 1000 population)_Both sexes") %>% 
   rename(country = Country,
          adult_mortality_rate = "Adult mortality rate (probability of dying between 15 and 60 years per 1000 population)_Both sexes")
 
-#Adult_mortality rate corresponds to the probability of dying between age 15 and 60 per 1000 individuals in 2016
-
-#Life expectancy and healthy life expectancy  
+#WHO -life expectancy and healthy life expectancy Corresponds to birth estimates from the year 2016
 life_expectancy_clean <- life_expectancy %>% 
   filter(Year == 2016) %>% 
   select(Country, "Life expectancy at birth (years)_Both sexes", "Healthy life expectancy (HALE) at birth (years)_Both sexes") %>% 
@@ -439,12 +402,7 @@ life_expectancy_clean <- life_expectancy %>%
          life_expectancy = "Life expectancy at birth (years)_Both sexes",
          healthy_life_expectancy = "Healthy life expectancy (HALE) at birth (years)_Both sexes")
 
-#Life expectancy and healthy life expectancy corresponds to at birth estimates from the year 2016
-
-
-#CAUSE-SPECIFIC MORTALITY
-
-#read dataset to object
+#WHO - cause specific mortality - read dataset to object.
 #Renaming variables, removing gender-specifc rows and unnecessary variables 
   mortality_causes_clean <- mortality_causes %>% 
   rename(Cause_1 = "...5", Cause_2 = "...6") %>% 
@@ -482,20 +440,15 @@ life_expectancy_clean <- life_expectancy %>%
 #writeLines("^\\w+\\.")
 #writeLines("^\\.$")
 
-
-
-#BMI
-BMI_above30_clean <- BMI_above30  %>% 
+#WHO - BMI
+bmi_above30_clean <- bmi_above30  %>% 
   separate(BMI_above30_all, into = c("BMI_above30_prevalence_all", "ref_int_all"), sep = " ") %>%
   select(Country, "BMI_above30_prevalence_all") %>%
   filter(Country != "Sudan") %>% 
   rename(country = Country) %>% 
   mutate(BMI_above30_prevalence_all = as.numeric(BMI_above30_prevalence_all))
 
-
-##WHO - public health and environment
-#-------------------------------------------------------------------------------------------------------
-#Air pollution
+#WHO - air pollution
 air_pollution_clean <- air_pollution %>% 
   separate("Concentrations of fine particulate matter (PM2.5)_2016_Total",
            into = c("concentration_fine_particles", "ref_interval"), sep = " ") %>%
@@ -503,13 +456,13 @@ air_pollution_clean <- air_pollution %>%
   rename(country = Country) %>% 
   mutate(concentration_fine_particles = as.numeric(concentration_fine_particles))
 
-#Handwashing facilities
+#WHO - handwashing facilities
 handwashing_facilities_clean <- handwashing_facilities %>%
   select(Country, "2017_Population with basic handwashing facilities at home (%)_Total") %>% 
   rename(country = Country,
          proportion_basic_handwashing_facilities = "2017_Population with basic handwashing facilities at home (%)_Total")
 
-#Household pollution - clean fuel technologies
+#WHO - household pollution - clean fuel technologies
 household_pollution_clean <- household_pollution %>% 
   select(Country, "Proportion of population with primary reliance on clean fuels and technologies (%)_2017") %>% 
   rename(country = Country,
@@ -517,14 +470,14 @@ household_pollution_clean <- household_pollution %>%
   mutate(proportion_using_clean_fuels = recode(proportion_using_clean_fuels, "&gt;95"="100", "&lt;5" = "1")) %>% 
   mutate(proportion_using_clean_fuels = as.numeric(proportion_using_clean_fuels))
 
-#Measles reported cases
+#WHO - measles reported cases
 measles_cases_clean <- measles_cases %>% 
   select(Country, "Measles - number of reported cases_2018") %>% 
   rename(country = Country,
          measles_reported_cases = "Measles - number of reported cases_2018") %>% 
   mutate(measles_reported_cases = as.numeric(measles_reported_cases))
 
-#Mortality from environmental pollution
+#WHO - mortality from environmental pollution
 mortality_pollution_related_clean <- mortality_pollution_related %>%
   separate("Ambient and household air pollution attributable death rate (per 100 000 population)_2016_Both sexes", 
            into = c("pollution_attributable_death_rate", "ref_interval"), sep = "\\[") %>%
@@ -535,28 +488,23 @@ mortality_pollution_related_clean <- mortality_pollution_related %>%
   mutate(pollution_attributable_death_rate = as.numeric(pollution_attributable_death_rate)) %>% 
   mutate(pollution_attributable_death_rate_std = as.numeric(pollution_attributable_death_rate_std))
 
-
-##WHO - Health workforce and system
-#-------------------------------------------------------------------------------------------------------
-#Current health expenditure
+#WHO - current health expenditure
 health_expenditure_clean <- health_expenditure %>% 
   select(Country, "2017_Current health expenditure (CHE) per capita in US$") %>% 
   rename(country = Country,
          current_health_expenditure_per_person_USD = "2017_Current health expenditure (CHE) per capita in US$")
-
 #Definition: Per capita current expenditures on health expressed in respective currency - US dolar. 
 #Rationale: This indicator calculates the average expenditure on health per person. It contributes to understand the health expenditure relative to the population size facilitating international comparison.
 
-#Health infrastructure
+#WHO - health infrastructure
 health_infrastructure_clean <- health_infrastructure %>% 
   filter(Year == "2013") %>% 
   select(Country, "Total density per 100 000 population: Hospitals") %>% 
   rename(country = Country,
          density_of_hospitals = "Total density per 100 000 population: Hospitals")
-
 #Definition: Number of hospitals, including the following hospital categories: rural and district, provincial (second level referral), regional/specialized/teaching and research hospitals (tertiary care), from the public and private sectors, per 100,000 population.
 
-#Medical doctors
+#WHO - medical doctors
 medical_doctors_clean <- medical_doctors %>% 
   group_by(Country) %>% 
   arrange(desc(Year)) %>% 
@@ -565,10 +513,9 @@ medical_doctors_clean <- medical_doctors %>%
   select(Country, "Medical doctors (per 10 000 population)") %>% 
   rename(country = Country,
          density_of_medical_doctors = "Medical doctors (per 10 000 population)")
-
 #Definition: Medical doctors per 10000 inhabitants. Includes generalists , specialist medical practitioners and medical doctors not further defined, in the given national and/or subnational area.
   
-#Nurses and midwifes
+#WHO - nursus and midwifes
 nurses_midwifes_clean <- nurses_midwifes %>%
   group_by(Country) %>% 
   arrange(desc(Year)) %>% 
@@ -577,14 +524,11 @@ nurses_midwifes_clean <- nurses_midwifes %>%
   select(Country, "Nursing and midwifery personnel (per 10 000 population)") %>% 
   rename(country = Country,
          density_of_nurses_midwifes = "Nursing and midwifery personnel (per 10 000 population)")
-
 #Definition: Nurses and midwifes per 10000 inhabitants. 
 
-
-##WHO - Smoking
-#-------------------------------------------------------------------------------
+#WHO - Smoking
 #Read dataset to object
-smoking_clean <- smoking %>% 
+smoking_clean <- smoking %>%
   
 #Separate into variables of prevalence and confidence interval and remove unnecessary variables and rename
   separate("Prevalence of smoking any tobacco product among persons aged &gt;= 15 years_Male", 
@@ -594,10 +538,10 @@ smoking_clean <- smoking %>%
   mutate(prevalence_smoking_males = as.numeric(prevalence_smoking_males)) %>% 
   mutate(prevalence_smoking_females = as.numeric(prevalence_smoking_females)) %>% 
   select(Country, Year, prevalence_smoking_males, prevalence_smoking_females) %>% 
-  rename(country = Country) %>% 
-
+  rename(country = Country) %>%
+  
 #Remove predicted future prevalence of smoking
-  filter(Year != "2025") %>% 
+  filter(Year != "2025") %>%
   
 #Limiting dataset to most recent observation
   group_by(country) %>% 
@@ -610,26 +554,20 @@ smoking_clean <- smoking %>%
 
 #Removing unnecessary variables
   select(country, prevalence_smoking)  
-
 #Definition: Percentage of population above age 15 years smoking any tobacco product.
 
 
-
-
-# Write data
-# ------------------------------------------------------------------------------
-#write_tsv(x = my_data_clean, path = "data/02_my_data_clean.tsv")
-
-write_tsv(x = COVID_test_clean, 
-          path = "data/02_COVID_test_clean.tsv" )
-write_tsv(x = POP_demo_clean, 
-          path = "data/02_POP_demo_clean.tsv" )
-write_tsv(x = JH_conftime_clean, 
-          path = "data/02_JH_conftime_clean.tsv" )
-write_tsv(x = JH_deadtime_clean, 
-          path = "data/02_JH_deadtime_clean.tsv" )
-write_tsv(x = JH_recotime_clean, 
-          path = "data/02_JH_recotime_clean.tsv" )
+# Writing data ------------------------------------------------------------
+write_tsv(x = covid_test_clean, 
+          path = "data/02_covid_test_clean.tsv" )
+write_tsv(x = pop_demo_clean, 
+          path = "data/02_pop_demo_clean.tsv" )
+write_tsv(x = jh_conftime_clean, 
+          path = "data/02_jh_conftime_clean.tsv" )
+write_tsv(x = jh_deadtime_clean, 
+          path = "data/02_jh_deadtime_clean.tsv" )
+write_tsv(x = jh_recotime_clean, 
+          path = "data/02_jh_recotime_clean.tsv" )
 write_tsv(x = adult_mortality_clean,
           path = "data/02_adult_mortality_clean.tsv")
 write_tsv(x = life_expectancy_clean,
@@ -656,13 +594,13 @@ write_tsv(x = nurses_midwifes_clean,
           path = "data/02_nurses_midwifes_clean.tsv")
 write_tsv(x = smoking_clean,
           path = "data/02_smoking_clean.tsv")
-write_tsv(x = UN_pop_clean,
-          path = "data/02_UN_pop_clean.tsv")
-write_tsv(x = UN_gdp_clean,
-          path = "data/02_UN_gdp_clean.tsv")
+write_tsv(x = un_pop_clean,
+          path = "data/02_un_pop_clean.tsv")
+write_tsv(x = un_gdp_clean,
+          path = "data/02_un_gdp_clean.tsv")
 write_tsv(x = sex_leader_clean,
           path = "data/02_sex_leader_clean.tsv")
-write_tsv(x = BMI_above30_clean,
-          path = "data/02_BMI_above30_clean.tsv")
+write_tsv(x = bmi_above30_clean,
+          path = "data/02_bmi_above30_clean.tsv")
 write_tsv(x = mortality_causes_clean,
           path = "data/02_mortality_causes_clean.tsv")

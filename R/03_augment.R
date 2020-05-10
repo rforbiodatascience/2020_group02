@@ -1,56 +1,44 @@
-# Clear workspace
-# ------------------------------------------------------------------------------
+# Clear workspace ---------------------------------------------------------
 rm(list = ls())
 
-# Load libraries
-# ------------------------------------------------------------------------------
+# Load libraries ----------------------------------------------------------
 library("tidyverse")
-library("readr")
-library("forcats")
-library("purrr")
 library("survivalAnalysis")
 
-# Define functions
-# ------------------------------------------------------------------------------
+# Define functions --------------------------------------------------------
 source(file = "R/99_project_functions.R")
 
-
-# Load data
-# ------------------------------------------------------------------------------
+# Load data ---------------------------------------------------------------
 adult_mortality_clean <- read_tsv(file = "data/02_adult_mortality_clean.tsv")
 air_pollution_clean <- read_tsv(file = "data/02_air_pollution_clean.tsv")
-bmi_above30_clean <- read_tsv(file = "data/02_BMI_above30_clean.tsv")
-COVID_test_clean <- read_tsv(file = "data/02_COVID_test_clean.tsv")
+bmi_above30_clean <- read_tsv(file = "data/02_bmi_above30_clean.tsv")
+covid_test_clean <- read_tsv(file = "data/02_covid_test_clean.tsv")
 handwashing_facilities_clean <- read_tsv(file = "data/02_handwashing_facilities_clean.tsv")
 health_expenditure_clean <- read_tsv(file = "data/02_health_expenditure_clean.tsv")
 health_infrastructure_clean <- read_tsv(file = "data/02_health_infrastructure_clean.tsv")
 household_pollution_clean <- read_tsv(file = "data/02_household_pollution_clean.tsv")
-JH_conftime_clean <- read_tsv(file = "data/02_JH_conftime_clean.tsv", col_types = cols(date = col_date(format="%m/%d/%y")))
-JH_deadtime_clean <- read_tsv(file = "data/02_JH_deadtime_clean.tsv", col_types = cols(date = col_date(format="%m/%d/%y")))
-JH_recotime_clean <- read_tsv(file = "data/02_JH_recotime_clean.tsv", col_types = cols(date = col_date(format="%m/%d/%y")))
+jh_conftime_clean <- read_tsv(file = "data/02_jh_conftime_clean.tsv", col_types = cols(date = col_date(format="%m/%d/%y")))
+jh_deadtime_clean <- read_tsv(file = "data/02_jh_deadtime_clean.tsv", col_types = cols(date = col_date(format="%m/%d/%y")))
+jh_recotime_clean <- read_tsv(file = "data/02_jh_recotime_clean.tsv", col_types = cols(date = col_date(format="%m/%d/%y")))
 life_expectancy_clean <- read_tsv(file = "data/02_life_expectancy_clean.tsv")
 measles_cases_clean <- read_tsv(file = "data/02_measles_cases_clean.tsv")
 medical_doctors_clean <- read_tsv(file = "data/02_medical_doctors_clean.tsv")
 mortality_causes_clean <- read_tsv(file = "data/02_mortality_causes_clean.tsv")
 mortality_pollution_related_clean <- read_tsv(file = "data/02_mortality_pollution_related_clean.tsv")
 nurses_midwifes_clean <- read_tsv(file = "data/02_nurses_midwifes_clean.tsv")
-POP_demo_clean <- read_tsv(file = "data/02_POP_demo_clean.tsv")
+pop_demo_clean <- read_tsv(file = "data/02_pop_demo_clean.tsv")
 smoking_clean <- read_tsv(file = "data/02_smoking_clean.tsv")
-UN_gdp_clean <- read_tsv(file = "data/02_UN_gdp_clean.tsv")
-UN_pop_clean <- read_tsv(file = "data/02_UN_pop_clean.tsv")
+un_gdp_clean <- read_tsv(file = "data/02_un_gdp_clean.tsv")
+un_pop_clean <- read_tsv(file = "data/02_un_pop_clean.tsv")
 sex_leader_clean <- read_tsv(file = "data/02_sex_leader_clean.tsv")
 
-
-
-# Wrangle data
-# ------------------------------------------------------------------------------
-
+# Wrangle data ------------------------------------------------------------
 #Anti-join for test of differences in naming of countries - Johns Hopkins used as reference
 dfs <- mget(ls(pattern = ".+_clean"))
 
 list_of_dataframes <- replicate(22, data.frame())
 for (i in seq_along(dfs)) {
-  list_of_dataframes[[i]] <- anti_join(dfs[[i]], JH_conftime_clean, by = "country") %>% 
+  list_of_dataframes[[i]] <- anti_join(dfs[[i]], jh_conftime_clean, by = "country") %>% 
     count(country, sort = TRUE)
 }
 
@@ -81,9 +69,9 @@ list2env(dfs_corr_countries, envir = .GlobalEnv)
 #-----------------------------------------------------------------------------
 #Performing left-join to JH dataset
 
-covid_join <- JH_conftime_clean %>% 
-  left_join(., JH_deadtime_clean, by=c('country', "Lat", "Long", "date")) %>% 
-  left_join(., JH_recotime_clean, by=c('country', "Lat", "Long", "date")) %>%
+covid_join <- jh_conftime_clean %>% 
+  left_join(., jh_deadtime_clean, by=c('country', "Lat", "Long", "date")) %>% 
+  left_join(., jh_recotime_clean, by=c('country', "Lat", "Long", "date")) %>%
   left_join(., adult_mortality_clean, by=c('country')) %>% 
   left_join(., air_pollution_clean, by=c('country')) %>% 
   left_join(., bmi_above30_clean, by=c('country')) %>%
@@ -95,13 +83,13 @@ covid_join <- JH_conftime_clean %>%
   left_join(., medical_doctors_clean, by=c('country')) %>% 
   left_join(., mortality_pollution_related_clean, by=c('country')) %>% 
   left_join(., nurses_midwifes_clean, by=c('country')) %>% 
-  left_join(., POP_demo_clean, by=c('country'))%>% 
+  left_join(., pop_demo_clean, by=c('country'))%>% 
   left_join(., sex_leader_clean, by=c('country'))%>% 
   left_join(., smoking_clean, by=c('country')) %>% 
-  left_join(., UN_pop_clean, by=c('country')) %>% 
+  left_join(., un_pop_clean, by=c('country')) %>% 
   left_join(., mortality_causes_clean, by=c('country')) %>%  
-  left_join(., UN_gdp_clean, by=c('country')) %>%
-  left_join(., COVID_test_clean, by=c('country', c("date" = "Date"))) 
+  left_join(., un_gdp_clean, by=c('country')) %>%
+  left_join(., covid_test_clean, by=c('country', c("date" = "Date"))) 
 
 covid_join <- covid_join %>% 
   arrange(country, date)
@@ -155,7 +143,6 @@ thousand_deaths_by_country <- covid_join %>%
   arrange(date) %>% 
   summarise(thousand_deaths=head(date,1))
 
-
 covid_join <- covid_join %>% 
   left_join(., first_case_by_country, by=c('country')) %>% 
   left_join(., first_death_by_country, by=c('country')) %>%
@@ -206,7 +193,6 @@ covid_join <- covid_join %>%
   
 #'Kidney diseases', 'Road injury'  
 
-
 #Generating tertiles of covariates
 list_of_cov <- names(covid_join)[8:40]
 for(i in list_of_cov) {
@@ -234,20 +220,12 @@ df_shiny <- covid_join %>%
          "Pollution attributable death rate" = pollution_attributable_death_rate)  
   
 
-  
-  
-
-# Write data
-# ------------------------------------------------------------------------------
+# Write data --------------------------------------------------------------
 write_tsv(x = country_differences,
           path = "data/country_differences.tsv")
-
 
 write_tsv(x = covid_join,
           path = "data/03_covid_aug.tsv")
 
 write_tsv(x = covid_join,
           path = "covid_app/03_covid_aug.tsv")
-
-write_tsv(x = df_shiny, 
-          path = "covid_app/03_df_shiny_aug.tsv")
