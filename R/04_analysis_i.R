@@ -36,7 +36,7 @@ map_dead_cases_per_100000 <- covid_map %>%
   leaflet() %>%
   addProviderTiles(provider = "Stamen.TerrainBackground") %>% 
   addCircles(covid_map, lng = ~long, lat = ~lat, radius = ~`dead_cases_per_100000` * 5000,
-             popup = ~popup_death, weight = 1, color = "red", opacity = 2)
+             popup = ~popup_death, weight = 3, color = "red", opacity = 2)
 
 #Global map for total no. of deaths
 map_number_of_covid_19_related_deaths <- covid_map %>% 
@@ -44,7 +44,7 @@ map_number_of_covid_19_related_deaths <- covid_map %>%
   leaflet() %>%
   addProviderTiles(provider = "Stamen.TerrainBackground") %>% 
   addCircles(covid_map, lng = ~long, lat = ~lat, radius = ~`number_of_covid-19_related_deaths` * 20,
-             popup = ~popup_death, weight = 1, color = "red", opacity = 2) 
+             popup = ~popup_death, weight = 3, color = "red", opacity = 2) 
 
 #Global map of deaths from 1st december to 100 confirmed cases, as range.
 #Filtering NAs from variables to be plotted. Adding a new variable (covid_map_cuts) for indexing no. of days from Dec 1st to first 100 confirmed COVID in ranges (1-80; 80-120; .. days)
@@ -89,7 +89,16 @@ map_days_from_100_cases_to_100_deaths  <- map_days_from_100_cases_to_100_deaths%
 
 
 # Write data - saving maps ------------------------------------------------
-saveWidget(widget = map_dead_cases_per_100000, file = "map_dead_cases_per_100000.html")
-saveWidget(widget = map_number_of_covid_19_related_deaths, file = "map_number_of_covid_19_related_deaths.html")
-saveWidget(widget = map_days_from_dec1_to_100_cases, file = "map_days_from_dec1_to_100_cases.html")
-saveWidget(widget = map_days_from_100_cases_to_100_deaths, file = "map_days_from_100_cases_to_100_deaths.html")
+#Savewiget only possible to working directory. Using normalizePath to save to subdirectories. 
+
+f<-"results/04_analysis_i/map_dead_cases_per_100000.html"
+saveWidget(widget = map_dead_cases_per_100000, file.path(normalizePath(dirname(f)), basename(f)))
+
+f<-"results/04_analysis_i/map_number_of_covid_19_related_deaths.html"
+saveWidget(widget = map_number_of_covid_19_related_deaths, file.path(normalizePath(dirname(f)), basename(f)))
+
+f<-"results/04_analysis_i/map_days_from_dec1_to_100_cases.html"
+saveWidget(widget = map_days_from_dec1_to_100_cases, file.path(normalizePath(dirname(f)), basename(f)))
+
+f<-"results/04_analysis_i/map_days_from_100_cases_to_100_deaths.html"
+saveWidget(widget = map_days_from_100_cases_to_100_deaths, file.path(normalizePath(dirname(f)), basename(f)))
