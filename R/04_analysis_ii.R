@@ -152,7 +152,7 @@ kruskal.test(days_from_100_cases_to_100_deaths ~ sex, data = covid_aug_by_countr
 png("results/04_analysis_ii/Spread of COVID-19 by population demographics.png",
     width=12, height = 8,unit='in',res=300)
 plot_list2$population_median_age_years_ter + plot_list2$population_proportion_under_15_ter + 
-  plot_list2$population_proportion_over_60_ter + plot_list2$population_density_ter + 
+  plot_list2$population_aged_60_years_old_percentage_ter + plot_list2$population_density_ter + 
   plot_list2$population_living_in_urban_areas_ter + plot_list2$gdp_per_capita_us_dollars_ter + 
   plot_annotation(title = 'Association between population demographics and the spread of COVID-19',
                   subtitle = 'Defined as number of days from December 1st 2019 to reaching 100 cases per country') 
@@ -191,7 +191,7 @@ dev.off()
 png("results/04_analysis_ii/Death from COVID-19 by population demographics.png",
     width=12, height = 8,unit='in',res=300)
 plot_list1$population_median_age_years_ter + plot_list1$population_proportion_under_15_ter + 
-  plot_list1$population_proportion_over_60_ter + plot_list1$population_density_ter + 
+  plot_list1$population_aged_60_years_old_percentage_ter + plot_list1$population_density_ter + 
   plot_list1$population_living_in_urban_areas_ter + plot_list1$gdp_per_capita_us_dollars_ter + 
   plot_annotation(title = 'Association between population demographics and death from COVID-19',
                   subtitle = 'Defined as number of days from reaching 100 cases until reaching 100 deaths per country') 
