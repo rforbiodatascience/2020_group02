@@ -1,22 +1,20 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-#---------------------------------------------------------
+# Info about the app ------------------------------------------------------
+#Graphics represents COVID-19 confirmed cases, COVID-19 deaths and COVID-19 test in times series
+#Table represents values of sepcial interest to the porject
+#Click on the "Run App" icon to run the app
 
+# Loading libraries -------------------------------------------------------
 library(shiny)
 library(tidyverse)
 
-##Loading files 
 
+# Loading files -----------------------------------------------------------
 covid_aug_app <- read_tsv(file = "03_covid_aug.tsv")
 df_shiny_app <- read_tsv(file = "03_df_shiny_aug.tsv")
 
 
-
-
-## Define UI for app that draws a timeseries for Covid-19 deaths, Covid-19 confirmed cases 
-#and Covid-19 tests performed until April 16th. 
+# App function coding -----------------------------------------------------
+#Defining user interface for app - selection of country from df_shiny, showing Denmark by default in sidebar panel. Output (graphics and table) is shown in main panel. 
 
 ui <- fluidPage(
     titlePanel("COVID-19 data until May 4th"),
@@ -25,19 +23,17 @@ ui <- fluidPage(
             selectInput(inputId = "country", "Select a country", choices = df_shiny_app$country, selected = "Denmark" )
         ),
       
-        
         mainPanel(
             tableOutput("covid_data"), 
             plotOutput("plot1"),
             plotOutput("plot2")) 
-
-
     )
 )
+
+#defining output, subsetting country from to different df to input country. Coding plots by ggplot and aligning text in Tabel  
 server <- function(input, output, session){
     output$covid_data <- renderTable({
          country_filter <- subset(df_shiny_app, df_shiny_app$country == input$country) 
-        
       }, digits = 1, align = "c")
     
     output$plot1 <-renderPlot({
@@ -47,11 +43,9 @@ server <- function(input, output, session){
             geom_area(mapping = aes (x = date, y = confirmed_cases_per_100000), fill = "red", color = "red") +
             geom_area(mapping = aes (x = date, y = test_cases_per_100000), fill = "green", color = "green", alpha = 0.3 ) +
             labs(x = "",
-                 y = "Confirmed (and in some test) cases per 100.000", 
-                  title = "Confirmed COVID-19 cases per 100.000 - in green test data")+
+                 y = "Conf. cases (and if available conf. tests) per 100.000", 
+                  title = "Confirmed COVID-19 cases per 100.000 - in green COVID-19 test data")+
           theme_minimal(base_size = 14)
-        
-        
     })
     
     output$plot2 <-renderPlot({
@@ -60,10 +54,9 @@ server <- function(input, output, session){
                 geom_area(color = "blue", fill = "blue") +
                 labs(x = "",
                      y = "Deaths per 100.000",
-                     title = "COVID-19 related deaths") +
+                     title = "COVID-19 related deaths pr. 100.000") +
               theme_minimal(base_size = 14)
     })
-    
 }
 
 # Run the application 
