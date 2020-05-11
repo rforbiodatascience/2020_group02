@@ -1,6 +1,6 @@
 ---
 title: "Influence of demographic characteristic on Covid-19 kinetics"
-author: "Mette Christoffersen, Signe Modvig, Hans Jakob Hartling og Mette Christensen"
+author: "Mette Christoffersen, Signe Modvig, Hans Jakob Hartling and Mette Christensen"
 date: "11 5 2020"
 output: 
   ioslides_presentation:
@@ -18,9 +18,11 @@ library("kableExtra")
 ```
 
 
-## Aim - hypothesis - inkl søjleplot og map plot Mette 
-<div class="columns-1">
-  <div class="centered">
+## Aim and hypothesis - inkl søjleplot og map plot Mette 
+
+- Aim: Linking COVID-19 and demograhic/population data - and have fun with R :)
+- Hypothesis: That factors like urbanisation and median population age affects COVID-19 kinetics
+
 - [Global map - days from 100 cases to 100 deaths](map_days_from_100_cases_to_100_deaths.html)
 - [Global map - days from 100 cases to 100 deaths](map_days_from_dec1_to_100_cases.html)
 
@@ -43,7 +45,10 @@ library("kableExtra")
 ## Covid-19 cases and deaths in each country
 ![](../results/04_analysis_point_plots/cases_deaths_log.gif)
 
-## Results - variable selection - Mette Chr
+## Results - variable selection 
+
+- Liniar correlation analysis lm(days from dec1 to 100 cases ~ diff. variables)
+- Significant correlations:
 
 ```{r include=FALSE, paged.print=FALSE}
 
@@ -86,7 +91,7 @@ summary(model2)
 cor_covar = round(coefficients(model1_final), digits = 6) 
 
 cor_covar %>% 
-  kable(caption = "Table 1. Correlation between covariants", format = "html") %>% 
+  kable(caption = "Table 1. Correlation between covariats", format = "html") %>% 
   kableExtra::kable_styling(position = "left", font_size = 12, bootstrap_options = "striped", full_width = FALSE)
 
 
@@ -144,7 +149,14 @@ cor_covar %>%
   
 
 
-## Shiny app - Mette Chr
+## COVID-19 app
+
+<div class="centered">
+
+ - Confirmed cases, test and death in time series 
+
+https://r-kursus.shinyapps.io/covid_app/
+
 
 ## Another explanation? {.flexbox .vcenter}
 <div class="columns-2">
@@ -164,6 +176,12 @@ OR JUST CONFOUNDING BY DEVELOPMENTAL STATUS OF THE COUNTRIES...
 ![](../doc/Developed_and_developing_countries.png){ width=100%, height=100%}
 </div>
 
-## Conclusion slide - HJ
+## Conclusion - A small virus in a world full of data
+  ![](https://ing.dk/sites/ing/files/topillustration/2020/03/2019-ncov-cdc-23312coronavirus.png){ width=30%, height=30%}
+   
+  
+  - This project demonstrates the strength of Tidyverse R by cleansing, transformation, visualization and communication Covid-19 data
+  - Performed focusing on reproducibility
+  - All data analysis is available at github (https://github.com/rforbiodatascience/2020_group02)
 
 
