@@ -1,19 +1,16 @@
-# Clear workspace
-# ------------------------------------------------------------------------------
+# Clear workspace ---------------------------------------------------------
 rm(list = ls())
 
-# Load libraries
-# ------------------------------------------------------------------------------
+
+# Load libraries ----------------------------------------------------------
 library("tidyverse")
-library("patchwork")
 
 
-# Define functions
-# ------------------------------------------------------------------------------
-# source(file = "R/99_project_functions.R")
+# Define functions --------------------------------------------------------
+source(file = "R/99_project_functions.R")
 
-# Load data
-# ------------------------------------------------------------------------------
+
+# Load data ---------------------------------------------------------------
 levels <- c("1", "2", "3")
 covid_aug <- read_tsv(file = "data/03_covid_aug.tsv",
                       col_types = cols(thousand_deaths = col_date(),
@@ -54,13 +51,8 @@ covid_aug <- read_tsv(file = "data/03_covid_aug.tsv",
                                        cumulative_covid_test_ter = col_factor(levels = levels)))
 
 
-covid_aug_by_country <- covid_aug %>% 
-  group_by(country) %>% 
-  slice(which.max(date))  
 
-
-
-# #Which factors affect number of COVID-19 confirmed cases and deaths across countries? --------
+# Which factors affect number of COVID-19 confirmed cases and deaths across countries? --------
 
 #Days from December 1st to 100 cases - as a function of country
 covid_aug %>%
@@ -74,7 +66,7 @@ covid_aug %>%
   labs(title = "Spread of COVID-19", y = "Days from December 1st 2019 until 100 cases", x = "Country") +
   scale_fill_manual( values = c( "yes"="red", "no"="darkgray" ), guide = FALSE ) +
   theme(panel.background = element_rect(fill = "white"), axis.text.x=element_text(angle=40, hjust=1, vjust=1.2, margin=margin(-15,0,0,0)), axis.ticks = element_blank())
-ggsave("results/04_introduction/COVID-19 spread by country.png", width=22, height = 11, unit='in')
+ggsave("results/04_analysis_aim/COVID-19 spread by country.png", width=22, height = 11, unit='in')
 
 
 #Days from 100 cases to 100 deaths - as a function of country
@@ -89,4 +81,4 @@ covid_aug %>%
   scale_fill_manual( values = c( "yes"="red", "no"="darkgray" ), guide = FALSE ) +
   theme(panel.background = element_rect(fill = "white"), 
         axis.text.x=element_text(angle=40, hjust=1, vjust=1.4), axis.ticks = element_blank()) 
-ggsave("results/04_introduction/COVID-19 mortality by country.png", width=10, height = 6.5,unit='in')
+ggsave("results/04_analysis_aim/COVID-19 mortality by country.png", width=10, height = 6.5,unit='in')
