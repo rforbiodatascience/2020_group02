@@ -103,7 +103,7 @@ p_le <- ggplot(covid_aug_by_country, aes_string(x="life_expectancy", y = 'days_f
   ggtitle("Development of Corona-pandemic by country") +
   guides(alpha="none")
 
-p_urban <- ggplot(covid_aug, aes_string(x="population_living_in_urban_areas", y = 'days_from_dec1_to_100_cases')) +
+p_urban <- ggplot(covid_aug_by_country, aes_string(x="population_living_in_urban_areas", y = 'days_from_dec1_to_100_cases')) +
   geom_point(aes(color=log(gdp_per_capita_us_dollars), size=population_in_thousands_total, alpha=0.5)) + 
   scale_size(range = c(0.5, 20), name="Population", labels=NULL) +
   scale_colour_gradientn(colours=topo.colors(5), name="GDP per capita (log)") +
@@ -114,7 +114,7 @@ p_urban <- ggplot(covid_aug, aes_string(x="population_living_in_urban_areas", y 
 
 
 
-ggplotly(p_resp) %>% 
+ggplotly(p_resp, tooltip = c("country", "gdp_per_capita_us_dollars")) %>% 
   highlight("plotly_hover")
 ggplotly(p_urban, tooltip = c("country")) %>% 
   highlight("plotly_hover")
@@ -124,10 +124,10 @@ ggplotly(p_urban) %>%
 
 # Gif ---------------------------------------------------------------------
 
+#renaming output-variables for gif
 covid_aug2 <- covid_aug %>%
   rename(covid_deaths = 'number_of_covid-19_related_deaths') %>%
   rename(covid_cases = 'number_of_confirmed_covid-19')
-
 #Making gif showing progression of corona for each country - log-axis
  gif_plot_log <-ggplot(covid_aug2, aes_string(x="covid_cases", y = "covid_deaths")) +
    geom_point(aes(color=log(gdp_per_capita_us_dollars), size=population_in_thousands_total, alpha=0.5)) + 
@@ -148,17 +148,6 @@ covid_aug2 <- covid_aug %>%
  
  
 
- 
- covid_aug2 <- covid_aug %>%
-   mutate(pop_10 = ntile(population_in_thousands_total, 10)) %>%
-   mutate(gdp_10 = ntile(gdp_per_capita_us_dollars, 10))
- 
- covid_aug_by_country2 <- covid_aug2 %>% 
-   group_by(country) %>% 
-   slice(which.max(date))
- 
- 
- 
 
 # Write data
 # ------------------------------------------------------------------------------
