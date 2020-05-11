@@ -1,26 +1,23 @@
-# Clear workspace
-# ------------------------------------------------------------------------------
+
+# Clear workspace ---------------------------------------------------------
+
 rm(list = ls())
 
-# Load libraries
-# ------------------------------------------------------------------------------
+
+# Load libraries ----------------------------------------------------------
+
 library("tidyverse")
 library("patchwork")
 library("survivalAnalysis")
 library("broom")
 
-# Define functions
-# ------------------------------------------------------------------------------
-# source(file = "R/99_project_functions.R")
 
-# Load data
-# ------------------------------------------------------------------------------
+# Load data ---------------------------------------------------------------
+
 covid_aug <- read_tsv(file = "data/03_covid_aug.tsv")
 
-# Data analysis
-# ------------------------------------------------------------------------------
 
-#PCA
+# PCA data analysis -------------------------------------------------------
 
 #Filtering to avoid missing data and removing non-numeric columns
 #Performing PCA based on country demographics
@@ -43,6 +40,7 @@ covid_pca
 
 covid_pca %>% tidy("pcs")
 
+
 #Plot of PCA significance of individual PCs
 PC_sign <- covid_pca %>% tidy("pcs") %>% 
   ggplot(aes(x = PC, y = percent)) +
@@ -57,8 +55,6 @@ dev.off()
 
 
 #Naming of filtered dataset for augmenting
-#For some reason china appears twice in covid_aug??? That's why it appears black on the tertile and light on the binary
-#The wrong China is removed manually below until we find error
 covid_filtered <- covid_aug %>%
   filter(!is.na(concentration_fine_particles)) %>% 
   filter(!is.na(bmi_above30_prevalence_all)) %>% 
@@ -68,7 +64,6 @@ covid_filtered <- covid_aug %>%
   filter(!is.na(population_aged_60_years_old_percentage)) %>% 
   filter(!is.na(population_density)) %>% 
   filter(!is.na(cardiovascular_diseases)) %>% 
-  filter(lat != 37.8099) %>% 
   group_by(country) %>% 
   slice(which.max(date)) %>%
   mutate(binary_death = if_else(!is.na(hundred_deaths), 1, 0)) %>% 
@@ -129,10 +124,9 @@ covid_pca_aug_k_org_pca <- covid_k_pca %>%
   rename(cluster_pca = .cluster)
 covid_pca_aug_k_org_pca
 
-# Plots and .pngs
-# ------------------------------------------------------------------------------
 
-#creating plots
+# Comparative plots and .pngs ---------------------------------------------------------
+
 
 #Comparative plots for absolute deaths
 #We see a nice congruence between cluster, PCA and COVID, but

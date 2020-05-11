@@ -12,7 +12,23 @@ output:
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## Population living in urban areas
+## Aim - hypothesis - inkl søjleplot og map plot Mette Chr
+
+## Materiale - oversigt over dataset - Mette Christof
+
+## Metode 1 - clean flowchart  - Mette Christof
+
+## Metode 2 - analyse flowchart  - Mette Christof
+
+## Results GIF - HJ
+
+## Results - variable selection - Mette Chr
+
+## Respiratory -Signe
+
+## Life expectancy Signe
+
+## Population living in urban areas Signe
 
 <div class="columns-2">
   <div class="centered">
@@ -20,25 +36,15 @@ knitr::opts_chunk$set(echo = FALSE)
   ![](../results/04_analysis_survival/KM_population_living_in_urban_areas_ter.png){width=70%, height=70% }
 
   ![](../results/04_analysis_iv/cases_population_living_in_urban_areas.png){ width=110%, height=110% }
+- fgdd
 </div>
 
+## PCA - Signe
 
-## Slide with Bullets
+## Shiny app - Mette Chr
 
-- Bullet 1
-- Bullet 2
-- Bullet 3
+## Sex leader - Mette Christof
 
-## Slide with R Output
+## Conclusion slide - HJ
 
-![KM_adult_mortality_rate_ter]('/results/04_analysis_iii/KM_adult_mortality_rate_ter.png')
-
-```{r}
-```
-
-## Slide with Plot
-
-```{r pressure}
-plot(pressure)
-```
 
