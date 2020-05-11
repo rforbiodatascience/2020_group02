@@ -108,9 +108,9 @@ for(i in list_of_cov_hj){
 }
 
 
-covid_aug_by_country <- covid_aug_by_country %>%
-  mutate(quartile = ntile(value, 10)) %>%
-  mutate
+covid_aug_by_country2 <- covid_aug_by_country %>%
+  mutate(pop_10 = ntile(population_in_thousands_total, 10)) %>%
+  mutate(gdp_10) = ntile(gdp_per_capita_us_dollars, 10)
 
 #Making interactive plot for selected variables (life_exp, health_expenditure, Pollution, pop in urban, pop >60 years)
 
