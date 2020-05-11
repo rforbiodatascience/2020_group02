@@ -26,6 +26,10 @@ covid_aug_by_country <- covid_aug %>%
   group_by(country) %>% 
   slice(which.max(date)) 
 
+covid_aug_by_country2 <- covid_aug2 %>% 
+  group_by(country) %>% 
+  slice(which.max(date))
+
 # Wrangle data
 # ------------------------------------------------------------------------------
 
@@ -108,14 +112,14 @@ for(i in list_of_cov_hj){
 }
 
 
-covid_aug_by_country2 <- covid_aug_by_country %>%
+covid_aug2 <- covid_aug %>%
   mutate(pop_10 = ntile(population_in_thousands_total, 10)) %>%
-  mutate(gdp_10) = ntile(gdp_per_capita_us_dollars, 10)
+  mutate(gdp_10 = ntile(gdp_per_capita_us_dollars, 10))
 
 #Making interactive plot for selected variables (life_exp, health_expenditure, Pollution, pop in urban, pop >60 years)
 
-p_le <- ggplot(covid_aug, aes_string(x="life_expectancy", y = 'days_from_dec1_to_100_cases')) +
-  geom_point(aes(color=log(gdp_per_capita_us_dollars), size=population_in_thousands_total, alpha=0.5)) + 
+p_le <- ggplot(covid_aug_by_country2, aes_string(x="life_expectancy", y = 'days_from_dec1_to_100_cases')) +
+  geom_point(aes(color=gdp_10, size=population_in_thousands_total, alpha=0.5)) + 
   scale_size(range = c(0.5, 20), name="Population", labels = NULL) +
   scale_colour_gradientn(colours=topo.colors(5), name = "GDP per capita (log)") +
   ylab("Days from 1st December to 100 cases") +
@@ -123,8 +127,8 @@ p_le <- ggplot(covid_aug, aes_string(x="life_expectancy", y = 'days_from_dec1_to
   ggtitle("Development of Corona-pandemic by country") +
   guides(alpha="none")
 
-p_he <- ggplot(covid_aug_by_country, aes_string(x="current_health_expenditure_per_person_usd", y = 'days_from_100_cases_to_100_deaths')) +
-  geom_point(aes(color=log(gdp_per_capita_us_dollars), size=population_in_thousands_total, alpha=0.5)) + 
+p_he <- ggplot(covid_aug_by_country2, aes_string(x="current_health_expenditure_per_person_usd", y = 'days_from_100_cases_to_100_deaths')) +
+  geom_point(aes(color=gdp_10, size=pop_10, alpha=0.5)) + 
   scale_size(range = c(0.5, 20), name="Population", labels=NULL) +
   scale_colour_gradientn(colours=topo.colors(5), name="GDP per capita") +
   ylab("Days from 100 cases to 100 deaths") +
