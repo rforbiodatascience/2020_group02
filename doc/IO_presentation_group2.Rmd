@@ -24,11 +24,21 @@ library("kableExtra")
 - [Global map - days from 100 cases to 100 deaths](map_days_from_100_cases_to_100_deaths.html)
 - [Global map - days from 100 cases to 100 deaths](map_days_from_dec1_to_100_cases.html)
 
-## Materiale - oversigt over dataset - Mette Christof
+## Datasets - overview of data
+<div class="centered">
+![](../results/04_analysis_flowcharts/variables_overview.png){ width=80%, height=80% }
+</div>
 
-## Metode 1 - clean flowchart  - Mette Christof
+## Datasets - cleaning, augmenting and joining
+<div class="centered">
+![](../results/04_analysis_flowcharts/flowchart_design.png){ width=80%, height=80% }
+</div>
 
-## Metode 2 - analyse flowchart  - Mette Christof
+
+## Methods - study design
+<div class="centered">
+![](../results/04_analysis_flowcharts/flowchart_analyses.png){ width=80%, height=80% }
+</div>
 
 ## Covid-19 cases and deaths in each country colored by GDP and sized by population
 ![](../results/04_analysis_point_plots/cases_deaths_log.gif)
@@ -137,6 +147,10 @@ cor_covar %>%
 ## Shiny app - Mette Chr
 
 ## Sex leader - Mette Christof
+<div class="columns-2">
+<div class="centered">
+![](../results/04_analysis_exploratory_figures/COVID-19 spread by gender of national leader.png){ width=100%, height=100% }
+</div>
 
 ## Conclusion slide - HJ
 
