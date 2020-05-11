@@ -1,27 +1,22 @@
-# Clear workspace
-# ------------------------------------------------------------------------------
+# Clear workspace ---------------------------------------------------------
 rm(list = ls())
 
-# Load libraries
-# ------------------------------------------------------------------------------
+
+# Load libraries ----------------------------------------------------------
 library("DiagrammeR")
-library("DiagrammeRsvg")
-library("rsvg")
 
 
-# Define functions
-# ------------------------------------------------------------------------------
-# source(file = "R/99_project_functions.R")
+# Define functions --------------------------------------------------------
+source(file = "R/99_project_functions.R")
 
-# Load data
-# ------------------------------------------------------------------------------
+
+# Load data ---------------------------------------------------------------
 covid_aug <- read_tsv(file = "data/03_covid_aug.tsv",
                       col_types = cols(thousand_deaths = col_date(),
                                        `days_from_100_cases_to_1000_deaths` = col_double()))
 
 
-
-# Flowcharts with study design ----------------------------------------------
+# Flowchart with study design ----------------------------------------------
 
 flowchart_design <- grViz("digraph {
   
@@ -65,8 +60,11 @@ cleaning -> 'exp1' [lhead = cluster1]
 export_svg(flowchart_design) %>%
   charToRaw() %>%
   rsvg() %>%
-  png::writePNG("results/04_flowcharts/flowchart_design.png")
+  png::writePNG("results/04_analysis_flowcharts/flowchart_design.png")
 
+
+
+# Flowchart - analyses setup----------------------------------------------------
 
 flowchart_analyses <- grViz("digraph {
   
@@ -80,8 +78,7 @@ analysis1 [label = 'Simple associations']
 analysis2 [label = 'Stratified associations']
 analysis3 [label = 'Survival analyses']
 analysis4 [label = 'Cluster/PCA analyses']
-analysis5 [label = 'Maps']
-analysis6 [label = 'Shiny app']
+analysis5 [label = 'Shiny app']
 conclusion [label = 'Conclusions']
 presentation [label = 'Presentation']
 
@@ -92,13 +89,11 @@ analysis -> 'analysis2'
 analysis -> 'analysis3'
 analysis -> 'analysis4'
 analysis -> 'analysis5'
-analysis -> 'analysis6'
 analysis1 -> 'conclusion'
 analysis2 -> 'conclusion'
 analysis3 -> 'conclusion'
 analysis4 -> 'conclusion'
 analysis5 -> 'conclusion'
-analysis6 -> 'conclusion'
 conclusion -> 'presentation'
 }")
 
@@ -106,7 +101,7 @@ conclusion -> 'presentation'
 export_svg(flowchart_analyses) %>%
   charToRaw() %>%
   rsvg() %>%
-  png::writePNG("results/04_flowcharts/flowchart_analyses.png")
+  png::writePNG("results/04_analysis_flowcharts/flowchart_analyses.png")
 
 
 # Flowchart with variables ------------------------------------------------
@@ -175,7 +170,7 @@ subgraph cluster7 {
 export_svg(variables) %>%
   charToRaw() %>%
   rsvg() %>%
-  png::writePNG("results/04_flowcharts/variables_overview.png")
+  png::writePNG("results/04_analysis_flowcharts/variables_overview.png")
 
 
 
