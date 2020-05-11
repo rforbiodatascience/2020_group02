@@ -132,8 +132,8 @@ covid_aug2 <- covid_aug %>%
 #Making gif showing progression of corona for each country - log-axis
  gif_plot_log <-ggplot(covid_aug2, aes_string(x="covid_cases", y = "covid_deaths")) +
    geom_point(aes(color=log(gdp_per_capita_us_dollars), size=population_in_thousands_total, alpha=0.7)) + 
-   scale_size(range = c(0.5, 20), name="Population", label = comma) +
-   scale_colour_gradientn(colours=topo.colors(5), name = "GDP per capita (log)") +
+   scale_size(range = c(0.5, 16), name="Population in thousands", label = comma, breaks = c(1000, 50000, 100000, 500000)) +
+   scale_colour_gradientn(colours=topo.colors(5), name = "GDP per capita", breaks = c(12, 10, 8, 6), labels = c("Richest", "Rich", "Poor", "Poorest")) +
    scale_x_log10(label = comma) +
    scale_y_log10(label = comma) +
    ylab("Confirmed Covid-19 deaths (log)") +
