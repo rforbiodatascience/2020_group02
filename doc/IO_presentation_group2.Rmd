@@ -29,10 +29,12 @@ library("kableExtra")
 
 ## Metode 2 - analyse flowchart  - Mette Christof
 
-## Results GIF - HJ
+## Covid-19 cases and deaths in each country colored by GDP and sized by population
+![](../results/04_analysis_point_plots/cases_deaths_log.gif)
 
 ## Results - variable selection - Mette Chr
 
+<<<<<<< HEAD
 ```{r include=FALSE, paged.print=FALSE}
 
 covid_aug <- read_tsv(file = "../data/03_covid_aug.tsv")
@@ -84,21 +86,38 @@ cor_covar %>%
 
 
 ## Respiratory -Signe
+=======
+## Respiratory diseases
+<div class="columns-2">
+  <div class="centered">
+  ![](../results/04_analysis_ii/Cases_respiratory_diseases_ter.png){ width=70%, height=70% }
+  ![](../results/04_analysis_survival/KM_respiratory_diseases_ter.png){width=70%, height=70% }
+>>>>>>> c260cbce40561fad94a481ae75ae7a22d19ee5a8
 
-## Life expectancy Signe
+  ![](../results/04_analysis_point_plots/cases_respiratory_diseases.png){ width=110%, height=110% }
+</div>
 
-## Population living in urban areas Signe
+## Life expectancy
+<div class="columns-2">
+  <div class="centered">
+  ![](../results/04_analysis_ii/Cases_life_expectancy_ter.png){ width=70%, height=70% }
+  ![](../results/04_analysis_survival/KM_life_expectancy_ter.png){width=70%, height=70% }
+
+  ![](../results/04_analysis_point_plots/cases_life_expectancy.png){ width=110%, height=110% }
+</div>
+
+## Population % living in urban areas
 
 <div class="columns-2">
   <div class="centered">
   ![](../results/04_analysis_ii/Cases_population_living_in_urban_areas_ter.png){ width=70%, height=70% }
   ![](../results/04_analysis_survival/KM_population_living_in_urban_areas_ter.png){width=70%, height=70% }
 
-  ![](../results/04_analysis_iv/cases_population_living_in_urban_areas.png){ width=110%, height=110% }
-- fgdd
+  ![](../results/04_analysis_point_plots/cases_population_living_in_urban_areas.png){ width=110%, height=110% }
 </div>
 
 ## PCA - Signe
+
 
 ## Shiny app - Mette Chr
 

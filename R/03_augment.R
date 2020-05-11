@@ -3,7 +3,7 @@ rm(list = ls())
 
 # Load libraries ----------------------------------------------------------
 library("tidyverse")
-library("survivalAnalysis")
+
 
 # Define functions --------------------------------------------------------
 source(file = "R/99_project_functions.R")
@@ -33,7 +33,8 @@ un_pop_clean <- read_tsv(file = "data/02_un_pop_clean.tsv")
 sex_leader_clean <- read_tsv(file = "data/02_sex_leader_clean.tsv")
 
 # Wrangle data ------------------------------------------------------------
-#Anti-join for test of differences in naming of countries - Johns Hopkins used as reference
+
+# Anti-join for test of differences in naming of countries - Johns --------
 dfs <- mget(ls(pattern = ".+_clean"))
 
 list_of_dataframes <- replicate(22, data.frame())
@@ -55,8 +56,10 @@ country_differences <- bind_rows(list_of_dataframes, .id = "origin") %>%
   select(origin, country)
 
 
-#-------------------------------------------------------------------------------
-#Preparing for merging of datasets to JH - alligning var(country) to JH using country_translate()
+
+# Preparing for merging of datasets to JH  --------
+
+# Aligning var(country) to JH using country_translate()
 dfs_corr_countries <- dfs %>%
   map(~mutate(., country_diff = (country_translate(country))) %>% 
         mutate(country = if_else(!is.na(country_diff), country_diff, country)) %>% 
@@ -66,9 +69,8 @@ dfs_corr_countries <- map(dfs_corr_countries, tibble::as_tibble)
 list2env(dfs_corr_countries, envir = .GlobalEnv)
 
 
-#-----------------------------------------------------------------------------
-#Performing left-join to JH dataset
 
+# Performing left-join to JH dataset --------------------------------------
 covid_join <- jh_conftime_clean %>% 
   left_join(., jh_deadtime_clean, by=c('country', "Lat", "Long", "date")) %>% 
   left_join(., jh_recotime_clean, by=c('country', "Lat", "Long", "date")) %>%
@@ -94,9 +96,8 @@ covid_join <- jh_conftime_clean %>%
 covid_join <- covid_join %>% 
   arrange(country, date)
 
-#Generate outcome variables
-#------------------------------------------------------------------------------
 
+# Generate outcome variables ----------------------------------------------
 covid_join <- covid_join %>% 
   mutate(confirmed_cases_per_100000 = (`Number of confirmed COVID-19`/(`Population (in thousands) total`/100))) %>%
   mutate(confirmed_cases_per_100000 = round(confirmed_cases_per_100000, 2)) %>% 
@@ -170,6 +171,8 @@ covid_join <- covid_join %>%
   mutate(deaths_28_days_per_100000 = deaths_28_days_after_100_cases/(`Population (in thousands) total`/100)) %>% 
   mutate(deaths_28_days_per_100000 = round(deaths_28_days_per_100000, 2))
 
+
+dfs <- mget(ls(pattern = ".+_clean"))
 #cleaning variable names 
 covid_join <- covid_join %>% 
   rename_all(~str_to_lower(.)) %>% 
@@ -181,6 +184,9 @@ covid_join <- covid_join %>%
   rename_all(~str_replace_all(., "__", "_")) %>% 
   rename_all(~str_replace_all(., "_+$", ""))
 
+
+# Constructing variables --------------------------------------------------
+
 #changing disease cases to relative
 covid_join <- covid_join %>% 
   mutate(respiratory_infectious = (respiratory_infectious/population_in_thousands_total*100)) %>% 
@@ -190,8 +196,7 @@ covid_join <- covid_join %>%
   mutate(respiratory_diseases = (respiratory_diseases/population_in_thousands_total*100)) %>% 
   mutate(kidney_diseases = (kidney_diseases/population_in_thousands_total*100)) %>% 
   mutate(road_injury = (road_injury/population_in_thousands_total*100))
-  
-#'Kidney diseases', 'Road injury'  
+
 
 #Generating tertiles of covariates
 list_of_cov <- names(covid_join)[8:40]
@@ -202,8 +207,7 @@ for(i in list_of_cov) {
 }
 
 
-#Rendering covid_join for use in shiny_app
-
+# Rendering covid_join for use in shiny app -------------------------------
 df_shiny <- covid_join %>% 
   group_by(country) %>% 
   slice(which.max(date)) %>% 

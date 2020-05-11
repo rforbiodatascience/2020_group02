@@ -1,24 +1,26 @@
-# Clear workspace
-# ------------------------------------------------------------------------------
+
+# Clear workspace ---------------------------------------------------------
+
 rm(list = ls())
 
-# Load libraries
-# ------------------------------------------------------------------------------
+
+# Load libraries ----------------------------------------------------------
+
 library("tidyverse")
 library("patchwork")
 library("survivalAnalysis")
 library("broom")
 
-# Define functions
-# ------------------------------------------------------------------------------
-# source(file = "R/99_project_functions.R")
 
-# Load data
-# ------------------------------------------------------------------------------
+
+# Load data ---------------------------------------------------------------
+
 covid_aug <- read_tsv(file = "data/03_covid_aug.tsv")
 
-# Wrangle data
-# ------------------------------------------------------------------------------
+
+
+# Wrangle data ------------------------------------------------------------
+
 
 #kaplan-meier curves for survival - example with time to 100 deaths and density of medical doctors
 kaplan_meier <- covid_aug %>% 
@@ -30,8 +32,9 @@ kaplan_meier <- covid_aug %>%
   filter(!is.na(time))
 
 
-# Analyze data
-# ------------------------------------------------------------------------------
+
+# Survival analyses and plots -------------------------------------------------------
+
 
 #KM plots for all tertiled variables
 
@@ -66,5 +69,6 @@ for(i in list_colnames){
     dev.off()
   }
   
+
 
 

@@ -3,8 +3,7 @@ rm(list = ls())
 
 
 # Load libraries ----------------------------------------------------------
-library("modelr")
-library("broom")
+library("tidyverse")
 
 
 # Define functions --------------------------------------------------------
@@ -52,29 +51,34 @@ covid_aug <- read_tsv(file = "data/03_covid_aug.tsv",
                                        cumulative_covid_test_ter = col_factor(levels = levels)))
 
 
-covid_aug_by_country <- covid_aug %>% 
+
+# Which factors affect number of COVID-19 confirmed cases and deaths across countries? --------
+
+#Days from December 1st to 100 cases - as a function of country
+covid_aug %>%
   group_by(country) %>% 
-  slice(which.max(date)) 
+  filter(days_from_dec1_to_100_cases != "NA") %>% 
+  mutate(highlight = ifelse( country == "Denmark", "yes", "no" )) %>%
+  mutate(fast_resp = ifelse(days_from_dec1_to_100_cases > 110, "yes", "no")) %>% 
+  slice(which.max(date)) %>% 
+  ggplot(mapping = aes(x=reorder(country, -days_from_dec1_to_100_cases), y = days_from_dec1_to_100_cases, fill = highlight)) +
+  geom_bar(stat = "Identity") +
+  labs(title = "Spread of COVID-19", y = "Days from December 1st 2019 until 100 cases", x = "Country") +
+  scale_fill_manual( values = c( "yes"="red", "no"="darkgray" ), guide = FALSE ) +
+  theme(panel.background = element_rect(fill = "white"), axis.text.x=element_text(angle=40, hjust=1, vjust=1.2, margin=margin(-15,0,0,0)), axis.ticks = element_blank())
+ggsave("results/04_analysis_aim/COVID-19 spread by country.png", width=22, height = 11, unit='in')
 
 
-# Linear regression model - COVID-19 cases and selected covariates -----------------
-model1 <- lm(days_from_dec1_to_100_cases ~ life_expectancy + pollution_attributable_death_rate_std +
-               current_health_expenditure_per_person_usd + population_living_in_urban_areas +
-               population_aged_60_years_old_percentage + respiratory_diseases, data = covid_aug_by_country)
-
-summary(model1)
-
-model1_reduced <- lm(days_from_dec1_to_100_cases ~ life_expectancy + 
-               population_living_in_urban_areas + respiratory_diseases, data = covid_aug_by_country)
-
-summary(model1_reduced)
-tidy(model1_reduced)
-
-
-# Linear regression model - COVID-19 deaths and selected covariates -------
-model2 <- lm(days_from_100_cases_to_100_deaths ~ life_expectancy + pollution_attributable_death_rate_std +
-               current_health_expenditure_per_person_usd + population_living_in_urban_areas +
-               population_aged_60_years_old_percentage + respiratory_diseases, data = covid_aug_by_country)
-
-summary(model2)
-
+#Days from 100 cases to 100 deaths - as a function of country
+covid_aug %>%
+  group_by(country) %>% 
+  filter(days_from_100_cases_to_100_deaths != "NA") %>% 
+  mutate(highlight = ifelse( country == "Denmark", "yes", "no" )) %>% 
+  slice(which.max(date)) %>% 
+  ggplot(mapping = aes(x=reorder(country, -days_from_100_cases_to_100_deaths), y = days_from_100_cases_to_100_deaths, fill = highlight )) +
+  geom_bar(stat = "Identity") +
+  labs(title = "COVID-19 related mortality", y = "Days from 100 cases until 100 deaths", x = "Country") +
+  scale_fill_manual( values = c( "yes"="red", "no"="darkgray" ), guide = FALSE ) +
+  theme(panel.background = element_rect(fill = "white"), 
+        axis.text.x=element_text(angle=40, hjust=1, vjust=1.4), axis.ticks = element_blank()) 
+ggsave("results/04_analysis_aim/COVID-19 mortality by country.png", width=10, height = 6.5,unit='in')
