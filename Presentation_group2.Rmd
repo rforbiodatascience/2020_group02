@@ -1,0 +1,71 @@
+---
+title: "Influence of demographic characteristic on Covid-19 kinetics"
+output:
+  pdf_document: default
+  html_document: default
+editor_options:
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r include=FALSE}
+library(plotly)
+library(tidyverse)
+library(gganimate)
+library(gifski)
+```
+
+```{r include=FALSE}
+covid_aug <- read_tsv(file = "data/03_covid_aug.tsv")
+```
+
+
+```{r include=FALSE}
+covid_aug_by_country <- covid_aug %>% 
+  group_by(country) %>% 
+  slice(which.max(date)) 
+```
+
+
+### Group 2: Mette Christensen, Mette Christoffersen, Signe Modvig and Hans Jakob Hartling
+
+# Introduction
+## 1) Hypothesis including bar chart highlighting Denmark
+# Methods
+## 2) Overview of dataset including flowchart
+## 3) Cleaning and augmentation
+## 4) Description of final dataset
+
+# Results
+### 5.1) Boxplots + gapminder plots (cases) and KM plots (deaths)
+#### 5.1.1) Life exp
+#### 5.1.2) Health expenditure
+#### 5.1.3) Pollution attributable death rate std
+#### 5.1.4) Population living in urban areas
+#### 5.1.5) Population aged 60 years old percentage
+#### 5.1.6) Respiratory diseases
+
+```{r message=FALSE, warning=FALSE}
+#plotting depending variable (x-axis) possibly affecting corona outbreak (y-axis)
+ggplot(covid_aug_by_country, aes_string(x="population_aged_60_years_old_percentage", y = 'days_from_dec1_to_100_cases')) +
+  geom_point(aes(color=log(gdp_per_capita_us_dollars), size=population_in_thousands_total, alpha=0.5)) + 
+  scale_size(range = c(0.5, 20), name="Population", labels = NULL) +
+  scale_colour_gradientn(colours=topo.colors(5), name = "GDP per capita") +
+  ylab("Days from 1st December to 100 cases") +
+  xlab("population_aged_60_years_old_percentage") +
+  ggtitle("Development of Corona-pandemic by country") +
+  guides(alpha="none")
+```
+
+
+### 5.2) Map
+### 5.3) Gif
+### 5.4) Shiny app
+### 5.5) Cluster/PCA
+### 5.6) Sex of leader
+
+# Discussion/Conclusion

@@ -26,18 +26,21 @@ covid_aug_by_country <- covid_aug %>%
   group_by(country) %>% 
   slice(which.max(date)) 
 
+covid_aug_by_country2 <- covid_aug2 %>% 
+  group_by(country) %>% 
+  slice(which.max(date))
+
 # Wrangle data
 # ------------------------------------------------------------------------------
 
 #TO DO
 # 1) Legend for plots
-# 4) Make shiny-app
 
 #Plotting development of cases and deaths for each country
 
-ggplot(covid_aug, aes(x=date, y=`number_of_confirmed_covid-19`, group=country)) +
+#ggplot(covid_aug, aes(x=date, y=`number_of_confirmed_covid-19`, group=country)) +
   geom_line()
-ggplot(covid_aug, aes(x=date, y=`number_of_covid-19_related_deaths`, group=country, color=sex)) +
+#ggplot(covid_aug, aes(x=date, y=`number_of_covid-19_related_deaths`, group=country, color=sex)) +
   geom_line()
 
 
@@ -53,26 +56,6 @@ ggplot(covid_aug_by_country, aes_string(x="population_aged_60_years_old_percenta
   guides(alpha="none")
   
 
-#plotting depending variable (x-axis) possibly affecting corona outbreak (y-axis)
-ggplot(covid_aug_by_country, aes_string(x="current_health_expenditure_per_person_usd", y = 'days_from_100_cases_to_100_deaths')) +
-  geom_point(aes(color=log(gdp_per_capita_us_dollars), size=population_in_thousands_total, alpha=0.5)) + 
-  scale_size(range = c(0.5, 20), name="Population", labels = NULL) +
-  scale_colour_gradientn(colours=topo.colors(5), name = "GDP per capita") +
-  ylab("days_from_100_cases_to_100_deaths") +
-  xlab("health expenditure") +
-  scale_x_log10() +
-  ggtitle("Development of Corona-pandemic by country") +
-  guides(alpha="none")
-
-ggplot(covid_aug_by_country, aes_string(x="current_health_expenditure_per_person_usd", y = 'days_from_dec1_to_100_cases')) +
-  geom_point(aes(color=log(gdp_per_capita_us_dollars), size=population_in_thousands_total, alpha=0.5)) + 
-  scale_size(range = c(0.5, 20), name="Population", labels = NULL) +
-  scale_colour_gradientn(colours=topo.colors(5), name = "GDP per capita") +
-  ylab("days_from_dec1_to_100_cases") +
-  xlab("health expenditure") +
-  scale_x_log10() +
-  ggtitle("Development of Corona-pandemic by country") +
-  guides(alpha="none")
 
 
 #Making list for looping all variables against selected outcomes
@@ -129,7 +112,33 @@ for(i in list_of_cov_hj){
 }
 
 
-#Making interactive plot
+covid_aug2 <- covid_aug %>%
+  mutate(pop_10 = ntile(population_in_thousands_total, 10)) %>%
+  mutate(gdp_10 = ntile(gdp_per_capita_us_dollars, 10))
+
+#Making interactive plot for selected variables (life_exp, health_expenditure, Pollution, pop in urban, pop >60 years)
+
+p_le <- ggplot(covid_aug_by_country2, aes_string(x="life_expectancy", y = 'days_from_dec1_to_100_cases')) +
+  geom_point(aes(color=gdp_10, size=population_in_thousands_total, alpha=0.5)) + 
+  scale_size(range = c(0.5, 20), name="Population", labels = NULL) +
+  scale_colour_gradientn(colours=topo.colors(5), name = "GDP per capita (log)") +
+  ylab("Days from 1st December to 100 cases") +
+  xlab("Life expectancy") +
+  ggtitle("Development of Corona-pandemic by country") +
+  guides(alpha="none")
+
+p_he <- ggplot(covid_aug_by_country2, aes_string(x="current_health_expenditure_per_person_usd", y = 'days_from_100_cases_to_100_deaths')) +
+  geom_point(aes(color=gdp_10, size=pop_10, alpha=0.5)) + 
+  scale_size(range = c(0.5, 20), name="Population", labels=NULL) +
+  scale_colour_gradientn(colours=topo.colors(5), name="GDP per capita") +
+  ylab("Days from 100 cases to 100 deaths") +
+  xlab("Health expenditure per person USD (log)") +
+  scale_x_log10() +
+  ggtitle("Development of Corona-pandemic by country") +
+  guides(alpha="none")
+
+
+
 #Population above 60 years old
 p_60years <- ggplot(covid_aug_by_country, aes(x = `population_aged_60_years_old_percentage`, y = `days_from_dec1_to_100_cases`,
             color = log(gdp_per_capita_us_dollars), size=population_in_thousands_total, alpha=0.5, ids=country)) +
@@ -141,34 +150,13 @@ p_60years <- ggplot(covid_aug_by_country, aes(x = `population_aged_60_years_old_
   ggtitle("Development of cases by country") +
   guides(alpha="none")
 
-#Population living in urban areas
-p_urban <- ggplot(covid_aug_by_country, aes(x = `population_living_in_urban_areas`, y = `days_from_dec1_to_100_cases`,
-                                              color = log(gdp_per_capita_us_dollars), size=population_in_thousands_total, alpha=0.5, ids=country)) +
-  geom_point() +
-  scale_size(range = c(0.5, 20), name="Population") +
-  scale_colour_gradientn(colours=topo.colors(5), name = "GDP per capita") +
-  ylab("Number of confirmed Covid-19 cases") +
-  xlab("Population living in urban areas (%)") +
-  ggtitle("Development of cases by country") +
-  guides(alpha="none")
-
-#Prevalence of smoking
-p_smoking <- ggplot(covid_aug_by_country, aes(x = `prevalence_smoking`, y = `days_from_dec1_to_100_cases`,
-                                            color = log(gdp_per_capita_us_dollars), size=population_in_thousands_total, alpha=0.5, ids=country)) +
-  geom_point() +
-  scale_size(range = c(0.5, 20), name="Population") +
-  scale_colour_gradientn(colours=topo.colors(5), name = "GDP per capita") +
-  ylab("Number of confirmed Covid-19 cases") +
-  xlab("Prevalence of smoking (%)") +
-  ggtitle("Development of cases by country") +
-  guides(alpha="none")
 
 ggplotly(p_60years, tooltip = c("country")) %>% 
   highlight("plotly_hover")
 ggplotly(p_urban, tooltip = c("country")) %>% 
   highlight("plotly_hover")
-ggplotly(p_smoking, tooltip = c("country")) %>% 
-  highlight("plotly_hover")
+ggplotly(p_le) %>% 
+  rangeslider(covid_aug$date)
 
 
 covid_aug2 <- covid_aug %>%

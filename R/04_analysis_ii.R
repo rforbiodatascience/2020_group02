@@ -6,7 +6,7 @@ rm(list = ls())
 # ------------------------------------------------------------------------------
 library("tidyverse")
 library("patchwork")
-library("modelr")
+library("PMCMRplus")
 
 
 # Define functions
@@ -55,15 +55,10 @@ covid_aug <- read_tsv(file = "data/03_covid_aug.tsv",
                                        cumulative_covid_test_ter = col_factor(levels = levels)))
 
 
-#Which factors affect number of COVID-19 confirmed cases and COVID-19 related deaths across countries?
-
 covid_aug_by_country <- covid_aug %>% 
   group_by(country) %>% 
   slice(which.max(date))  
 
-# Model data
-# ------------------------------------------------------------------------------
-#my_data_clean_aug %>% ...
 
 # Exploratory data analyses
 # ------------------------------------------------------------------------------
@@ -71,6 +66,7 @@ covid_aug_by_country <- covid_aug %>%
 #Summary statistics for variables
 list_of_cov <- names(covid_aug)[59:91]
 
+#COVID-19 mortality - days from 100 cases to 100 deaths
 pvalue_list1 <- list()
 for(i in list_of_cov) {
   pvalue <- cuzickTest(days_from_100_cases_to_100_deaths ~ covid_aug_by_country[[i]], data = covid_aug_by_country)
@@ -105,7 +101,7 @@ for(i in list_of_cov){
 }
 
 
-
+#COVID-19 spread - days from December 1st 2019 to 100 cases
 pvalue_list2 <- list()
 for(i in list_of_cov) {
   pvalue <- cuzickTest(days_from_dec1_to_100_cases ~ covid_aug_by_country[[i]], data = covid_aug_by_country)
@@ -140,6 +136,7 @@ for(i in list_of_cov){
 }
 
 
+#Association with gender of the national leader
 kruskal.test(days_from_dec1_to_100_cases ~ sex, data = covid_aug_by_country)
 kruskal.test(days_from_100_cases_to_100_deaths ~ sex, data = covid_aug_by_country)
 
@@ -152,7 +149,7 @@ kruskal.test(days_from_100_cases_to_100_deaths ~ sex, data = covid_aug_by_countr
 png("results/04_analysis_ii/Spread of COVID-19 by population demographics.png",
     width=12, height = 8,unit='in',res=300)
 plot_list2$population_median_age_years_ter + plot_list2$population_proportion_under_15_ter + 
-  plot_list2$population_proportion_over_60_ter + plot_list2$population_density_ter + 
+  plot_list2$population_aged_60_years_old_percentage_ter + plot_list2$population_density_ter + 
   plot_list2$population_living_in_urban_areas_ter + plot_list2$gdp_per_capita_us_dollars_ter + 
   plot_annotation(title = 'Association between population demographics and the spread of COVID-19',
                   subtitle = 'Defined as number of days from December 1st 2019 to reaching 100 cases per country') 
@@ -191,7 +188,7 @@ dev.off()
 png("results/04_analysis_ii/Death from COVID-19 by population demographics.png",
     width=12, height = 8,unit='in',res=300)
 plot_list1$population_median_age_years_ter + plot_list1$population_proportion_under_15_ter + 
-  plot_list1$population_proportion_over_60_ter + plot_list1$population_density_ter + 
+  plot_list1$population_aged_60_years_old_percentage_ter + plot_list1$population_density_ter + 
   plot_list1$population_living_in_urban_areas_ter + plot_list1$gdp_per_capita_us_dollars_ter + 
   plot_annotation(title = 'Association between population demographics and death from COVID-19',
                   subtitle = 'Defined as number of days from reaching 100 cases until reaching 100 deaths per country') 
@@ -226,37 +223,3 @@ png("results/04_analysis_ii/Death from COVID-19 by life expectancy and mortality
                   subtitle = 'Defined as number of days from reaching 100 cases until reaching 100 deaths per country')
 dev.off()
 
-
-
-
-
-#Days from 100 cases to 100 deaths - as a function of country
-covid_aug %>%
-  group_by(country) %>% 
-  filter(days_from_100_cases_to_100_deaths != "NA") %>% 
-  mutate(highlight = ifelse( country == "Denmark", "yes", "no" )) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(mapping = aes(x=reorder(country, -days_from_100_cases_to_100_deaths), y = days_from_100_cases_to_100_deaths, fill = highlight )) +
-  geom_bar(stat = "Identity") +
-  labs(y = "Days from 100 cases until 100 deaths") +
-  scale_fill_manual( values = c( "yes"="red", "no"="darkgray" ), guide = FALSE ) +
-  theme(panel.background = element_rect(fill = "white"), axis.text.x=element_text(angle=40,hjust=0.75,vjust=0.75)) 
-
-#Days from December 1st to 100 cases - as a function of country
-covid_aug %>%
-  group_by(country) %>% 
-  filter(days_from_dec1_to_100_cases != "NA") %>% 
-  mutate(highlight = ifelse( country == "Denmark", "yes", "no" )) %>%
-  drop_na(life_expectancy_ter) %>% 
-  slice(which.max(date)) %>% 
-  ggplot(mapping = aes(x=reorder(country, -days_from_dec1_to_100_cases), y = days_from_dec1_to_100_cases, fill = sex)) +
-  geom_bar(stat = "Identity") +
-  labs(y = "Days from December 1st 2019 until 100 cases") +
-  #scale_fill_manual( values = c( "yes"="red", "no"="darkgray" ), guide = FALSE ) +
-  theme(panel.background = element_rect(fill = "white"), axis.text.x=element_text(angle=40,hjust=1,vjust=0.5))
-
-
-# Write data
-# ------------------------------------------------------------------------------
-write_tsv(...)
-ggsave(...)
