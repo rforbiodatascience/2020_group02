@@ -1,29 +1,44 @@
 ---
 title: "Influence of demographic characteristic on Covid-19 kinetics"
-author: "Mette Christoffersen, Signe Modvig, Hans Jakob Hartling and Mette Christensen"
+author: "Mette Christoffersen, Signe Modvig, Hans Jakob Hartling og Mette Christensen"
 date: "11 5 2020"
 output: 
   ioslides_presentation:
-    widescreen: true 
+    widescreen: true
+   
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-
 ## Population living in urban areas
 
 <div class="columns-2">
+  <div class="centered">
+  ![](../results/04_analysis_ii/Cases_population_living_in_urban_areas_ter.png){ width=70%, height=70% }
+  ![](../results/04_analysis_survival/KM_population_living_in_urban_areas_ter.png){width=70%, height=70% }
 
-![](../results/04_analysis_iv/cases_population_living_in_urban_areas.png){ width=110%, height=110% }
-
-<div class="centered">
-
-  ![KM_adult_mortality_rate_ter](../results/04_analysis_ii/Cases_population_living_in_urban_areas_ter.png){ width=70% }
-  ![KM_adult_mortality_rate_ter](../results/KM_and_PCA_plots/KM_population_living_in_urban_areas_ter.png){ width=70% }
-
-
+  ![](../results/04_analysis_iv/cases_population_living_in_urban_areas.png){ width=110%, height=110% }
 </div>
 
+
+## Slide with Bullets
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+## Slide with R Output
+
+![KM_adult_mortality_rate_ter]('/results/04_analysis_iii/KM_adult_mortality_rate_ter.png')
+
+```{r}
+```
+
+## Slide with Plot
+
+```{r pressure}
+plot(pressure)
+```
 
