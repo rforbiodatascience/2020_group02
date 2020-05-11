@@ -209,7 +209,7 @@ df_shiny <- covid_join %>%
   slice(which.max(date)) %>% 
   select(country, dead_cases_per_100000, confirmed_cases_per_100000, days_from_dec1_to_100_cases, 
          days_from_100_cases_to_100_deaths, population_proportion_over_60, 
-         life_expectancy, population_living_in_urban_areas, pollution_attributable_death_rate) %>%
+         life_expectancy, population_living_in_urban_areas, respiratory_diseases, pollution_attributable_death_rate) %>%
   rename("No. dead cases per 100.000" = dead_cases_per_100000, 
          "No. confirmed cases pr. 100.000" = confirmed_cases_per_100000, 
          "No. days from December 1st to 100 cases" = days_from_dec1_to_100_cases,
@@ -217,6 +217,7 @@ df_shiny <- covid_join %>%
          "Proportion of population > 60 years (%)" = population_proportion_over_60,
          "Life expectancy (years)" = life_expectancy, 
          "Population living in urban areas (%)" = population_living_in_urban_areas, 
+         "Respiratory diseases" = respiratory_diseases,
          "Pollution attributable death rate" = pollution_attributable_death_rate)  
   
 
@@ -227,5 +228,9 @@ write_tsv(x = country_differences,
 write_tsv(x = covid_join,
           path = "data/03_covid_aug.tsv")
 
+#writing to Shiny_app covid_app
 write_tsv(x = covid_join,
           path = "covid_app/03_covid_aug.tsv")
+
+write_tsv(x = df_shiny, 
+          path = "covid_app/03_df_shiny_aug.tsv")
