@@ -91,14 +91,14 @@ map_days_from_100_cases_to_100_deaths  <- map_days_from_100_cases_to_100_deaths%
 # Write data - saving maps ------------------------------------------------
 #Savewiget only possible to working directory. Using normalizePath to save to subdirectories. 
 
-f<-"results/04_analysis_i/map_dead_cases_per_100000.html"
+f<-"results/04_analysis_global_maps/map_dead_cases_per_100000.html"
 saveWidget(widget = map_dead_cases_per_100000, file.path(normalizePath(dirname(f)), basename(f)))
 
-f<-"results/04_analysis_i/map_number_of_covid_19_related_deaths.html"
+f<-"results/04_analysis_global_maps/map_number_of_covid_19_related_deaths.html"
 saveWidget(widget = map_number_of_covid_19_related_deaths, file.path(normalizePath(dirname(f)), basename(f)))
 
-f<-"results/04_analysis_i/map_days_from_dec1_to_100_cases.html"
+f<-"results/04_analysis_global_maps/map_days_from_dec1_to_100_cases.html"
 saveWidget(widget = map_days_from_dec1_to_100_cases, file.path(normalizePath(dirname(f)), basename(f)))
 
-f<-"results/04_analysis_i/map_days_from_100_cases_to_100_deaths.html"
+f<-"results/04_analysis_global_maps/map_days_from_100_cases_to_100_deaths.html"
 saveWidget(widget = map_days_from_100_cases_to_100_deaths, file.path(normalizePath(dirname(f)), basename(f)))
