@@ -20,7 +20,8 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Metode 2 - analyse flowchart  - Mette Christof
 
-## Results GIF - HJ
+## Covid-19 cases and deaths in each country colored by GDP and sized by population
+![](../results/04_analysis_point_plots/cases_deaths_log.gif)
 
 ## Results - variable selection - Mette Chr
 
