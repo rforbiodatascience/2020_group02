@@ -2,18 +2,26 @@
 title: "Influence of demographic characteristic on Covid-19 kinetics"
 author: "Mette Christoffersen, Signe Modvig, Hans Jakob Hartling og Mette Christensen"
 date: "11 5 2020"
-output: ioslides_presentation
+output: 
+  ioslides_presentation:
+    widescreen: true
+   
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## R Markdown
+## Population living in urban areas
 
-This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+<div class="columns-2">
+  <div class="centered">
+  ![](../results/04_analysis_ii/Cases_population_living_in_urban_areas_ter.png){ width=70%, height=70% }
+  ![](../results/04_analysis_survival/KM_population_living_in_urban_areas_ter.png){width=70%, height=70% }
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+  ![](../results/04_analysis_iv/cases_population_living_in_urban_areas.png){ width=110%, height=110% }
+</div>
+
 
 ## Slide with Bullets
 
@@ -23,8 +31,9 @@ When you click the **Knit** button a document will be generated that includes bo
 
 ## Slide with R Output
 
-```{r cars, echo = TRUE}
-summary(cars)
+![KM_adult_mortality_rate_ter]('/results/04_analysis_iii/KM_adult_mortality_rate_ter.png')
+
+```{r}
 ```
 
 ## Slide with Plot

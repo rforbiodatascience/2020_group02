@@ -60,7 +60,7 @@ for(i in list_colnames){
   }
 
   for(i in list_colnames){
-    file_name = paste("results/04_analysis_iii/KM_", i, ".png", sep="")
+    file_name = paste("results/04_analysis_survival/KM_", i, ".png", sep="")
     png(file_name, width=8.5, height = 6.5,unit='in',res=300)
     print(plot_list[[i]])
     dev.off()
