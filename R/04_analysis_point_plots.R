@@ -138,7 +138,7 @@ covid_aug2 <- covid_aug %>%
    ylab("Confirmed Covid-19 deaths (log)") +
    xlab("Confirmed Covid-19 cases (log)") +
    ggtitle("Development of Corona-pandemic by country") +
-   guides(alpha="none", fill=guide) + 
+   guides(alpha="none") + 
    transition_time(date) +
    labs(title = "Date: {frame_time}")
  #Animate and present the files in  a gif
