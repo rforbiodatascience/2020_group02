@@ -17,74 +17,10 @@ library("broom")
 # ------------------------------------------------------------------------------
 covid_aug <- read_tsv(file = "data/03_covid_aug.tsv")
 
-# Wrangle data
+# Data analysis
 # ------------------------------------------------------------------------------
 
-
-#kaplan-meier curves for survival - example with time to 100 deaths and density of medical doctors
-kaplan_meier <- covid_aug %>% 
-  group_by(country) %>% 
-  slice(which.max(date)) %>%  
-  ungroup() %>% 
-  mutate(event = if_else(!is.na(hundred_deaths), 1, 0)) %>% 
-  mutate(time = if_else(event == 0, (date - hundred_cases),(days_from_100_cases_to_100_deaths))) %>% 
-  filter(!is.na(time))
-
-
-#survival analysis, summmary and plot
-#hvis man vil have kategorien "missing" med kan man bruge fct_explicit_na() i stedet for factor
-kaplan_meier %>% analyse_survival(vars(time, event), by=factor(density_of_medical_doctors_ter)) ->
-  km_result
-
-png("results/04_analysis_iii/km_medical_doctors.png", width=8.5,height = 6.5,unit='in',res=300)
-kaplan_meier_plot(km_result,
-                  break.time.by=15.25,
-                  xlab="months",
-                  legend.title="Density of medical doctors",
-                  hazard.ratio=T,
-                  risk.table=TRUE,
-                  table.layout="clean",
-                  ggtheme=ggplot2::theme_bw(10))
-
-dev.off()
-
-
-#KM plots for all tertiled variables
-
-list_colnames <- names(kaplan_meier)[59:76]
-
-plot_list <- list()
-
-for(i in list_colnames){
-  plot_name <- i
-  i_var = as.name(i)
-  km_res <- kaplan_meier %>% 
-#  drop_na(i) %>% 
-  analyse_survival(vars(time, event), by = factor(kaplan_meier[[i_var]]))
-  km_plot <- kaplan_meier_plot(km_res,
-                                 break.time.by=15.25,
-                                 xlab="months",
-                                 ylab="Cumulative survival (<100 deaths)",
-                                 legend.title=i,
-                                 hazard.ratio=T,
-                                 risk.table=TRUE,
-                                 table.layout="clean",
-                                 ggtheme=ggplot2::theme_bw(10))
-    
-    plot_list[[i]] = km_plot
-    print(plot_list[[i]])
-  }
-
-  for(i in list_colnames){
-    file_name = paste("results/04_analysis_iii/KM_", i, ".png", sep="")
-    png(file_name, width=8.5, height = 6.5,unit='in',res=300)
-    print(plot_list[[i]])
-    dev.off()
-  }
-  
-
-
-#PCA analysis
+#PCA
 
 #Filtering to avoid missing data and removing non-numeric columns
 #Performing PCA based on country demographics
@@ -137,18 +73,18 @@ covid_filtered <- covid_aug %>%
   slice(which.max(date)) %>%
   mutate(binary_death = if_else(!is.na(hundred_deaths), 1, 0)) %>% 
   mutate(tertile_deaths = case_when(
-   `number_of_covid-19_related_deaths` < 100  ~ 0,
-   `number_of_covid-19_related_deaths` > 99 & `number_of_covid-19_related_deaths` < 1000 ~ 1,
-   `number_of_covid-19_related_deaths` > 999 ~ 2)) %>% 
+    `number_of_covid-19_related_deaths` < 100  ~ 0,
+    `number_of_covid-19_related_deaths` > 99 & `number_of_covid-19_related_deaths` < 1000 ~ 1,
+    `number_of_covid-19_related_deaths` > 999 ~ 2)) %>% 
   mutate(tertile_rel_deaths = case_when(
     `dead_cases_per_100000` < 1  ~ 0,
     `dead_cases_per_100000` > 0.999 & `dead_cases_per_100000` < 10 ~ 1,
     `dead_cases_per_100000` > 9.99 ~ 2)) %>% 
-    
+  
   ungroup() %>% 
   select_if(colSums(is.na(.)) == 0) %>% 
   select(-('country':'adult_mortality_rate'), -date, -first_case, -ends_with("ter"), -confirmed_cases_per_100000, -dead_cases_per_100000)
-  
+
 
 #Augmenting PCA data with dataset (filtered)
 covid_pca_aug <- covid_pca %>% augment(covid_filtered)
@@ -192,6 +128,9 @@ covid_pca_aug_k_org_pca <- covid_k_pca %>%
   augment(covid_pca_aug_k_org) %>% 
   rename(cluster_pca = .cluster)
 covid_pca_aug_k_org_pca
+
+# Plots and .pngs
+# ------------------------------------------------------------------------------
 
 #creating plots
 
@@ -254,9 +193,3 @@ png("results/04_analysis_iii/pca_cluster_rel_deaths.png", width=8.5,height = 6.5
 
 dev.off()
 
-
-
-# Write data
-# ------------------------------------------------------------------------------
-write_tsv(...)
-ggsave(...)
