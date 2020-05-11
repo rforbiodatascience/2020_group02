@@ -1,9 +1,11 @@
-# Clear workspace
-# ------------------------------------------------------------------------------
+
+# Clear Workspace ---------------------------------------------------------
+
 rm(list = ls())
 
-# Load libraries
-# ------------------------------------------------------------------------------
+
+# Load libraries ----------------------------------------------------------
+
 install.packages("gganimate")
 install.packages("gifski")
 install.packages("plotly")
@@ -13,12 +15,8 @@ library(gganimate)
 library(gifski)
 
 
-# Define functions
-# ------------------------------------------------------------------------------
-# source(file = "R/99_project_functions.R")
+# Load data ---------------------------------------------------------------
 
-# Load data
-# ------------------------------------------------------------------------------
 covid_aug <- read_tsv(file = "data/03_covid_aug.tsv")
 
 #one row pr country using latest date
@@ -26,24 +24,8 @@ covid_aug_by_country <- covid_aug %>%
   group_by(country) %>% 
   slice(which.max(date)) 
 
-covid_aug_by_country2 <- covid_aug2 %>% 
-  group_by(country) %>% 
-  slice(which.max(date))
 
-# Wrangle data
-# ------------------------------------------------------------------------------
-
-#TO DO
-# 1) Legend for plots
-
-#Plotting development of cases and deaths for each country
-
-#ggplot(covid_aug, aes(x=date, y=`number_of_confirmed_covid-19`, group=country)) +
-  geom_line()
-#ggplot(covid_aug, aes(x=date, y=`number_of_covid-19_related_deaths`, group=country, color=sex)) +
-  geom_line()
-
-
+# Plots in loop - creating png files --------------------------------------
 
 #plotting depending variable (x-axis) possibly affecting corona outbreak (y-axis)
 ggplot(covid_aug_by_country, aes_string(x="population_aged_60_years_old_percentage", y = 'days_from_dec1_to_100_cases')) +
@@ -55,8 +37,6 @@ ggplot(covid_aug_by_country, aes_string(x="population_aged_60_years_old_percenta
   ggtitle("Development of Corona-pandemic by country") +
   guides(alpha="none")
   
-
-
 
 #Making list for looping all variables against selected outcomes
 list_of_cov_hj <- names(covid_aug)[8:40]
@@ -74,7 +54,7 @@ for(i in list_of_cov_hj){
     ylab("Days from 100 cases to 100 deaths") +
     xlab(i) +
     ggtitle("Development of Corona-pandemic by country") +
-    guides(size="none", alpha="none")
+    guides(alpha="none")
   plot_list_hj1[[i]] = plt
   print(plot_list_hj1[[i]])
 }
@@ -95,11 +75,11 @@ for(i in list_of_cov_hj){
     ggplot(aes_string(x=i, y = 'days_from_dec1_to_100_cases')) +
     geom_point(aes(color=log(gdp_per_capita_us_dollars), size=population_in_thousands_total, alpha=0.5)) + 
     scale_size(range = c(.1, 20), name="Population", labels= NULL) +
-    scale_colour_gradientn(colours=topo.colors(5), name="GDP per capita") +
+    scale_colour_gradientn(colours=topo.colors(5), name="GDP per capita (log)") +
     ylab("Days from 1st December to 100 cases") +
     xlab(i) +
     ggtitle("Development of Corona-pandemic by country") +
-    guides(size="none", alpha="none")
+    guides(alpha="none")
   plot_list_hj2[[i]] = plt
   print(plot_list_hj2[[i]])
 }
@@ -112,16 +92,14 @@ for(i in list_of_cov_hj){
 }
 
 
-covid_aug2 <- covid_aug %>%
-  mutate(pop_10 = ntile(population_in_thousands_total, 10)) %>%
-  mutate(gdp_10 = ntile(gdp_per_capita_us_dollars, 10))
+
 
 #Making interactive plot for selected variables (life_exp, health_expenditure, Pollution, pop in urban, pop >60 years)
 
-p_le <- ggplot(covid_aug_by_country2, aes_string(x="life_expectancy", y = 'days_from_dec1_to_100_cases')) +
-  geom_point(aes(color=gdp_10, size=population_in_thousands_total, alpha=0.5)) + 
+p_le <- ggplot(covid_aug2, aes_string(x="life_expectancy", y = 'days_from_dec1_to_100_cases')) +
+  geom_point(aes(color=gdp_10, size=population_in_thousands_total, alpha=0.5, frame=date)) + 
   scale_size(range = c(0.5, 20), name="Population", labels = NULL) +
-  scale_colour_gradientn(colours=topo.colors(5), name = "GDP per capita (log)") +
+  scale_colour_gradientn(colours=topo.colors(5), name = "GDP per capita (deciles)") +
   ylab("Days from 1st December to 100 cases") +
   xlab("Life expectancy") +
   ggtitle("Development of Corona-pandemic by country") +
@@ -156,7 +134,7 @@ ggplotly(p_60years, tooltip = c("country")) %>%
 ggplotly(p_urban, tooltip = c("country")) %>% 
   highlight("plotly_hover")
 ggplotly(p_le) %>% 
-  rangeslider(covid_aug$date)
+  rangeslider(covid_aug2$date)
 
 
 covid_aug2 <- covid_aug %>%
@@ -201,6 +179,17 @@ gif_plot <-ggplot(covid_aug2, aes_string(x="covid_cases", y = "covid_deaths")) +
  
  
 
+ 
+ covid_aug2 <- covid_aug %>%
+   mutate(pop_10 = ntile(population_in_thousands_total, 10)) %>%
+   mutate(gdp_10 = ntile(gdp_per_capita_us_dollars, 10))
+ 
+ covid_aug_by_country2 <- covid_aug2 %>% 
+   group_by(country) %>% 
+   slice(which.max(date))
+ 
+ 
+ 
 
 # Write data
 # ------------------------------------------------------------------------------
