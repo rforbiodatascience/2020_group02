@@ -81,11 +81,14 @@ for(i in list_of_cov){
   plot_name <- i
   plt <- covid_aug_by_country %>% 
     drop_na(i) %>% 
-    ggplot(aes_string(x=i, y = 'days_from_100_cases_to_100_deaths')) +
+    ggplot(aes_string(x=i, y = 'days_from_100_cases_to_100_deaths', fill = i)) +
     geom_boxplot() +
-    labs(y = "Days from 100 cases \n until 100 deaths", x = str_replace_all(str_to_sentence(str_replace_all(i, "_", " ")), "ter", "- in tertiles")) +
+    labs(y = "Days from 100 cases \n until 100 deaths",
+         x = str_replace_all(str_to_sentence(str_replace_all(i, "_", " ")), "ter", "- in tertiles")) +
     annotate("text", x=2.5, y=60, label = (paste0("P for trend = ", pvalue_list1_digits[[i]])), size=4) +
-    theme_bw()
+    scale_fill_manual( values = c( "1"="tomato", "2"="limegreen", "3"="cornflowerblue" )) +
+    theme_bw() +
+    theme(legend.position="none")
   plot_list1[[i]] = plt
   print(plot_list1[[i]])
 }
@@ -116,11 +119,14 @@ for(i in list_of_cov){
   plot_name <- i
   plt <- covid_aug_by_country %>% 
     drop_na(i) %>% 
-    ggplot(aes_string(x=i, y = 'days_from_dec1_to_100_cases')) +
+    ggplot(aes_string(x=i, y = 'days_from_dec1_to_100_cases', fill = i)) +
     geom_boxplot() +
-    labs(y = "Days from Dec 1st 2019 \n until 100 cases", x = str_replace_all(str_to_sentence(str_replace_all(i, "_", " ")), "ter", "- in tertiles")) +
+    labs(y = "Days from Dec 1st 2019 \n until 100 cases",
+         x = str_replace_all(str_to_sentence(str_replace_all(i, "_", " ")), "ter", "- in tertiles")) +
     annotate("text", x=2.5, y=160, label = (paste0("P for trend = ", pvalue_list2_digits[[i]])), size=4) +
-    theme_bw()
+    scale_fill_manual( values = c( "1"="tomato", "2"="limegreen", "3"="cornflowerblue" )) +
+    theme_bw() +
+    theme(legend.position="none")
   plot_list2[[i]] = plt
   print(plot_list2[[i]])
 }

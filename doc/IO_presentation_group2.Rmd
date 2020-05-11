@@ -30,7 +30,7 @@ library("kableExtra")
 
 ## Metode 2 - analyse flowchart  - Mette Christof
 
-## Covid-19 cases and deaths in each country colored by GDP and sized by population
+## Covid-19 cases and deaths in each country
 ![](../results/04_analysis_point_plots/cases_deaths_log.gif)
 
 ## Results - variable selection - Mette Chr
