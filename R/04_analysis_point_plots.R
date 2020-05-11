@@ -9,11 +9,12 @@ rm(list = ls())
 install.packages("gganimate")
 install.packages("gifski")
 install.packages("plotly")
+install.packages("scales")
 library(plotly)
 library(tidyverse)
 library(gganimate)
 library(gifski)
-
+library(scales)
 
 # Load data ---------------------------------------------------------------
 
@@ -130,19 +131,21 @@ covid_aug2 <- covid_aug %>%
   rename(covid_cases = 'number_of_confirmed_covid-19')
 #Making gif showing progression of corona for each country - log-axis
  gif_plot_log <-ggplot(covid_aug2, aes_string(x="covid_cases", y = "covid_deaths")) +
-   geom_point(aes(color=log(gdp_per_capita_us_dollars), size=population_in_thousands_total, alpha=0.5)) + 
+   geom_point(aes(color=log(gdp_per_capita_us_dollars), size=population_in_thousands_total, alpha=0.7)) + 
    scale_size(range = c(0.5, 20), name="Population", labels = NULL) +
    scale_colour_gradientn(colours=topo.colors(5), name = "GDP per capita (log)") +
    scale_x_log10() +
    scale_y_log10() +
    ylab("Confirmed Covid-19 deaths (log)") +
    xlab("Confirmed Covid-19 cases (log)") +
-   ggtitle("Development of Corona-pandemic by country") +
+   scale_x_continuous(labels = comma) +
+   scale_y_continuous(labels = comma) +
+   theme(axis.text = element_text(size = 12)) +
    guides(alpha="none") + 
    transition_time(date) +
    labs(title = "Date: {frame_time}")
  #Animate and present the files in  a gif
- animate(gif_plot_log, duration = 10, fps = 10, width = 450, height = 450, renderer = gifski_renderer())
+ animate(gif_plot_log, duration = 10, fps = 10, width = 900, height = 450, renderer = gifski_renderer())
  # save as a GIF
  anim_save("results/04_analysis_point_plots/cases_deaths_log.gif")
  
