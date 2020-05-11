@@ -49,7 +49,7 @@ PC_sign <- covid_pca %>% tidy("pcs") %>%
   geom_col() +
   theme_bw()
 
-png("results/04_analysis_iii/PC_significance.png", width=8.5,height = 6.5,unit='in',res=300)
+png("results/04_analysis_PCA/PC_significance.png", width=8.5,height = 6.5,unit='in',res=300)
 
 PC_sign
 
@@ -100,7 +100,7 @@ pl_pca_2 <- covid_pca_aug %>%
   geom_point()
 
 
-png("results/04_analysis_iii/pca_deaths.png", width=8.5,height = 6.5,unit='in',res=300)
+png("results/04_analysis_PCA/pca_deaths.png", width=8.5,height = 6.5,unit='in',res=300)
 
 (pl_pca_1+pl_pca_2)
 
@@ -158,7 +158,7 @@ pl3_abs <- covid_pca_aug_k_org_pca %>%
   geom_point() +
   theme(legend.position = "bottom")
 
-png("results/04_analysis_iii/pca_cluster_deaths.png", width=8.5,height = 6.5,unit='in',res=300)
+png("results/04_analysis_PCA/pca_cluster_deaths.png", width=8.5,height = 6.5,unit='in',res=300)
 
 (pl1_abs + pl2_abs + pl3_abs)
 
@@ -187,7 +187,7 @@ pl3_rel <- covid_pca_aug_k_org_pca %>%
 
 
 
-png("results/04_analysis_iii/pca_cluster_rel_deaths.png", width=8.5,height = 6.5,unit='in',res=300)
+png("results/04_analysis_PCA/pca_cluster_rel_deaths.png", width=8.5,height = 6.5,unit='in',res=300)
 
 (pl1_rel + pl2_rel + pl3_rel)
 
