@@ -5,6 +5,7 @@ date: "11 5 2020"
 output: 
   ioslides_presentation:
     widescreen: true
+    logo: Corp_Red_RGB.png
    
 ---
 
@@ -34,7 +35,6 @@ library("kableExtra")
 
 ## Results - variable selection - Mette Chr
 
-<<<<<<< HEAD
 ```{r include=FALSE, paged.print=FALSE}
 
 covid_aug <- read_tsv(file = "../data/03_covid_aug.tsv")
@@ -85,22 +85,19 @@ cor_covar %>%
 
 
 
-## Respiratory -Signe
-=======
 ## Respiratory diseases
 <div class="columns-2">
   <div class="centered">
-  ![](../results/04_analysis_ii/Cases_respiratory_diseases_ter.png){ width=70%, height=70% }
+  ![](../results/04_analysis_exploratory_figures/Cases_respiratory_diseases_ter.png){ width=70%, height=70% }
   ![](../results/04_analysis_survival/KM_respiratory_diseases_ter.png){width=70%, height=70% }
->>>>>>> c260cbce40561fad94a481ae75ae7a22d19ee5a8
 
-  ![](../results/04_analysis_point_plots/cases_respiratory_diseases.png){ width=110%, height=110% }
+   ![](../results/04_analysis_point_plots/cases_respiratory_diseases.png){ width=110%, height=110% }
 </div>
 
 ## Life expectancy
 <div class="columns-2">
   <div class="centered">
-  ![](../results/04_analysis_ii/Cases_life_expectancy_ter.png){ width=70%, height=70% }
+  ![](../results/04_analysis_exploratory_figures/Cases_life_expectancy_ter.png){ width=70%, height=70% }
   ![](../results/04_analysis_survival/KM_life_expectancy_ter.png){width=70%, height=70% }
 
   ![](../results/04_analysis_point_plots/cases_life_expectancy.png){ width=110%, height=110% }
@@ -110,13 +107,31 @@ cor_covar %>%
 
 <div class="columns-2">
   <div class="centered">
-  ![](../results/04_analysis_ii/Cases_population_living_in_urban_areas_ter.png){ width=70%, height=70% }
+  ![](../results/04_analysis_exploratory_figures/Cases_population_living_in_urban_areas_ter.png){ width=70%, height=70% }
   ![](../results/04_analysis_survival/KM_population_living_in_urban_areas_ter.png){width=70%, height=70% }
 
   ![](../results/04_analysis_point_plots/cases_population_living_in_urban_areas.png){ width=110%, height=110% }
 </div>
 
-## PCA - Signe
+## PCA analysis by population demographics
+<div class="columns-2">
+  <div class="centered">
+  ![](../results/04_analysis_PCA/pca_deaths.png){ width=105%, height=105% }
+  
+  - PCA showed a clear association with COVID-19 kinetics
+  - Relative COVID-19 deaths were more informative than absolute deaths
+  - PC1 comprises 44.6% of variation
+   
+  ![](../results/04_analysis_PCA/PC_significance.png){ width=60%, height=60% }
+
+## PCA and cluster analysis
+  <div class="columns-2">
+  <div class="centered">
+  ![](../results/04_analysis_PCA/pca_cluster_rel_deaths.png){ width=110%, height=110% }
+  
+  - Cluster analysis (n=3) based on population demographics data (middle) and on PCA (right) 
+  - Cluster analysis does not capture COVID-19 kinetics accurately
+  
 
 
 ## Shiny app - Mette Chr
