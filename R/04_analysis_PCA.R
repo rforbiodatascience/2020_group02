@@ -40,7 +40,6 @@ covid_pca
 
 covid_pca %>% tidy("pcs")
 
-
 #Plot of PCA significance of individual PCs
 PC_sign <- covid_pca %>% tidy("pcs") %>% 
   ggplot(aes(x = PC, y = percent)) +
@@ -85,7 +84,7 @@ covid_filtered <- covid_aug %>%
 covid_pca_aug <- covid_pca %>% augment(covid_filtered)
 covid_pca_aug
 
-#plotting PCA with coloring by tertile absolute and relative COVID-19 variable (deaths<100/100-1000/>1000 and deaths per 100.000 <1/1-10/>10)
+#plotting PCA with coloring by tertile absolute and relative COVID-19 variables
 pl_pca_1 <- covid_pca_aug %>% 
   ggplot(aes(x = .fittedPC1, y = .fittedPC2, colour = tertile_deaths)) +
   geom_point()
@@ -128,10 +127,6 @@ covid_pca_aug_k_org_pca
 # Comparative plots and .pngs ---------------------------------------------------------
 
 #Comparative plots for absolute deaths
-#We see a nice congruence between cluster, PCA and COVID, but
-#The three outliers are China (row 35, -25,-9), US (row 160, -5,-8), and India (row 73, -22,-5)
-#This suggests that the connection is mainly based on country size, reflecting a quick reach of X cases in large countries
-
 
 #Plot PCA - colour by COVID deaths
 pl1_abs <- covid_pca_aug_k_org_pca %>%
@@ -157,8 +152,7 @@ png("results/04_analysis_PCA/pca_cluster_deaths.png", width=8.5,height = 6.5,uni
 
 dev.off()
 
-#Therefore repeting the analysis using dead_cases_per_100000
-#This shows less congruence between PCA/cluster and COVID-19
+#Comparative plots of relative deaths using variable dead_cases_per_100000
 
 #Plot PCA - colour by relative COVID deaths
 pl1_rel <- covid_pca_aug_k_org_pca %>%
