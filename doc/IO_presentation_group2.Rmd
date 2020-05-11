@@ -164,6 +164,12 @@ https://r-kursus.shinyapps.io/covid_app/
 ![](../results/04_analysis_exploratory_figures/COVID-19 spread by gender of national leader.png){ width=100%, height=100% }
 </div>
 
-## Conclusion slide - HJ
+## Conclusion - A small virus in a world full of data
+  ![](https://ing.dk/sites/ing/files/topillustration/2020/03/2019-ncov-cdc-23312coronavirus.png){ width=30%, height=30%}
+   
+  
+  - This project demonstrates the strength of Tidyverse R by cleansing, transformation, visualization and communication Covid-19 data
+  - Performed focusing on reproducibility
+  - All data analysis is available at github (https://github.com/rforbiodatascience/2020_group02)
 
 
