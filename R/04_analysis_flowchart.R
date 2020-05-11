@@ -5,6 +5,8 @@ rm(list = ls())
 # Load libraries
 # ------------------------------------------------------------------------------
 library("DiagrammeR")
+library("DiagrammeRsvg")
+library("rsvg")
 
 
 # Define functions
@@ -19,9 +21,9 @@ covid_aug <- read_tsv(file = "data/03_covid_aug.tsv",
 
 
 
-# Flowchart with study design ----------------------------------------------
+# Flowcharts with study design ----------------------------------------------
 
-grViz("digraph {
+flowchart_design <- grViz("digraph {
   
 graph[compound = true, color = crimson, penwidth = 3]
 node [fontname = helvetica, fontsize = 20, shape = rectangle, style = filled, fillcolor = White, width = 6, height = 0.75,  penwidth = 2.0]
@@ -60,11 +62,56 @@ cleaning -> 'outcome1' [lhead = cluster2]
 cleaning -> 'exp1' [lhead = cluster1]
 }")
 
+export_svg(flowchart_design) %>%
+  charToRaw() %>%
+  rsvg() %>%
+  png::writePNG("results/04_flowcharts/flowchart_design.png")
+
+
+flowchart_analyses <- grViz("digraph {
+  
+graph[compound = true, color = crimson, penwidth = 3]
+node [fontname = helvetica, fontsize = 20, shape = rectangle, style = filled, fillcolor = White, width = 3, height = 0.75,  penwidth = 2.0]
+edge [color = black, arrowhead = none, arrowtail = none]
+
+cleaning [label = 'Combined database']
+analysis [label = 'Data analyses']
+analysis1 [label = 'Simple associations']
+analysis2 [label = 'Stratified associations']
+analysis3 [label = 'Survival analyses']
+analysis4 [label = 'Cluster/PCA analyses']
+analysis5 [label = 'Maps']
+analysis6 [label = 'Shiny app']
+conclusion [label = 'Conclusions']
+presentation [label = 'Presentation']
+
+
+cleaning -> 'analysis'
+analysis -> 'analysis1'
+analysis -> 'analysis2'
+analysis -> 'analysis3'
+analysis -> 'analysis4'
+analysis -> 'analysis5'
+analysis -> 'analysis6'
+analysis1 -> 'conclusion'
+analysis2 -> 'conclusion'
+analysis3 -> 'conclusion'
+analysis4 -> 'conclusion'
+analysis5 -> 'conclusion'
+analysis6 -> 'conclusion'
+conclusion -> 'presentation'
+}")
+
+
+export_svg(flowchart_analyses) %>%
+  charToRaw() %>%
+  rsvg() %>%
+  png::writePNG("results/04_flowcharts/flowchart_analyses.png")
 
 
 # Flowchart with variables ------------------------------------------------
 
-grViz("digraph {
+variables <- grViz("digraph {
   
 graph [compound = true, nodesep = 0.75, ranksep = .5, color = crimson, penwidth = 3]
 node [fontname = helvetica, fontsize = 16, fontcolor = black, shape = rectangle, fixedsize = TRUE, height = 1, penwidth = 2.0, color = black]
@@ -125,7 +172,10 @@ subgraph cluster7 {
 }")
 
 
-
+export_svg(variables) %>%
+  charToRaw() %>%
+  rsvg() %>%
+  png::writePNG("results/04_flowcharts/variables_overview.png")
 
 
 
