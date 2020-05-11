@@ -109,7 +109,8 @@ for(i in list_of_cov_hj){
 
 
 covid_aug_by_country <- covid_aug_by_country %>%
-  case_when()
+  mutate(quartile = ntile(value, 10)) %>%
+  mutate
 
 #Making interactive plot for selected variables (life_exp, health_expenditure, Pollution, pop in urban, pop >60 years)
 
