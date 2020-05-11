@@ -1,0 +1,42 @@
+---
+title: "README"
+author: "Mette Christensen, Signe Modvig Stausbøll, Hans Jakob Hartling, Mette Christoffersen"
+output: pdf_document; html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Influence of demographic characteristics on COVID-19 kinetics
+A project done during "R for Bio Data Science" at DTU in the spring of 2020. 
+Data has been updated with follow-up until May 4th 2020.
+
+
+### Field description
+
+#### Data source - Johns Hopkins University (https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data)
+
+number_of_confirmed_covid-19: Number of confirmed COVID-19 cases
+
+number_of_covid-19_related_deaths: Number of confirmed COVID-19 related deaths
+
+recovered_from_covid-19_no.: Number of recovered cases of COVID-19
+
+#### Data source - WHO
+
+adult_mortality_rate: The probability of dying between the ages of 15 and 60 years (per 1 000 population) per year among a hypothetical cohort of 100 000 people that would experience the age-specific mortality rate of the reporting year. 
+
+concentration_fine_particles: The mean annual concentration of fine suspended particles of less than 2.5 microns in diameters is a common measure of air pollution. The mean is a population-weighted average for urban population in a country.
+
+bmi_above30_prevalence_all: Percentage of defined population with a body mass index (BMI) of 30 kg/m2 or higher.  
+
+proportion_basic_handwashing_facilities: The percentage of population living in households that have a handwashing facility with soap and water at home. 
+
+current_health_expenditure_per_person_usd: Level of general government expenditure on health (GGHE) expressed as a percentage of total government expenditure.
+
+density_of_hospitals: 
+
+density_of_medical_doctors: Medical doctors per 10000 inhabitants.
+
+
