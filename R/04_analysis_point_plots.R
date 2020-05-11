@@ -49,7 +49,7 @@ for(i in list_of_cov_hj){
 }
 
 for(i in list_of_cov_hj){
-  file_name = paste("results/04_analysis_iv/deaths_", i, ".png", sep="")
+  file_name = paste("results/04_analysis_point_plots/deaths_", i, ".png", sep="")
   png(file_name, width=8.5, height = 6.5,unit='in',res=300)
   print(plot_list_hj1[[i]])
   dev.off()
@@ -74,7 +74,7 @@ for(i in list_of_cov_hj){
 }
 
 for(i in list_of_cov_hj){
-  file_name = paste("results/04_analysis_iv/cases_", i, ".png", sep="")
+  file_name = paste("results/04_analysis_point_plots/cases_", i, ".png", sep="")
   png(file_name, width=8.5, height = 6.5,unit='in',res=300)
   print(plot_list_hj2[[i]])
   dev.off()
@@ -144,7 +144,7 @@ covid_aug2 <- covid_aug %>%
  #Animate and present the files in  a gif
  animate(gif_plot_log, duration = 10, fps = 10, width = 450, height = 450, renderer = gifski_renderer())
  # save as a GIF
- anim_save("results/04_analysis_iv/hj_plot_test_log.gif")
+ anim_save("results/04_analysis_point_plots/cases_deaths_log.gif")
  
  
 
