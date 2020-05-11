@@ -14,7 +14,7 @@ df_shiny_app <- read_tsv(file = "03_df_shiny_aug.tsv")
 
 
 # App function coding -----------------------------------------------------
-#Defining user interface for app - selection of country from df_shiny, showing Denmark by default in sidebar panel. Output (graphics and table) is shown in main panel. 
+#Defining user interface for app - selection of country from df_shiny_app, showing Denmark by default in sidebar panel. Output (graphics and table) is shown in main panel. 
 
 ui <- fluidPage(
     titlePanel("COVID-19 data until May 4th"),
@@ -30,7 +30,7 @@ ui <- fluidPage(
     )
 )
 
-#defining output, subsetting country from to different df to input country. Coding plots by ggplot and aligning text in Tabel  
+#defining output, subsetting country from to different df to input country. Coding plots by ggplot and aligning text in Table  
 server <- function(input, output, session){
     output$covid_data <- renderTable({
          country_filter <- subset(df_shiny_app, df_shiny_app$country == input$country) 
@@ -43,8 +43,8 @@ server <- function(input, output, session){
             geom_area(mapping = aes (x = date, y = confirmed_cases_per_100000), fill = "red", color = "red") +
             geom_area(mapping = aes (x = date, y = test_cases_per_100000), fill = "green", color = "green", alpha = 0.3 ) +
             labs(x = "",
-                 y = "Conf. cases (and if available conf. tests) per 100.000", 
-                  title = "Confirmed COVID-19 cases per 100.000 - in green COVID-19 test data")+
+                 y = "Conf. cases (and if available no. of tests) per 100.000", 
+                  title = "Confirmed COVID-19 cases per 100.000 - in green COVID-19 test data (if available)")+
           theme_minimal(base_size = 14)
     })
     
@@ -54,7 +54,7 @@ server <- function(input, output, session){
                 geom_area(color = "blue", fill = "blue") +
                 labs(x = "",
                      y = "Deaths per 100.000",
-                     title = "COVID-19 related deaths pr. 100.000") +
+                     title = "COVID-19 related deaths per 100.000") +
               theme_minimal(base_size = 14)
     })
 }

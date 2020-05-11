@@ -1,20 +1,18 @@
-# Clear workspace
-# ------------------------------------------------------------------------------
+# Clear workspace ---------------------------------------------------------
 rm(list = ls())
 
-# Load libraries
-# ------------------------------------------------------------------------------
+
+# Load libraries ----------------------------------------------------------
 library("tidyverse")
 library("patchwork")
 library("PMCMRplus")
 
 
-# Define functions
-# ------------------------------------------------------------------------------
-# source(file = "R/99_project_functions.R")
+# Define functions --------------------------------------------------------
+source(file = "R/99_project_functions.R")
 
-# Load data
-# ------------------------------------------------------------------------------
+
+# Load data ---------------------------------------------------------------
 levels <- c("1", "2", "3")
 covid_aug <- read_tsv(file = "data/03_covid_aug.tsv",
                       col_types = cols(thousand_deaths = col_date(),
@@ -60,13 +58,12 @@ covid_aug_by_country <- covid_aug %>%
   slice(which.max(date))  
 
 
-# Exploratory data analyses
-# ------------------------------------------------------------------------------
 
-#Summary statistics for variables
+# Exploratory data analyses -----------------------------------------------
 list_of_cov <- names(covid_aug)[59:91]
 
-#COVID-19 mortality - days from 100 cases to 100 deaths
+
+# COVID-19 mortality - days from 100 cases to 100 deaths ------------------
 pvalue_list1 <- list()
 for(i in list_of_cov) {
   pvalue <- cuzickTest(days_from_100_cases_to_100_deaths ~ covid_aug_by_country[[i]], data = covid_aug_by_country)
@@ -86,7 +83,7 @@ for(i in list_of_cov){
     drop_na(i) %>% 
     ggplot(aes_string(x=i, y = 'days_from_100_cases_to_100_deaths')) +
     geom_boxplot() +
-    labs(y = "Days from 100 cases \n until 100 deaths") +
+    labs(y = "Days from 100 cases \n until 100 deaths", x = str_replace_all(str_to_sentence(str_replace_all(i, "_", " ")), "ter", "- in tertiles")) +
     annotate("text", x=2.5, y=60, label = (paste0("P for trend = ", pvalue_list1_digits[[i]])), size=4) +
     theme_bw()
   plot_list1[[i]] = plt
@@ -94,14 +91,14 @@ for(i in list_of_cov){
 }
 
 for(i in list_of_cov){
-  file_name = paste("results/04_analysis_ii/Deaths_", i, ".png", sep="")
+  file_name = paste("results/04_analysis_exploratory_figures/Deaths_", i, ".png", sep="")
   png(file_name, width=8.5, height = 6.5,unit='in',res=300)
   print(plot_list1[[i]])
   dev.off()
 }
 
 
-#COVID-19 spread - days from December 1st 2019 to 100 cases
+# COVID-19 spread - days from December 1st 2019 to 100 cases --------------
 pvalue_list2 <- list()
 for(i in list_of_cov) {
   pvalue <- cuzickTest(days_from_dec1_to_100_cases ~ covid_aug_by_country[[i]], data = covid_aug_by_country)
@@ -121,7 +118,7 @@ for(i in list_of_cov){
     drop_na(i) %>% 
     ggplot(aes_string(x=i, y = 'days_from_dec1_to_100_cases')) +
     geom_boxplot() +
-    labs(y = "Days from Dec 1st 2019 \n until 100 cases") +
+    labs(y = "Days from Dec 1st 2019 \n until 100 cases", x = str_replace_all(str_to_sentence(str_replace_all(i, "_", " ")), "ter", "- in tertiles")) +
     annotate("text", x=2.5, y=160, label = (paste0("P for trend = ", pvalue_list2_digits[[i]])), size=4) +
     theme_bw()
   plot_list2[[i]] = plt
@@ -129,24 +126,45 @@ for(i in list_of_cov){
 }
 
 for(i in list_of_cov){
-  file_name = paste("results/04_analysis_ii/Cases_", i, ".png", sep="")
+  file_name = paste("results/04_analysis_exploratory_figures/Cases_", i, ".png", sep="")
   png(file_name, width=8.5, height = 6.5,unit='in',res=300)
   print(plot_list2[[i]])
   dev.off()
 }
 
 
-#Association with gender of the national leader
-kruskal.test(days_from_dec1_to_100_cases ~ sex, data = covid_aug_by_country)
-kruskal.test(days_from_100_cases_to_100_deaths ~ sex, data = covid_aug_by_country)
+# Association with gender of the national leader --------------------------
+pvalue_sex_spread <- kruskal.test(days_from_dec1_to_100_cases ~ sex, data = covid_aug_by_country)
+pvalue_sex_spread_digits2 <- signif(pvalue_sex_spread[["p.value"]], digits = 2)
+pvalue_sex_death <- kruskal.test(days_from_100_cases_to_100_deaths ~ sex, data = covid_aug_by_country)
+pvalue_sex_death_digits2 <- signif(pvalue_sex_death[["p.value"]], digits = 2)
 
+covid_aug_by_country %>% 
+  drop_na(sex) %>%
+  ggplot(mapping = aes(x=sex, y = days_from_dec1_to_100_cases, fill = sex)) +
+  geom_boxplot() +
+  labs(title = 'Spread of COVID-19 in relation to the gender of the national leader', y = "Days from Dec 1st 2019 \n until 100 cases") +
+  annotate("text", x=2.2, y=160, label = (paste0("P = ", pvalue_sex_spread_digits2)), size=4) +
+  scale_fill_manual( values = c( "male"="lightblue", "female"="lightpink" )) +
+  theme_bw()
+ggsave("results/04_analysis_exploratory_figures/COVID-19 spread by gender of national leader.png", width=10, height = 5, unit='in')
+
+covid_aug_by_country %>% 
+  drop_na(sex) %>%
+  ggplot(mapping = aes(x=sex, y = days_from_100_cases_to_100_deaths, fill = sex)) +
+  geom_boxplot() +
+  labs(title = 'Deaths from COVID-19 in relation to the gender of the national leader', y = "Days from 100 cases \n until 100 deaths") +
+  annotate("text", x=2.2, y=60, label = (paste0("P = ", pvalue_sex_death_digits2)), size=4) +
+  scale_fill_manual( values = c( "male"="lightblue", "female"="lightpink" )) +
+  theme_bw()
+ggsave("results/04_analysis_exploratory_figures/COVID-19 deaths by gender of national leader.png", width=10, height = 5, unit='in')
 
 
 
 # Patchwork package for combining plots -----------------------------------
 
 # Descriptive plots - spread of COVID-19 - population demographics ------------------------------
-png("results/04_analysis_ii/Spread of COVID-19 by population demographics.png",
+png("results/04_analysis_exploratory_figures/Spread of COVID-19 by population demographics.png",
     width=12, height = 8,unit='in',res=300)
 plot_list2$population_median_age_years_ter + plot_list2$population_proportion_under_15_ter + 
   plot_list2$population_aged_60_years_old_percentage_ter + plot_list2$population_density_ter + 
@@ -156,7 +174,7 @@ plot_list2$population_median_age_years_ter + plot_list2$population_proportion_un
 dev.off()
 
 # Descriptive plot - spread of COVID-19 - health system -------------------
-png("results/04_analysis_ii/Spread of COVID-19 by capacity of health systems.png",
+png("results/04_analysis_exploratory_figures/Spread of COVID-19 by capacity of health systems.png",
     width=12, height = 8,unit='in',res=300)
 plot_list2$current_health_expenditure_per_person_usd_ter + plot_list2$density_of_hospitals_ter + 
   plot_list2$density_of_medical_doctors_ter + plot_list2$density_of_nurses_midwifes_ter +
@@ -165,7 +183,7 @@ plot_list2$current_health_expenditure_per_person_usd_ter + plot_list2$density_of
 dev.off()
 
 # Descriptive plot - spread of COVID-19 - public health -------------------
-png("results/04_analysis_ii/Spread of COVID-19 by public health factors.png",
+png("results/04_analysis_exploratory_figures/Spread of COVID-19 by public health factors.png",
     width=12, height = 8,unit='in',res=300)
 plot_list2$bmi_above30_prevalence_all_ter + plot_list2$prevalence_smoking_ter + 
   plot_list2$concentration_fine_particles_ter + plot_list2$pollution_attributable_death_rate_std_ter +
@@ -174,7 +192,7 @@ plot_list2$bmi_above30_prevalence_all_ter + plot_list2$prevalence_smoking_ter +
 dev.off()
 
 # Descriptive plot - spread of COVID-19 - mortality -----------------------
-png("results/04_analysis_ii/Spread of COVID-19 by life expectancy and mortality.png",
+png("results/04_analysis_exploratory_figures/Spread of COVID-19 by life expectancy and mortality.png",
     width=12, height = 10,unit='in',res=300)
 (plot_list2$adult_mortality_rate_ter + plot_list2$life_expectancy_ter + 
   plot_list2$cardiovascular_diseases_ter + plot_list2$respiratory_diseases_ter) /
@@ -185,7 +203,7 @@ png("results/04_analysis_ii/Spread of COVID-19 by life expectancy and mortality.
 dev.off()
 
 # Descriptive plots - death from COVID-19 - population demographics ------------------------------
-png("results/04_analysis_ii/Death from COVID-19 by population demographics.png",
+png("results/04_analysis_exploratory_figures/Death from COVID-19 by population demographics.png",
     width=12, height = 8,unit='in',res=300)
 plot_list1$population_median_age_years_ter + plot_list1$population_proportion_under_15_ter + 
   plot_list1$population_aged_60_years_old_percentage_ter + plot_list1$population_density_ter + 
@@ -195,7 +213,7 @@ plot_list1$population_median_age_years_ter + plot_list1$population_proportion_un
 dev.off()
 
 # Descriptive plot - death from COVID-19 - health system -------------------
-png("results/04_analysis_ii/Death from COVID-19 by capacity of health systems.png",
+png("results/04_analysis_exploratory_figures/Death from COVID-19 by capacity of health systems.png",
     width=12, height = 8,unit='in',res=300)
 plot_list1$current_health_expenditure_per_person_usd_ter + plot_list1$density_of_hospitals_ter + 
   plot_list1$density_of_medical_doctors_ter + plot_list1$density_of_nurses_midwifes_ter +
@@ -204,7 +222,7 @@ plot_list1$current_health_expenditure_per_person_usd_ter + plot_list1$density_of
 dev.off()
 
 # Descriptive plot - death from COVID-19 - public health -------------------
-png("results/04_analysis_ii/Death from COVID-19 by public health factors.png",
+png("results/04_analysis_exploratory_figures/Death from COVID-19 by public health factors.png",
     width=12, height = 8,unit='in',res=300)
 plot_list1$bmi_above30_prevalence_all_ter + plot_list1$prevalence_smoking_ter + 
   plot_list1$concentration_fine_particles_ter + plot_list1$pollution_attributable_death_rate_std_ter +
@@ -213,7 +231,7 @@ plot_list1$bmi_above30_prevalence_all_ter + plot_list1$prevalence_smoking_ter +
 dev.off()
 
 # Descriptive plot - death from COVID-19 - mortality -----------------------
-png("results/04_analysis_ii/Death from COVID-19 by life expectancy and mortality.png",
+png("results/04_analysis_exploratory_figures/Death from COVID-19 by life expectancy and mortality.png",
     width=12, height = 10,unit='in',res=300)
 (plot_list1$adult_mortality_rate_ter + plot_list1$life_expectancy_ter + 
     plot_list1$cardiovascular_diseases_ter + plot_list1$respiratory_diseases_ter) /

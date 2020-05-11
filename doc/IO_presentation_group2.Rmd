@@ -11,9 +11,18 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+library("tidyverse")
+library("knitr")
+library("kableExtra")
+
 ```
 
-## Aim - hypothesis - inkl søjleplot og map plot Mette Chr
+
+## Aim - hypothesis - inkl søjleplot og map plot Mette 
+<div class="columns-1">
+  <div class="centered">
+- [Global map - days from 100 cases to 100 deaths](map_days_from_100_cases_to_100_deaths.html)
+- [Global map - days from 100 cases to 100 deaths](map_days_from_dec1_to_100_cases.html)
 
 ## Materiale - oversigt over dataset - Mette Christof
 
@@ -21,36 +30,87 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Metode 2 - analyse flowchart  - Mette Christof
 
-## Results GIF - HJ
+## Covid-19 cases and deaths in each country colored by GDP and sized by population
+![](../results/04_analysis_point_plots/cases_deaths_log.gif)
 
 ## Results - variable selection - Mette Chr
+
+```{r include=FALSE, paged.print=FALSE}
+
+covid_aug <- read_tsv(file = "../data/03_covid_aug.tsv")
+
+covid_aug_by_country <- covid_aug %>% 
+  group_by(country) %>% 
+  slice(which.max(date)) 
+
+
+# Linear regression - COVID-19 cases and covariates
+# ------------------------------------------------------------------------------
+
+#Check for correlation between covariates
+
+model1 <- lm(days_from_dec1_to_100_cases ~ life_expectancy + pollution_attributable_death_rate_std +
+               current_health_expenditure_per_person_usd + population_living_in_urban_areas +
+               population_aged_60_years_old_percentage + respiratory_diseases, data = covid_aug_by_country)
+
+summary(model1)
+
+
+model1_final <- lm(days_from_dec1_to_100_cases ~ life_expectancy + 
+               population_living_in_urban_areas + respiratory_diseases, data = covid_aug_by_country) 
+ 
+model1_final<-summary(model1_final)
+
+
+model2 <- lm(days_from_100_cases_to_100_deaths ~ life_expectancy + pollution_attributable_death_rate_std +
+               current_health_expenditure_per_person_usd + population_living_in_urban_areas +
+               population_aged_60_years_old_percentage + respiratory_diseases, data = covid_aug_by_country)
+
+summary(model2)
+
+
+```
+
+```{r Table 1, echo=FALSE, paged.print=FALSE, results="asis"}
+
+cor_covar = round(coefficients(model1_final), digits = 6) 
+
+cor_covar %>% 
+  kable(caption = "Table 1. Correlation between covariants", format = "html") %>% 
+  kableExtra::kable_styling(position = "left", font_size = 12, bootstrap_options = "striped", full_width = FALSE)
+
+
+```
+
+
+
 
 ## Respiratory diseases
 <div class="columns-2">
   <div class="centered">
-  ![](../results/04_analysis_ii/Cases_respiratory_diseases_ter.png){ width=70%, height=70% }
+  ![](../results/04_analysis_exploratory_figures/Cases_respiratory_diseases_ter.png){ width=70%, height=70% }
   ![](../results/04_analysis_survival/KM_respiratory_diseases_ter.png){width=70%, height=70% }
 
-  ![](../results/04_analysis_iv/cases_respiratory_diseases.png){ width=110%, height=110% }
+   ![](../results/04_analysis_point_plots/cases_respiratory_diseases.png){ width=110%, height=110% }
 </div>
 
 ## Life expectancy
 <div class="columns-2">
   <div class="centered">
-  ![](../results/04_analysis_ii/Cases_life_expectancy_ter.png){ width=70%, height=70% }
+  ![](../results/04_analysis_exploratory_figures/Cases_life_expectancy_ter.png){ width=70%, height=70% }
   ![](../results/04_analysis_survival/KM_life_expectancy_ter.png){width=70%, height=70% }
 
-  ![](../results/04_analysis_iv/cases_life_expectancy.png){ width=110%, height=110% }
+  ![](../results/04_analysis_point_plots/cases_life_expectancy.png){ width=110%, height=110% }
 </div>
 
 ## Population % living in urban areas
 
 <div class="columns-2">
   <div class="centered">
-  ![](../results/04_analysis_ii/Cases_population_living_in_urban_areas_ter.png){ width=70%, height=70% }
+  ![](../results/04_analysis_exploratory_figures/Cases_population_living_in_urban_areas_ter.png){ width=70%, height=70% }
   ![](../results/04_analysis_survival/KM_population_living_in_urban_areas_ter.png){width=70%, height=70% }
 
-  ![](../results/04_analysis_iv/cases_population_living_in_urban_areas.png){ width=110%, height=110% }
+  ![](../results/04_analysis_point_plots/cases_population_living_in_urban_areas.png){ width=110%, height=110% }
 </div>
 
 ## PCA analysis by population demographics

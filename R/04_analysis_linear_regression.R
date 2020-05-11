@@ -1,21 +1,17 @@
-# Clear workspace
-# ------------------------------------------------------------------------------
+# Clear workspace ---------------------------------------------------------
 rm(list = ls())
 
-# Load libraries
-# ------------------------------------------------------------------------------
-library("tidyverse")
-library("patchwork")
+
+# Load libraries ----------------------------------------------------------
 library("modelr")
 library("broom")
 
 
-# Define functions
-# ------------------------------------------------------------------------------
-# source(file = "R/99_project_functions.R")
+# Define functions --------------------------------------------------------
+source(file = "R/99_project_functions.R")
 
-# Load data
-# ------------------------------------------------------------------------------
+
+# Load data ---------------------------------------------------------------
 levels <- c("1", "2", "3")
 covid_aug <- read_tsv(file = "data/03_covid_aug.tsv",
                       col_types = cols(thousand_deaths = col_date(),
@@ -56,31 +52,26 @@ covid_aug <- read_tsv(file = "data/03_covid_aug.tsv",
                                        cumulative_covid_test_ter = col_factor(levels = levels)))
 
 
-#Which factors affect number of COVID-19 confirmed cases and COVID-19 related deaths across countries?
-
 covid_aug_by_country <- covid_aug %>% 
   group_by(country) %>% 
   slice(which.max(date)) 
 
 
-# Linear regression - COVID-19 cases and covariates
-# ------------------------------------------------------------------------------
-
-#Check for correlation between covariates
-
+# Linear regression model - COVID-19 cases and selected covariates -----------------
 model1 <- lm(days_from_dec1_to_100_cases ~ life_expectancy + pollution_attributable_death_rate_std +
                current_health_expenditure_per_person_usd + population_living_in_urban_areas +
                population_aged_60_years_old_percentage + respiratory_diseases, data = covid_aug_by_country)
 
 summary(model1)
 
-model1_final <- lm(days_from_dec1_to_100_cases ~ life_expectancy + 
+model1_reduced <- lm(days_from_dec1_to_100_cases ~ life_expectancy + 
                population_living_in_urban_areas + respiratory_diseases, data = covid_aug_by_country)
 
-summary(model1_final)
-tidy(model_final)
+summary(model1_reduced)
+tidy(model1_reduced)
 
 
+# Linear regression model - COVID-19 deaths and selected covariates -------
 model2 <- lm(days_from_100_cases_to_100_deaths ~ life_expectancy + pollution_attributable_death_rate_std +
                current_health_expenditure_per_person_usd + population_living_in_urban_areas +
                population_aged_60_years_old_percentage + respiratory_diseases, data = covid_aug_by_country)
