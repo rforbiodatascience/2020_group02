@@ -24,11 +24,25 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Results - variable selection - Mette Chr
 
-## Respiratory -Signe
+## Respiratory diseases
+<div class="columns-2">
+  <div class="centered">
+  ![](../results/04_analysis_ii/Cases_respiratory_diseases_ter.png){ width=70%, height=70% }
+  ![](../results/04_analysis_survival/KM_respiratory_diseases_ter.png){width=70%, height=70% }
 
-## Life expectancy Signe
+  ![](../results/04_analysis_iv/cases_respiratory_diseases.png){ width=110%, height=110% }
+</div>
 
-## Population living in urban areas Signe
+## Life expectancy
+<div class="columns-2">
+  <div class="centered">
+  ![](../results/04_analysis_ii/Cases_life_expectancy_ter.png){ width=70%, height=70% }
+  ![](../results/04_analysis_survival/KM_life_expectancy_ter.png){width=70%, height=70% }
+
+  ![](../results/04_analysis_iv/cases_life_expectancy.png){ width=110%, height=110% }
+</div>
+
+## Population % living in urban areas
 
 <div class="columns-2">
   <div class="centered">
@@ -36,10 +50,10 @@ knitr::opts_chunk$set(echo = FALSE)
   ![](../results/04_analysis_survival/KM_population_living_in_urban_areas_ter.png){width=70%, height=70% }
 
   ![](../results/04_analysis_iv/cases_population_living_in_urban_areas.png){ width=110%, height=110% }
-- fgdd
 </div>
 
 ## PCA - Signe
+
 
 ## Shiny app - Mette Chr
 

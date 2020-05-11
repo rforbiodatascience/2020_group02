@@ -127,11 +127,10 @@ covid_pca_aug_k_org_pca
 
 # Comparative plots and .pngs ---------------------------------------------------------
 
-
 #Comparative plots for absolute deaths
 #We see a nice congruence between cluster, PCA and COVID, but
 #The three outliers are China (row 35, -25,-9), US (row 160, -5,-8), and India (row 73, -22,-5)
-#This suggests that the connection is mainly based on country size, reflecting a quick reach of 1000 cases
+#This suggests that the connection is mainly based on country size, reflecting a quick reach of X cases in large countries
 
 
 #Plot PCA - colour by COVID deaths
