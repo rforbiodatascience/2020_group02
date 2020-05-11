@@ -1,7 +1,6 @@
 ---
 title: "Influence of demographic characteristics on COVID-19 kinetics"
 author: "Mette Christensen, Signe Modvig Stausbøll, Hans Jakob Hartling, Mette Christoffersen"
-date: "11 5 2020"
 output: github_document
 ---
 
