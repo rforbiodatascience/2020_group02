@@ -40,7 +40,7 @@ library("kableExtra")
 ![](../results/04_analysis_flowcharts/flowchart_analyses.png){ width=80%, height=80% }
 </div>
 
-## Covid-19 cases and deaths in each country colored by GDP and sized by population
+## Covid-19 cases and deaths in each country
 ![](../results/04_analysis_point_plots/cases_deaths_log.gif)
 
 ## Results - variable selection - Mette Chr
