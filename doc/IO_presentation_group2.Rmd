@@ -5,6 +5,7 @@ date: "11 5 2020"
 output: 
   ioslides_presentation:
     widescreen: true
+    logo: Corp_Red_RGB.png
    
 ---
 
@@ -52,7 +53,25 @@ knitr::opts_chunk$set(echo = FALSE)
   ![](../results/04_analysis_iv/cases_population_living_in_urban_areas.png){ width=110%, height=110% }
 </div>
 
-## PCA - Signe
+## PCA analysis by population demographics
+<div class="columns-2">
+  <div class="centered">
+  ![](../results/04_analysis_PCA/pca_deaths.png){ width=105%, height=105% }
+  
+  - PCA showed a clear association with COVID-19 kinetics
+  - Relative COVID-19 deaths were more informative than absolute deaths
+  - PC1 comprises 44.6% of variation
+   
+  ![](../results/04_analysis_PCA/PC_significance.png){ width=60%, height=60% }
+
+## PCA and cluster analysis
+  <div class="columns-2">
+  <div class="centered">
+  ![](../results/04_analysis_PCA/pca_cluster_rel_deaths.png){ width=110%, height=110% }
+  
+  - Cluster analysis (n=3) based on population demographics data (middle) and on PCA (right) 
+  - Cluster analysis does not capture COVID-19 kinetics accurately
+  
 
 
 ## Shiny app - Mette Chr
