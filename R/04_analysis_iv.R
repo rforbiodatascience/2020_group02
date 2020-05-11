@@ -52,7 +52,7 @@ for(i in list_of_cov_hj){
     scale_size(range = c(0.5, 20), name="Population", labels=NULL) +
     scale_colour_gradientn(colours=topo.colors(5), name="GDP per capita") +
     ylab("Days from 100 cases to 100 deaths") +
-    xlab(i) +
+    xlab(str_to_sentence(str_replace(i, "_", " "))) +
     ggtitle("Development of Corona-pandemic by country") +
     guides(alpha="none")
   plot_list_hj1[[i]] = plt
@@ -77,7 +77,7 @@ for(i in list_of_cov_hj){
     scale_size(range = c(.1, 20), name="Population", labels= NULL) +
     scale_colour_gradientn(colours=topo.colors(5), name="GDP per capita (log)") +
     ylab("Days from 1st December to 100 cases") +
-    xlab(str_replace(i, "_", " ")) +
+    xlab(str_to_sentence(str_replace(i, "_", " "))) +
     ggtitle("Development of Corona-pandemic by country") +
     guides(alpha="none")
   plot_list_hj2[[i]] = plt
