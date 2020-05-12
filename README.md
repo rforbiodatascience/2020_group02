@@ -63,25 +63,32 @@ per 100000 inhabitants.
 government expenditure on health (GGHE) expressed as a percentage of
 total government expenditure.
 
-**date**:
+**date**: Date
 
-**date\_28\_days\_after\_100\_cases**:
+**date\_28\_days\_after\_100\_cases**: Date 28 days after reaching 100
+cases.
 
-**days\_from\_100\_cases\_to\_100\_deaths**:
+**days\_from\_100\_cases\_to\_100\_deaths**: Number of days from
+reaching 100 cases to reaching 100 deaths.
 
-**days\_from\_100\_cases\_to\_1000\_deaths**:
+**days\_from\_100\_cases\_to\_1000\_deaths**: Number of days from
+reaching 100 cases to reaching 1000 deaths.
 
-**days\_from\_dec1\_to\_100\_cases**:
+**days\_from\_dec1\_to\_100\_cases**: Number of days from December 1st
+2019 to reaching 100 cases.
 
-**days\_to\_hundred\_cases**:
+**days\_to\_hundred\_cases**: Number of days until reaching 100 cases.
 
-**days\_to\_thousand\_cases**:
+**days\_to\_thousand\_cases**: Number of days until reaching 1000 cases.
 
-**dead\_cases\_per\_100000**:
+**dead\_cases\_per\_100000**: Number of COVID-19 related deaths per
+100000 inhabitants.
 
-**deaths\_28\_days\_after\_100\_cases**:
+**deaths\_28\_days\_after\_100\_cases**: Number of COVID-19 related
+deaths 28 days after reaching 100 cases.
 
-**deaths\_28\_days\_per\_100000**:
+**deaths\_28\_days\_per\_100000**: Number of COVID-19 related deaths per
+100000 inhabitants.
 
 **density\_of\_hospitals**: Number of hospitals, including the following
 hospital categories: rural and district, provincial (second level
@@ -95,31 +102,34 @@ inhabitants.
 **density\_of\_nurses\_midwifes**: Nurses and midwifes per 10000
 inhabitants.
 
-**first\_case**:
+**first\_case**: Date for appearance of first case.
 
-**first\_death**:
+**first\_death**: Date for first COVID-19 related death.
 
-**gdp\_in\_current\_prices\_millions\_of\_us\_dollars**:
+**gdp\_in\_current\_prices\_millions\_of\_us\_dollars**: Gross domestic
+product in current prices (Millions USD)
 
-**gdp\_per\_capita\_us\_dollars**:
+**gdp\_per\_capita\_us\_dollars**: Gross domestic product per capita in
+US dollars.
 
 **healthy\_life\_expectancy**:
 
-**hundred\_cases**:
+**hundred\_cases**: Date for reaching 100 cases.
 
-**hundred\_deaths**:
+**hundred\_deaths**: Date for reaching 100 deaths.
 
-**ischaemic\_heart\_disease**:
+**ischaemic\_heart\_disease**: Mortality from ischaemic heart disease in
+percent.
 
-**kidney\_diseases**:
+**kidney\_diseases**: Mortality from kidney diseases in percent.
 
-**lat**:
+**lat**: Latitude for country.
 
 **life\_expectancy**:
 
-**long**:
+**long**: Longitude for country.
 
-**malignant\_neoplasms**:
+**malignant\_neoplasms**: Mortality from malignant neoplasms in percent.
 
 **measles\_reported\_cases**:
 
@@ -172,6 +182,4 @@ percent.
 
 **thousand\_deaths**:
 
-**proportion\_using\_clean\_fuels**:
-
-## List of variables
+## Packages

@@ -55,11 +55,11 @@ Original data is available in this repository in /data/_raw
 
 **days_to_thousand_cases**: Number of days until reaching 1000 cases.
 
-**dead_cases_per_100000**: Number of inhabitants
+**dead_cases_per_100000**: Number of COVID-19 related deaths per 100000 inhabitants.
 
-**deaths_28_days_after_100_cases**:
+**deaths_28_days_after_100_cases**: Number of COVID-19 related deaths 28 days after reaching 100 cases.
 
-**deaths_28_days_per_100000**:
+**deaths_28_days_per_100000**: Number of COVID-19 related deaths per 100000 inhabitants.
 
 **density_of_hospitals**: Number of hospitals, including the following hospital categories: rural and district, provincial (second level referral), regional/specialized/teaching and research hospitals (tertiary care), from the public and private sectors, per 100,000 population.
 
@@ -67,33 +67,33 @@ Original data is available in this repository in /data/_raw
 
 **density_of_nurses_midwifes**: Nurses and midwifes per 10000 inhabitants. 
 
-**first_case**:
+**first_case**: Date for appearance of first case.
 
-**first_death**:
+**first_death**: Date for first COVID-19 related death.
 
-**gdp_in_current_prices_millions_of_us_dollars**:
+**gdp_in_current_prices_millions_of_us_dollars**: Gross domestic product in current prices (Millions USD)
 
-**gdp_per_capita_us_dollars**:
+**gdp_per_capita_us_dollars**: Gross domestic product per capita in US dollars.
 
 **healthy_life_expectancy**:
 
-**hundred_cases**:
+**hundred_cases**: Date for reaching 100 cases.
 
-**hundred_deaths**:
+**hundred_deaths**: Date for reaching 100 deaths.
 
-**ischaemic_heart_disease**:
+**ischaemic_heart_disease**: Mortality from ischaemic heart disease in percent.
 
-**kidney_diseases**:
+**kidney_diseases**: Mortality from kidney diseases in percent.
 
-**lat**:
+**lat**: Latitude for country.
 
 **life_expectancy**:
 
-**long**:
+**long**: Longitude for country.
 
-**malignant_neoplasms**:
+**malignant_neoplasms**: Mortality from malignant neoplasms in percent.
 
-**measles_reported_cases**:
+**measles_reported_cases**: 
 
 **number_of_confirmed_covid-19**:
 
