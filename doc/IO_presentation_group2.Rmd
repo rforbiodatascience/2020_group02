@@ -22,7 +22,7 @@ library("kableExtra")
 <div class="centered">
 ![](../results/04_analysis_aim/COVID-19 mortality by country.png){ width=80%, height=80% }
 
-<font size="4">[Global map - cumulative death until May 4th](https://r-kursus.rstudio.cloud/bcf69dc3ce0a4a55a0bd79ce2cec2b6a/rmd_output/4/map_number_of_covid_19_related_deaths.html)</font>
+<font size="4">[Global map - cumulative death until May 4th](https://r-kursus.rstudio.cloud/bcf69dc3ce0a4a55a0bd79ce2cec2b6a/file_show?path=%2Fcloud%2Fproject%2Fdoc%2Fmap_number_of_covid_19_related_deaths.html)</font>
 
 ## Aim and hypothesis
 <div class="black">
@@ -206,7 +206,7 @@ cor_covar %>%
 
 Confirmed cases, test and death in time series 
 
-<font size="3">https://r-kursus.shinyapps.io/covid_app/</font>
+<font size="4">https://r-kursus.shinyapps.io/covid_app/</font>
 
 
 ## Another explanation? {.flexbox .vcenter}
@@ -229,13 +229,13 @@ OR JUST CONFOUNDING BY DEVELOPMENTAL STATUS OF THE COUNTRIES...
 </div>
 ![](../doc/Developed_and_developing_countries.png){ width=100%, height=100%}
 </div>
-<font size="4">[Global map - days from december 1st to 100 cases](map_days_from_dec1_to_100_cases.html)</font>
+<font size="4">[Global map - days from december 1st to 100 cases](https://r-kursus.rstudio.cloud/bcf69dc3ce0a4a55a0bd79ce2cec2b6a/file_show?path=%2Fcloud%2Fproject%2Fdoc%2Fmap_days_from_100_cases_to_100_deaths.html)</font>
 
 ## Conclusion - A small virus in a world full of data
   ![](https://ing.dk/sites/ing/files/topillustration/2020/03/2019-ncov-cdc-23312coronavirus.png){ width=30%, height=30%}
    
   
-  - This project demonstrates the strength of Tidyverse R by cleansing, transformation, visualization and communication Covid-19 data
+  - This project demonstrates the strength of Tidyverse R by cleansing, transformation, visualization and communication of Covid-19 data
   - Performed focusing on reproducibility
   - All data analysis is available at github (https://github.com/rforbiodatascience/2020_group02)
 
