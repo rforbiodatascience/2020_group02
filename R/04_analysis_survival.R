@@ -52,11 +52,17 @@ for(i in list_colnames){
                                  break.time.by=15.25,
                                  xlab="months",
                                  ylab="Cumulative survival (<100 deaths)",
-                                 legend.title=i,
+                                 legend.title = str_replace_all(str_to_sentence(str_replace_all(i, "_", " ")), "ter", ""),
+                                 font.legend = c(16, "black"),
+                                 font.x = c(16, "black"), 
+                                 font.y = c(16, "black"),
+                                 font.tickslab = c(16, "bold"),
                                  hazard.ratio=T,
                                  risk.table=TRUE,
+                                 risk.table.fontsize = 5,
                                  table.layout="clean",
-                                 ggtheme=ggplot2::theme_bw(10))
+                                 ggtheme=ggplot2::theme_bw(10)
+)
     
     plot_list[[i]] = km_plot
     print(plot_list[[i]])
