@@ -41,21 +41,21 @@ Original data is available in this repository in /data/_raw
 
 **current_health_expenditure_per_person_usd**: Level of general government expenditure on health (GGHE) expressed as a percentage of total government expenditure.
 
-**date**:
+**date**: Date
 
-**date_28_days_after_100_cases**:
+**date_28_days_after_100_cases**: Date 28 days after reaching 100 cases.
 
-**days_from_100_cases_to_100_deaths**:
+**days_from_100_cases_to_100_deaths**: Number of days from reaching 100 cases to reaching 100 deaths.
 
-**days_from_100_cases_to_1000_deaths**:
+**days_from_100_cases_to_1000_deaths**: Number of days from reaching 100 cases to reaching 1000 deaths.
 
-**days_from_dec1_to_100_cases**:
+**days_from_dec1_to_100_cases**: Number of days from December 1st 2019 to reaching 100 cases.
 
-**days_to_hundred_cases**:
+**days_to_hundred_cases**: Number of days until reaching 100 cases.
 
-**days_to_thousand_cases**:
+**days_to_thousand_cases**: Number of days until reaching 1000 cases.
 
-**dead_cases_per_100000**:
+**dead_cases_per_100000**: Number of inhabitants
 
 **deaths_28_days_after_100_cases**:
 
@@ -140,15 +140,4 @@ Original data is available in this repository in /data/_raw
 **thousand_deaths**:
 
 
-
-
-
-
-
-
-**proportion_using_clean_fuels**:
-
-
-
-
-## List of variables
+## Packages
