@@ -8,9 +8,6 @@ library("patchwork")
 library("PMCMRplus")
 
 
-# Define functions --------------------------------------------------------
-source(file = "R/99_project_functions.R")
-
 
 # Load data ---------------------------------------------------------------
 levels <- c("1", "2", "3")
