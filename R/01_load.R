@@ -6,17 +6,15 @@ library("tidyverse")
 library("lubridate")
 library("readxl")
 
-# Load data ---------------------------------------------------------------
-#HUSK!
-#Column names included in load file
-#Henvisninger til datasættenes oprindelse inkluderes i Readme file
-#Check funktionen til summarise_all 
 
-##Our world in data (OWD) 
+# Load Our world in data (OWD) --------------------------------------------
+
 #OWD - COVID-19 tests performed, in time series
 covid_test_raw <- read_csv(file = "data/_raw/Our world in data/covid-testing-all-observations.csv")
 
-##Johns Hopkins (JH)
+
+# Load Johns Hopkins data (JH) --------------------------------------------
+
 #JH - confirmed COVID-19 cases, in time series
 jh_conftime_raw <- read_csv("data/_raw/Johns Hopkins - COVID-19/time_series_covid19_confirmed_global.csv")
 
@@ -26,9 +24,12 @@ jh_deadtime_raw <- read_csv("data/_raw/Johns Hopkins - COVID-19/time_series_covi
 #JH - Recovered from COVID-19, in time series
 jh_recotime_raw <- read_csv("data/_raw/Johns Hopkins - COVID-19/time_series_covid19_recovered_global.csv")
  
-##United nations (UN)
+
 #UN - population demographics data
 un_pop_raw <- read_csv("data/_raw/UN/SYB62_1_201907_Population, Surface Area and Density (1).csv", skip = 1)
+
+
+# Load United nations data (UN) -------------------------------------------
 
 #UN - gross domestic product (gdp) data
 cols <- read_csv(file = "data/_raw/UN/SYB62_230_201904_GDP and GDP Per Capita.csv",
@@ -44,11 +45,17 @@ un_gdp_raw <- read_csv(file = "data/_raw/UN/SYB62_230_201904_GDP and GDP Per Cap
 
 un_gdp_raw <- read_csv(file = "data/_raw/UN/SYB62_230_201904_GDP and GDP Per Capita.csv", col_names = FALSE, skip = 2)
 
-##Unknown 
+
+
+# Load Gender leader data -------------------------------------------------
+
 #Gender-leader data
 sex_leader_raw <- read_csv(file = "data/_raw/gender_leader.csv")
 
-##World health Organisation (WHO)
+
+
+# Load World health organisation data (WHO) -------------------------------
+
 #WHO - adult mortality
 cols <- read_csv(file = "data/_raw/WHO/Mortality/Adult mortality.csv",
                  n_max = 2,
