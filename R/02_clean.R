@@ -7,11 +7,6 @@ library("lubridate")
 library("readxl") 
 
 # Load data ---------------------------------------------------------------
-#Tilføj til readme fil at vi har besluttet at anvende nyeste datapunkt for hvert variabel
-#Check "summarise_each(funs(first(.[!is.na(.)])))" brugt i population demographics
-#Check muligheden for at supplere data med ældre non-missing values, hvis nyeste værdi er missing (Smoking)
-#Funktion til latitude og longitude data for lande med flere regioner
-#Load samtlige datasæt i toppen
 covid_test <- read_tsv(file = "data/01_covid_test.tsv")
 jh_conftime <- read_tsv(file = "data/01_jh_conftime.tsv")
 jh_deadtime <- read_tsv(file = "data/01_jh_deadtime.tsv")
