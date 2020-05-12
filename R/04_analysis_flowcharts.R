@@ -3,6 +3,7 @@ rm(list = ls())
 
 
 # Load libraries ----------------------------------------------------------
+
 library("DiagrammeR")
 library("DiagrammeRsvg")
 library("rsvg")
@@ -10,10 +11,12 @@ library("tidyverse")
 
 
 # Define functions --------------------------------------------------------
+
 source(file = "R/99_project_functions.R")
 
 
 # Load data ---------------------------------------------------------------
+
 covid_aug <- read_tsv(file = "data/03_covid_aug.tsv",
                       col_types = cols(thousand_deaths = col_date(),
                                        `days_from_100_cases_to_1000_deaths` = col_double()))
@@ -65,9 +68,7 @@ export_svg(flowchart_design) %>%
   rsvg() %>%
   png::writePNG("results/04_analysis_flowcharts/flowchart_design.png")
 
-
-
-# 
+ 
 # Flowchart - analyses setup----------------------------------------------------
 
 flowchart_analyses <- grViz("digraph {
@@ -177,7 +178,6 @@ export_svg(variables) %>%
   png::writePNG("results/04_analysis_flowcharts/variables_overview.png")
 
 
-
 variables1 <- grViz("digraph {
   
 graph [compound = true, nodesep = 0.75, ranksep = .5, color = crimson, penwidth = 3]
@@ -215,7 +215,6 @@ export_svg(variables1) %>%
   charToRaw() %>%
   rsvg() %>%
   png::writePNG("results/04_analysis_flowcharts/variables_overview1.png")
-
 
 
 variables2 <- grViz("digraph {
