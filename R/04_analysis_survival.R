@@ -14,7 +14,9 @@ library("broom")
 
 # Load data ---------------------------------------------------------------
 
-covid_aug <- read_tsv(file = "data/03_covid_aug.tsv")
+covid_aug <- read_tsv(file = "data/03_covid_aug.tsv",
+                      col_types = cols(thousand_deaths = col_date(),
+                                       `days_from_100_cases_to_1000_deaths` = col_double()))
 
 
 
