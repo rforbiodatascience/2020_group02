@@ -3,6 +3,7 @@ rm(list = ls())
 
 
 # Load libraries ----------------------------------------------------------
+
 library("tidyverse")
 library("patchwork")
 library("PMCMRplus")
@@ -10,6 +11,7 @@ library("PMCMRplus")
 
 
 # Load data ---------------------------------------------------------------
+
 levels <- c("1", "2", "3")
 covid_aug <- read_tsv(file = "data/03_covid_aug.tsv",
                       col_types = cols(thousand_deaths = col_date(),
@@ -57,10 +59,12 @@ covid_aug_by_country <- covid_aug %>%
 
 
 # Exploratory data analyses -----------------------------------------------
+
 list_of_cov <- names(covid_aug)[59:91]
 
 
 # COVID-19 mortality - days from 100 cases to 100 deaths ------------------
+
 pvalue_list1 <- list()
 for(i in list_of_cov) {
   pvalue <- cuzickTest(days_from_100_cases_to_100_deaths ~ covid_aug_by_country[[i]], data = covid_aug_by_country)
@@ -99,6 +103,7 @@ for(i in list_of_cov){
 
 
 # COVID-19 spread - days from December 1st 2019 to 100 cases --------------
+
 pvalue_list2 <- list()
 for(i in list_of_cov) {
   pvalue <- cuzickTest(days_from_dec1_to_100_cases ~ covid_aug_by_country[[i]], data = covid_aug_by_country)
@@ -137,6 +142,7 @@ for(i in list_of_cov){
 
 
 # Association with gender of the national leader --------------------------
+
 pvalue_sex_spread <- kruskal.test(days_from_dec1_to_100_cases ~ sex, data = covid_aug_by_country)
 pvalue_sex_spread_digits2 <- signif(pvalue_sex_spread[["p.value"]], digits = 2)
 pvalue_sex_death <- kruskal.test(days_from_100_cases_to_100_deaths ~ sex, data = covid_aug_by_country)
@@ -178,7 +184,9 @@ plot_list2$population_median_age_years_ter + plot_list2$population_proportion_un
                   subtitle = 'Defined as number of days from December 1st 2019 to reaching 100 cases per country') 
 dev.off()
 
+
 # Descriptive plot - spread of COVID-19 - health system -------------------
+
 png("results/04_analysis_exploratory_figures/Spread of COVID-19 by capacity of health systems.png",
     width=12, height = 8,unit='in',res=300)
 plot_list2$current_health_expenditure_per_person_usd_ter + plot_list2$density_of_hospitals_ter + 
@@ -187,7 +195,9 @@ plot_list2$current_health_expenditure_per_person_usd_ter + plot_list2$density_of
                   subtitle = 'Defined as number of days from December 1st 2019 to reaching 100 cases per country')
 dev.off()
 
+
 # Descriptive plot - spread of COVID-19 - public health -------------------
+
 png("results/04_analysis_exploratory_figures/Spread of COVID-19 by public health factors.png",
     width=12, height = 8,unit='in',res=300)
 plot_list2$bmi_above30_prevalence_all_ter + plot_list2$prevalence_smoking_ter + 
@@ -196,7 +206,9 @@ plot_list2$bmi_above30_prevalence_all_ter + plot_list2$prevalence_smoking_ter +
                   subtitle = 'Defined as number of days from December 1st 2019 to reaching 100 cases per country')
 dev.off()
 
+
 # Descriptive plot - spread of COVID-19 - mortality -----------------------
+
 png("results/04_analysis_exploratory_figures/Spread of COVID-19 by life expectancy and mortality.png",
     width=12, height = 10,unit='in',res=300)
 (plot_list2$adult_mortality_rate_ter + plot_list2$life_expectancy_ter + 
@@ -207,7 +219,9 @@ png("results/04_analysis_exploratory_figures/Spread of COVID-19 by life expectan
                   subtitle = 'Defined as number of days from December 1st 2019 to reaching 100 cases per country')
 dev.off()
 
+
 # Descriptive plots - death from COVID-19 - population demographics ------------------------------
+
 png("results/04_analysis_exploratory_figures/Death from COVID-19 by population demographics.png",
     width=12, height = 8,unit='in',res=300)
 plot_list1$population_median_age_years_ter + plot_list1$population_proportion_under_15_ter + 
@@ -217,7 +231,9 @@ plot_list1$population_median_age_years_ter + plot_list1$population_proportion_un
                   subtitle = 'Defined as number of days from reaching 100 cases until reaching 100 deaths per country') 
 dev.off()
 
+
 # Descriptive plot - death from COVID-19 - health system -------------------
+
 png("results/04_analysis_exploratory_figures/Death from COVID-19 by capacity of health systems.png",
     width=12, height = 8,unit='in',res=300)
 plot_list1$current_health_expenditure_per_person_usd_ter + plot_list1$density_of_hospitals_ter + 
@@ -226,7 +242,9 @@ plot_list1$current_health_expenditure_per_person_usd_ter + plot_list1$density_of
                   subtitle = 'Defined as number of days from reaching 100 cases until reaching 100 deaths per country')
 dev.off()
 
+
 # Descriptive plot - death from COVID-19 - public health -------------------
+
 png("results/04_analysis_exploratory_figures/Death from COVID-19 by public health factors.png",
     width=12, height = 8,unit='in',res=300)
 plot_list1$bmi_above30_prevalence_all_ter + plot_list1$prevalence_smoking_ter + 
@@ -235,7 +253,9 @@ plot_list1$bmi_above30_prevalence_all_ter + plot_list1$prevalence_smoking_ter +
                   subtitle = 'Defined as number of days from reaching 100 cases until reaching 100 deaths per country')
 dev.off()
 
+
 # Descriptive plot - death from COVID-19 - mortality -----------------------
+
 png("results/04_analysis_exploratory_figures/Death from COVID-19 by life expectancy and mortality.png",
     width=12, height = 10,unit='in',res=300)
 (plot_list1$adult_mortality_rate_ter + plot_list1$life_expectancy_ter + 
