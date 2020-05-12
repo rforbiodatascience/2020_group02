@@ -28,13 +28,14 @@ library("kableExtra")
 ## Aim and hypothesis
 
 <br>
+<font size="5"> Aim:</font> <br>
 <font size="5"> Linking exposure variables (demograhic/population data etc) to:</font> <br>
-<font size="4"> 1. Days from 100 cases to 100 deaths <br>
-2. Days from December 1st to 100 deaths </br> </font> 
+<font size="4"> 1. Days from December 1st 2019 to 100 deaths <br>
+2. Days from 100 cases to 100 deaths </br> </font> 
 <br>
 <br>
-
-<font size="5"> That demographic factors like urbanisation and median age affects COVID-19 kinetics</font>
+<font size="5"> Hypothesis:</font>
+<font size="5"> Demographic factors like urbanisation and age distribution affects COVID-19 kinetics</font>
 
 
 
