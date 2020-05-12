@@ -26,17 +26,17 @@ library("kableExtra")
 <font size="3">[Global map - days from december 1st to 100 cases](map_days_from_dec1_to_100_cases.html)</font>
 
 ## Aim and hypothesis
-
+<div class="black">
 <br>
-<font size="5"> Aim:</font> <br>
-<font size="5"> Linking exposure variables (demograhic/population data etc) to:</font> <br>
-<font size="4"> 1. Days from December 1st 2019 to 100 deaths <br>
-2. Days from 100 cases to 100 deaths </br> </font> 
+<font size="6"> Aim:</font> <br>
+<font size="5"> Linking exposure variables (publicly available demograhic/population data etc) to:</font> <br>
+<font size="4"> 1. Days from December 1st 2019 to 100 deaths <br> - as a measure of worldwide spread of COVID-19 <br>
+2. Days from 100 cases to 100 deaths <br> - as a measure of nationwide spread of and dealing with COVID-19 </br> </font> 
 <br>
 <br>
-<font size="5"> Hypothesis:</font>
-<font size="5"> Demographic factors like urbanisation and age distribution affects COVID-19 kinetics</font>
-
+<font size="6"> Hypothesis:</font> <br>
+<font size="5"> Population demographics, public health and capacity of health care systems affects COVID-19 kinetics</font>
+</div>
 
 
 
@@ -51,12 +51,29 @@ library("kableExtra")
 <div class="centered">
 ![](../results/04_analysis_flowcharts/flowchart_design.png){ width=100%, height=100% }
 </div>
+<div class="black">
+<br>
+<font size="5"> Specific challenges: </font> <br>
+<font size="4"> 1. Ensuring identical naming of countries across data sources <br>
+2. Large number of data sources and exposure variables </font> <br>
+</div>
 
+## Datasets - cleaning, augmenting and joining
+<div class="centered">
+![](../results/04_analysis_flowcharts/flowchart_design.png){ width=100%, height=100% }
+</div>
+<div class="black">
+<br>
+<font size="5"> Solutions: </font> <br>
+<font size="4"> 1. Creating a simple function for renaming countries <br>
+2. Using (a lot of) for loops </font> <br>
+</div>
 
 ## Methods - study design
 <div class="centered">
 ![](../results/04_analysis_flowcharts/flowchart_analyses.png){ width=90%, height=90% }</div>
 <div class="black">
+<br>
 <font size="4">Non-course packages</font> <br>
 <font size="3">
 Lubridate (converting to date)
