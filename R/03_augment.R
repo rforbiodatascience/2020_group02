@@ -1,12 +1,14 @@
 # Clear workspace ---------------------------------------------------------
 rm(list = ls())
 
+
 # Load libraries ----------------------------------------------------------
 library("tidyverse")
 
 
 # Define functions --------------------------------------------------------
 source(file = "R/99_project_functions.R")
+
 
 # Load data ---------------------------------------------------------------
 adult_mortality_clean <- read_tsv(file = "data/02_adult_mortality_clean.tsv")
@@ -32,7 +34,9 @@ un_gdp_clean <- read_tsv(file = "data/02_un_gdp_clean.tsv")
 un_pop_clean <- read_tsv(file = "data/02_un_pop_clean.tsv")
 sex_leader_clean <- read_tsv(file = "data/02_sex_leader_clean.tsv")
 
+
 # Wrangle data ------------------------------------------------------------
+
 
 # Anti-join for test of differences in naming of countries - Johns --------
 dfs <- mget(ls(pattern = ".+_clean"))
@@ -56,7 +60,6 @@ country_differences <- bind_rows(list_of_dataframes, .id = "origin") %>%
   select(origin, country)
 
 
-
 # Preparing for merging of datasets to JH  --------
 
 # Aligning var(country) to JH using country_translate()
@@ -67,7 +70,6 @@ dfs_corr_countries <- dfs %>%
 
 dfs_corr_countries <- map(dfs_corr_countries, tibble::as_tibble)
 list2env(dfs_corr_countries, envir = .GlobalEnv)
-
 
 
 # Performing left-join to JH dataset --------------------------------------
@@ -98,6 +100,7 @@ covid_join <- covid_join %>%
 
 
 # Generate outcome variables ----------------------------------------------
+
 covid_join <- covid_join %>% 
   mutate(confirmed_cases_per_100000 = (`Number of confirmed COVID-19`/(`Population (in thousands) total`/100))) %>%
   mutate(confirmed_cases_per_100000 = round(confirmed_cases_per_100000, 2)) %>% 
@@ -185,7 +188,7 @@ covid_join <- covid_join %>%
   rename_all(~str_replace_all(., "_+$", ""))
 
 
-# Constructing variables --------------------------------------------------
+# Constructing additional variables ---------------------------------------
 
 #changing disease cases to relative
 covid_join <- covid_join %>% 
@@ -208,6 +211,7 @@ for(i in list_of_cov) {
 
 
 # Rendering covid_join for use in shiny app -------------------------------
+
 df_shiny <- covid_join %>% 
   group_by(country) %>% 
   slice(which.max(date)) %>% 
@@ -226,6 +230,7 @@ df_shiny <- covid_join %>%
   
 
 # Write data --------------------------------------------------------------
+
 write_tsv(x = country_differences,
           path = "data/country_differences.tsv")
 
