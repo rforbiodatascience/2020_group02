@@ -16,15 +16,18 @@ library("knitr")
 library("kableExtra")
 
 ```
+## Aim and hypothesis 
 
-
-## Aim and hypothesis - inkl søjleplot og map plot Mette 
-
-- Aim: Linking COVID-19 and demograhic/population data - and have fun with R :)
+- Aim: Linking COVID-19 and demograhic/population data 
 - Hypothesis: That factors like urbanisation and median population age affects COVID-19 kinetics
 
+<font size ="3">
 - [Global map - days from 100 cases to 100 deaths](map_days_from_100_cases_to_100_deaths.html)
+<font size ="3">
 - [Global map - days from 100 cases to 100 deaths](map_days_from_dec1_to_100_cases.html)
+<div class="centered">
+![](../results/04_analysis_aim/COVID-19 spread by country.png){width=60%, height=60% }
+
 
 ## Datasets - overview of data
 <div class="centered">
@@ -86,13 +89,16 @@ summary(model2)
 
 ```
 
+
+
+
 ```{r Table 1, echo=FALSE, paged.print=FALSE, results="asis"}
 
 cor_covar = round(coefficients(model1_final), digits = 6) 
 
 cor_covar %>% 
   kable(caption = "Table 1. Correlation between covariats", format = "html") %>% 
-  kableExtra::kable_styling(position = "left", font_size = 12, bootstrap_options = "striped", full_width = FALSE)
+  kableExtra::kable_styling(position = "center", font_size = 12, bootstrap_options = "striped", full_width = FALSE)
 
 
 ```
