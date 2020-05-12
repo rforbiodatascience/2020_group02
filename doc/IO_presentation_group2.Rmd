@@ -1,7 +1,7 @@
 ---
 title: "Influence of demographic characteristic on Covid-19 kinetics"
 author: "Mette Christoffersen, Signe Modvig, Hans Jakob Hartling and Mette Christensen"
-date: "11 5 2020"
+date: "15 5 2020"
 output: 
   ioslides_presentation: 
     widescreen: true
@@ -59,12 +59,10 @@ library("kableExtra")
 <font size="4">Non-course packages</font> <br>
 <font size="3">
 Lubridate (converting to date)
-; patchwork (making a patchwork of graphs)
 ; PMCMRplus (p-values, Cuzick Test)
 ; DiagrammeR + DiagrammeRsvg + rsvg (flowcharts)
-; leaflet (making worldmaps)
+; leaflet (making world maps)
 ; htmlwidgets (saving interactiv plots)
-; modelr (linear regression)
 ; survivalAnalysis (Survival analysis)
 ; gganimate and gifski (making and saving gif)
 ; scales (modify scales on ggplot)!</font>
