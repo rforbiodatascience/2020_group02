@@ -1,10 +1,13 @@
+# Clear workspace ---------------------------------------------------------
 
 rm(list = ls())
+
 
 # Load libraries ----------------------------------------------------------
 library("tidyverse")
 library("lubridate")
 library("readxl") 
+
 
 # Load data ---------------------------------------------------------------
 covid_test <- read_tsv(file = "data/01_covid_test.tsv")
@@ -30,7 +33,9 @@ un_gdp <- read_tsv(file = "data/01_un_gdp_raw.tsv")
 sex_leader <- read_tsv(file = "data/01_sex_leader_raw.tsv")
 bmi_above30 <- read_tsv(file = "data/01_bmi_above30_agestand_raw.tsv")
 
-# Wrangle data ------------------------------------------------------------
+
+# Wrangle OWD data --------------------------------------------------------
+
 ##OWD - COVID-19 tests performed, in time series. 
 #removing comment after country.
 covid_test_clean <- covid_test %>% 
@@ -42,20 +47,8 @@ covid_test_clean <- covid_test %>%
   summarise(`Cumulative total` = sum(`Cumulative total`)) %>% 
   rename("cumulative_covid_test" = `Cumulative total`)
 
-##WHO - population demographics
-#Dataset composed of several years - only 2013, 2016 og 2020 is holding variables of interest. 
-pop_demo_clean <- pop_demo %>% 
-  rename(country = Country) %>%
-  
-#replaces ws in population size
-  mutate(`Population (in thousands) total` = str_replace_all(`Population (in thousands) total`, " ", "")) %>%
-  select(-c(`Population living on &lt;$1 (PPP int. $) a day (%)`)) %>%
-  filter(Year %in% c("2020", "2013", "2016")) %>% 
-  select(-Year) %>% 
-  group_by(country) %>%
-  
-#collapsing rows by extracting the first value that is not NA 
-  summarise_each(funs(first(.[!is.na(.)])))
+
+# Wrangle JH data ---------------------------------------------------------
 
 #JH - confirmed COVID-19 cases, in time series
 #Unifying latitude and longitude for transformation to state of capital, removing colonial states/provinces and tidying data by pivot_long
@@ -359,6 +352,10 @@ jh_recotime_clean <- jh_recotime_clean %>%
     summarise(`Recovered from COVID-19 (no.)` = sum(`Recovered from COVID-19 (no.)`)) %>% 
     rename(country = `Country/Region`)
 
+
+
+# Wrangle UN data ---------------------------------------------------------
+
 #UN - population demographics data
 un_pop_clean <- un_pop %>%
   select(X2, Year, Series, Value) %>%
@@ -375,12 +372,33 @@ un_gdp_clean <- un_gdp %>%
   pivot_wider(names_from = Series, values_from = Value) %>%
   select(country, 'GDP in current prices (millions of US dollars)', 'GDP per capita (US dollars)')
 
+
+# Wrangle gender leader data ----------------------------------------------
+
 #Gender leader
 sex_leader_clean <- sex_leader %>% 
   filter(year == 2020 & month == 4) %>%
   mutate(sex = case_when(`male` == 1 ~ "male",
                          `male` == 0 ~ "female")) %>%
   select(country, sex)
+
+
+# Wrangle WHO data --------------------------------------------------------
+
+##WHO - population demographics
+#Dataset composed of several years - only 2013, 2016 og 2020 is holding variables of interest. 
+pop_demo_clean <- pop_demo %>% 
+  rename(country = Country) %>%
+  
+  #replaces ws in population size
+  mutate(`Population (in thousands) total` = str_replace_all(`Population (in thousands) total`, " ", "")) %>%
+  select(-c(`Population living on &lt;$1 (PPP int. $) a day (%)`)) %>%
+  filter(Year %in% c("2020", "2013", "2016")) %>% 
+  select(-Year) %>% 
+  group_by(country) %>%
+  
+  #collapsing rows by extracting the first value that is not NA 
+  summarise_each(funs(first(.[!is.na(.)])))
 
 #WHO - adult mortality. Corresponds to the probability of dying between age 15 and 60 per 1000 individuals in 2016
 adult_mortality_clean <- adult_mortality %>% 
@@ -488,8 +506,6 @@ health_expenditure_clean <- health_expenditure %>%
   select(Country, "2017_Current health expenditure (CHE) per capita in US$") %>% 
   rename(country = Country,
          current_health_expenditure_per_person_USD = "2017_Current health expenditure (CHE) per capita in US$")
-#Definition: Per capita current expenditures on health expressed in respective currency - US dolar. 
-#Rationale: This indicator calculates the average expenditure on health per person. It contributes to understand the health expenditure relative to the population size facilitating international comparison.
 
 #WHO - health infrastructure
 health_infrastructure_clean <- health_infrastructure %>% 
@@ -497,7 +513,6 @@ health_infrastructure_clean <- health_infrastructure %>%
   select(Country, "Total density per 100 000 population: Hospitals") %>% 
   rename(country = Country,
          density_of_hospitals = "Total density per 100 000 population: Hospitals")
-#Definition: Number of hospitals, including the following hospital categories: rural and district, provincial (second level referral), regional/specialized/teaching and research hospitals (tertiary care), from the public and private sectors, per 100,000 population.
 
 #WHO - medical doctors
 medical_doctors_clean <- medical_doctors %>% 
@@ -508,8 +523,7 @@ medical_doctors_clean <- medical_doctors %>%
   select(Country, "Medical doctors (per 10 000 population)") %>% 
   rename(country = Country,
          density_of_medical_doctors = "Medical doctors (per 10 000 population)")
-#Definition: Medical doctors per 10000 inhabitants. Includes generalists , specialist medical practitioners and medical doctors not further defined, in the given national and/or subnational area.
-  
+
 #WHO - nursus and midwifes
 nurses_midwifes_clean <- nurses_midwifes %>%
   group_by(Country) %>% 
@@ -519,7 +533,6 @@ nurses_midwifes_clean <- nurses_midwifes %>%
   select(Country, "Nursing and midwifery personnel (per 10 000 population)") %>% 
   rename(country = Country,
          density_of_nurses_midwifes = "Nursing and midwifery personnel (per 10 000 population)")
-#Definition: Nurses and midwifes per 10000 inhabitants. 
 
 #WHO - Smoking
 #Read dataset to object
@@ -549,7 +562,6 @@ smoking_clean <- smoking %>%
 
 #Removing unnecessary variables
   select(country, prevalence_smoking)  
-#Definition: Percentage of population above age 15 years smoking any tobacco product.
 
 
 # Writing data ------------------------------------------------------------
