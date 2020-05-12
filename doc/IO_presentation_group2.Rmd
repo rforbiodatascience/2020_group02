@@ -83,18 +83,30 @@ Lubridate (converting to date)
 ; htmlwidgets (saving interactiv plots)
 ; survivalAnalysis (Survival analysis)
 ; gganimate and gifski (making and saving gif)
-; scales (modify scales on ggplot)!</font>
+; scales (modify scales on ggplot)</font>
 </div>
 
 ## Covid-19 cases and deaths in each country
 ![](../results/04_analysis_point_plots/cases_deaths_log.gif)
 
 ## Results - selection of exposure variables 
+<div style="float: left; width: 40%;"> <div class="black"> <font size="4"> Selected exposure variabels: </font> <br>
+<font size="3"> - Life expectancy <br>
+- Population living in urban areas <br>
+- Respiratory disease <br>
+- Pollution attributable death rate <br>
+- Health expenditure per person <br>
+- Proportion of population >60 years <br>
+__________________________________________________________________________________________________________________________________________</font> <br>
+</div>
 <br>
-- Liniar correlation analysis lm(days from december 1st to 100 cases ~ diff. exposure variables) <br>
-- Significant correlations:
+<div class="black"> <font size="4"> Linear regression analysis </font> <br> <font size="3">  - Outcome: 'Days from Dec 1st 2019 to 100 cases' <br> - Significant correlations: </font>
+</div></div>
+<div style="float: right; width: 60%;">
+![](https://rstudio-education.github.io/tidyverse-cookbook/images/data-science-workflow.png){ width=80%, height=80% }
 <br>
-
+<br>
+<br>
 ```{r include=FALSE, paged.print=FALSE}
 
 covid_aug <- read_tsv(file = "../data/03_covid_aug.tsv")
@@ -131,9 +143,6 @@ summary(model2)
 
 ```
 
-
-
-
 ```{r Table 1, echo=FALSE, paged.print=FALSE, results="asis"}
 
 cor_covar = round(coefficients(model1_final), digits = 6) 
@@ -144,7 +153,7 @@ cor_covar %>%
 
 
 ```
-
+</div>
 
 
 
