@@ -27,7 +27,7 @@ library("kableExtra")
 ## Aim and hypothesis
 
 <br>
-<font size="5"> Linking COVID-19 and demograhic/population data to:</font> <br>
+<font size="5"> Linking exposure variables (demograhic/population data etc) to:</font> <br>
 <font size="4"> 1. Days from 100 cases to 100 deaths <br>
 2. Days from December 1st to 100 deaths </br> </font> 
 <br>
