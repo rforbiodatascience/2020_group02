@@ -40,9 +40,7 @@ library("kableExtra")
 
 ## Methods - study design
 <div class="centered">
-<<<<<<< HEAD
-![](../results/04_analysis_flowcharts/flowchart_analyses.png){ width=90%, height=90% }
-![](../results/04_analysis_flowcharts/flowchart_analyses.png){ width=80%, height=80% }</div>
+![](../results/04_analysis_flowcharts/flowchart_analyses.png){ width=90%, height=90% }</div>
 <div class="black">
 <font size="4">Non-course packages</font> <br>
 <font size="3">
