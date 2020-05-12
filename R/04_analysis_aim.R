@@ -3,14 +3,12 @@ rm(list = ls())
 
 
 # Load libraries ----------------------------------------------------------
+
 library("tidyverse")
 
 
-# Define functions --------------------------------------------------------
-source(file = "R/99_project_functions.R")
-
-
 # Load data ---------------------------------------------------------------
+
 levels <- c("1", "2", "3")
 covid_aug <- read_tsv(file = "data/03_covid_aug.tsv",
                       col_types = cols(thousand_deaths = col_date(),
@@ -49,7 +47,6 @@ covid_aug <- read_tsv(file = "data/03_covid_aug.tsv",
                                        gdp_in_current_prices_millions_of_us_dollars_ter = col_factor(levels = levels),
                                        gdp_per_capita_us_dollars_ter = col_factor(levels = levels),
                                        cumulative_covid_test_ter = col_factor(levels = levels)))
-
 
 
 # Which factors affect number of COVID-19 confirmed cases and deaths across countries? --------
