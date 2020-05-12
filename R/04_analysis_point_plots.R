@@ -5,12 +5,6 @@ rm(list = ls())
 
 
 # Load libraries ----------------------------------------------------------
-
-install.packages("gganimate")
-install.packages("gifski")
-install.packages("plotly")
-install.packages("scales")
-library(plotly)
 library(tidyverse)
 library(gganimate)
 library(gifski)
