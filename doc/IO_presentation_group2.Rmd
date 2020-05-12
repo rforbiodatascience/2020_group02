@@ -3,7 +3,7 @@ title: "Influence of demographic characteristic on Covid-19 kinetics"
 author: "Mette Christoffersen, Signe Modvig, Hans Jakob Hartling and Mette Christensen"
 date: "11 5 2020"
 output: 
-  ioslides_presentation:
+  ioslides_presentation: 
     widescreen: true
     logo: Corp_Red_RGB.png
     
@@ -39,7 +39,20 @@ library("kableExtra")
 
 ## Methods - study design
 <div class="centered">
-![](../results/04_analysis_flowcharts/flowchart_analyses.png){ width=80%, height=80% }
+![](../results/04_analysis_flowcharts/flowchart_analyses.png){ width=80%, height=80% }</div>
+<div class="black">
+<font size="4">Non-course packages</font> <br>
+<font size="3">
+Lubridate (converting to date)
+; patchwork (making a patchwork of graphs)
+; PMCMRplus (p-values, Cuzick Test)
+; DiagrammeR + DiagrammeRsvg + rsvg (flowcharts)
+; leaflet (making worldmaps)
+; htmlwidgets (saving interactiv plots)
+; modelr (linear regression)
+; survivalAnalysis (Survival analysis)
+; gganimate and gifski (making and saving gif)
+; scales (modify scales on ggplot)!</font>
 </div>
 
 ## Covid-19 cases and deaths in each country
