@@ -1,6 +1,6 @@
 ---
 title: "Influence of demographic characteristic on Covid-19 kinetics"
-author: "Mette Christoffersen, Signe Modvig, Hans Jakob Hartling og Mette Christensen"
+author: "Mette Christoffersen, Signe Modvig, Hans Jakob Hartling and Mette Christensen"
 date: "11 5 2020"
 output: 
   ioslides_presentation:
@@ -15,26 +15,40 @@ knitr::opts_chunk$set(echo = FALSE)
 library("tidyverse")
 library("knitr")
 library("kableExtra")
-
 ```
 
+## Aim and hypothesis 
+- Aim: Linking COVID-19 and demograhic/population data 
+- Hypothesis: That factors like urbanisation and median population age affects COVID-19 kinetics
 
-## Aim - hypothesis - inkl søjleplot og map plot Mette 
-<div class="columns-1">
-  <div class="centered">
 - [Global map - days from 100 cases to 100 deaths](map_days_from_100_cases_to_100_deaths.html)
 - [Global map - days from 100 cases to 100 deaths](map_days_from_dec1_to_100_cases.html)
 
-## Materiale - oversigt over dataset - Mette Christof
+![](../results/04_analysis_aim/COVID-19 spread by country.png){ width=60%, height=60% }
 
-## Metode 1 - clean flowchart  - Mette Christof
+## Datasets - overview of data 
+<div class="centered">
+![](../results/04_analysis_flowcharts/variables_overview.png){ width=80%, height=80% }
+</div>
 
-## Metode 2 - analyse flowchart  - Mette Christof
+## Datasets - cleaning, augmenting and joining
+<div class="centered">
+![](../results/04_analysis_flowcharts/flowchart_design.png){ width=80%, height=80% }
+</div>
 
-## Covid-19 cases and deaths in each country colored by GDP and sized by population
+
+## Methods - study design
+<div class="centered">
+![](../results/04_analysis_flowcharts/flowchart_analyses.png){ width=80%, height=80% }
+</div>
+
+## Covid-19 cases and deaths in each country
 ![](../results/04_analysis_point_plots/cases_deaths_log.gif)
 
-## Results - variable selection - Mette Chr
+## Results - variable selection 
+
+- Liniar correlation analysis lm(days from dec1 to 100 cases ~ diff. variables)
+- Significant correlations:
 
 ```{r include=FALSE, paged.print=FALSE}
 
@@ -72,13 +86,16 @@ summary(model2)
 
 ```
 
+
+
+
 ```{r Table 1, echo=FALSE, paged.print=FALSE, results="asis"}
 
 cor_covar = round(coefficients(model1_final), digits = 6) 
 
 cor_covar %>% 
-  kable(caption = "Table 1. Correlation between covariants", format = "html") %>% 
-  kableExtra::kable_styling(position = "left", font_size = 12, bootstrap_options = "striped", full_width = FALSE)
+  kable(caption = "Table 1. Correlation between covariats", format = "html") %>% 
+  kableExtra::kable_styling(position = "center", font_size = 12, bootstrap_options = "striped", full_width = FALSE)
 
 
 ```
@@ -136,10 +153,39 @@ cor_covar %>%
   
 
 
-## Shiny app - Mette Chr
+## COVID-19 app
 
-## Sex leader - Mette Christof
+<div class="centered">
 
-## Conclusion slide - HJ
+ - Confirmed cases, test and death in time series 
+
+https://r-kursus.shinyapps.io/covid_app/
+
+
+## Another explanation? {.flexbox .vcenter}
+<div class="columns-2">
+<div class="centered">
+![](../results/04_analysis_exploratory_figures/COVID-19 spread by gender of national leader.png){ width=100%, height=100% }
+
+![](../doc/donald_trump.png){ width=50%, height=100% }
+![](../doc/mette_frederiksen.png){ width=50%, height=100% }
+</div>
+
+## Another explanation? {.flexbox .vcenter}
+<div class="columns-2">
+<div class="centered">
+![](../results/04_analysis_exploratory_figures/COVID-19 spread by gender of national leader.png){ width=100%, height=100% }
+
+OR JUST CONFOUNDING BY DEVELOPMENTAL STATUS OF THE COUNTRIES...
+![](../doc/Developed_and_developing_countries.png){ width=100%, height=100%}
+</div>
+
+## Conclusion - A small virus in a world full of data
+  ![](https://ing.dk/sites/ing/files/topillustration/2020/03/2019-ncov-cdc-23312coronavirus.png){ width=30%, height=30%}
+   
+  
+  - This project demonstrates the strength of Tidyverse R by cleansing, transformation, visualization and communication Covid-19 data
+  - Performed focusing on reproducibility
+  - All data analysis is available at github (https://github.com/rforbiodatascience/2020_group02)
 
 

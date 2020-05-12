@@ -81,11 +81,14 @@ for(i in list_of_cov){
   plot_name <- i
   plt <- covid_aug_by_country %>% 
     drop_na(i) %>% 
-    ggplot(aes_string(x=i, y = 'days_from_100_cases_to_100_deaths')) +
+    ggplot(aes_string(x=i, y = 'days_from_100_cases_to_100_deaths', fill = i)) +
     geom_boxplot() +
-    labs(y = "Days from 100 cases \n until 100 deaths", x = str_replace_all(str_to_sentence(str_replace_all(i, "_", " ")), "ter", "- in tertiles")) +
-    annotate("text", x=2.5, y=60, label = (paste0("P for trend = ", pvalue_list1_digits[[i]])), size=4) +
-    theme_bw()
+    labs(y = "Days from 100 cases \n until 100 deaths",
+         x = str_replace_all(str_to_sentence(str_replace_all(i, "_", " ")), "ter", "- in tertiles")) +
+    annotate("text", x=2.5, y=60, label = (paste0("P for trend = ", pvalue_list1_digits[[i]])), size=6) +
+    scale_fill_manual( values = c( "1"="tomato", "2"="limegreen", "3"="cornflowerblue" )) +
+    theme_bw() +
+    theme(legend.position="none", text = element_text(size = 20)) 
   plot_list1[[i]] = plt
   print(plot_list1[[i]])
 }
@@ -116,11 +119,14 @@ for(i in list_of_cov){
   plot_name <- i
   plt <- covid_aug_by_country %>% 
     drop_na(i) %>% 
-    ggplot(aes_string(x=i, y = 'days_from_dec1_to_100_cases')) +
+    ggplot(aes_string(x=i, y = 'days_from_dec1_to_100_cases', fill = i)) +
     geom_boxplot() +
-    labs(y = "Days from Dec 1st 2019 \n until 100 cases", x = str_replace_all(str_to_sentence(str_replace_all(i, "_", " ")), "ter", "- in tertiles")) +
-    annotate("text", x=2.5, y=160, label = (paste0("P for trend = ", pvalue_list2_digits[[i]])), size=4) +
-    theme_bw()
+    labs(y = "Days from Dec 1st 2019 \n until 100 cases",
+         x = str_replace_all(str_to_sentence(str_replace_all(i, "_", " ")), "ter", "- in tertiles")) +
+    annotate("text", x=2.5, y=160, label = (paste0("P for trend = ", pvalue_list2_digits[[i]])), size=6) +
+    scale_fill_manual( values = c( "1"="tomato", "2"="limegreen", "3"="cornflowerblue" )) +
+    theme_bw() +
+    theme(legend.position="none", text = element_text(size = 20)) 
   plot_list2[[i]] = plt
   print(plot_list2[[i]])
 }
@@ -143,21 +149,23 @@ covid_aug_by_country %>%
   drop_na(sex) %>%
   ggplot(mapping = aes(x=sex, y = days_from_dec1_to_100_cases, fill = sex)) +
   geom_boxplot() +
-  labs(title = 'Spread of COVID-19 in relation to the gender of the national leader', y = "Days from Dec 1st 2019 \n until 100 cases") +
-  annotate("text", x=2.2, y=160, label = (paste0("P = ", pvalue_sex_spread_digits2)), size=4) +
+  labs(title = 'Spread of COVID-19 in relation to \n the gender of the national leader', y = "Days from Dec 1st 2019 \n until 100 cases") +
+  annotate("text", x=2.2, y=160, label = (paste0("P = ", pvalue_sex_spread_digits2)), size=6) +
   scale_fill_manual( values = c( "male"="lightblue", "female"="lightpink" )) +
-  theme_bw()
-ggsave("results/04_analysis_exploratory_figures/COVID-19 spread by gender of national leader.png", width=10, height = 5, unit='in')
+  theme_bw() +
+  theme(legend.position="none", text = element_text(size = 30)) 
+ggsave("results/04_analysis_exploratory_figures/COVID-19 spread by gender of national leader.png", width=10, height = 10, unit='in')
 
 covid_aug_by_country %>% 
   drop_na(sex) %>%
   ggplot(mapping = aes(x=sex, y = days_from_100_cases_to_100_deaths, fill = sex)) +
   geom_boxplot() +
-  labs(title = 'Deaths from COVID-19 in relation to the gender of the national leader', y = "Days from 100 cases \n until 100 deaths") +
-  annotate("text", x=2.2, y=60, label = (paste0("P = ", pvalue_sex_death_digits2)), size=4) +
+  labs(title = 'Deaths from COVID-19 in relation to \n the gender of the national leader', y = "Days from 100 cases \n until 100 deaths") +
+  annotate("text", x=2.2, y=50, label = (paste0("P = ", pvalue_sex_death_digits2)), size=6) +
   scale_fill_manual( values = c( "male"="lightblue", "female"="lightpink" )) +
-  theme_bw()
-ggsave("results/04_analysis_exploratory_figures/COVID-19 deaths by gender of national leader.png", width=10, height = 5, unit='in')
+  theme_bw() +
+  theme(legend.position="none", text = element_text(size = 30)) 
+ggsave("results/04_analysis_exploratory_figures/COVID-19 deaths by gender of national leader.png", width=10, height = 10, unit='in')
 
 
 
