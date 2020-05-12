@@ -43,8 +43,8 @@ exp3 [label = 'Health expenditure per person']
 exp4 [label = 'Proportion of population living in urban areas']
 exp5 [label = 'Proportion of population above 60 years']
 exp6 [label = 'Mortality from respiratory diseases']
-outcome1 [label = 'Days from December 1st 2019 to 100 cases \n as a measure of spread of COVID-19', fillcolor = white]
-outcome2 [label = 'Days from 100 cases to 100 deaths \n as a measure of health system readiness/capacity', fillcolor = white]
+outcome1 [label = 'Days from December 1st 2019 to 100 cases \n as a measure of worldwide spread of COVID-19', fillcolor = white, width = 12]
+outcome2 [label = 'Days from 100 cases to 100 deaths \n as a measure of nationwide spread and dealing with COVID-19', fillcolor = white, width = 12]
 
 
 subgraph cluster1 {
@@ -83,7 +83,7 @@ analysis1 [label = 'Simple associations']
 analysis2 [label = 'Stratified associations']
 analysis3 [label = 'Survival analyses']
 analysis4 [label = 'Cluster/PCA analyses']
-analysis5 [label = 'Shiny app']
+analysis5 [label = 'Shiny app/maps']
 conclusion [label = 'Conclusions']
 presentation [label = 'Presentation']
 
