@@ -6,7 +6,8 @@ output:
   ioslides_presentation:
     widescreen: true
     logo: Corp_Red_RGB.png
-   
+    
+
 ---
 
 ```{r setup, include=FALSE}
@@ -109,6 +110,7 @@ cor_covar %>%
   ![](../results/04_analysis_survival/KM_respiratory_diseases_ter.png){width=70%, height=70% }
 
    ![](../results/04_analysis_point_plots/cases_respiratory_diseases.png){ width=110%, height=110% }
+   - A clear association between COVID-19 case- and mortality kinetics was seen for respiratory diseases
 </div>
 
 ## Life expectancy
