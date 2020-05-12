@@ -5,10 +5,12 @@ rm(list = ls())
 
 
 # Load libraries ----------------------------------------------------------
+
 library(tidyverse)
 library(gganimate)
 library(gifski)
 library(scales)
+
 
 # Load data ---------------------------------------------------------------
 
@@ -76,7 +78,6 @@ for(i in list_of_cov_hj){
 }
 
 
-
 # Gif ---------------------------------------------------------------------
 
 #renaming output-variables for gif
@@ -99,5 +100,7 @@ covid_aug2 <- covid_aug %>%
  #Animate and present the files in  a gif
  animate(gif_plot_log, duration = 10, fps = 10, width = 900, height = 450, renderer = gifski_renderer())
 
+ 
 # Save gif ---------------------------------------------------------------
- anim_save("results/04_analysis_point_plots/cases_deaths_log.gif")
+
+  anim_save("results/04_analysis_point_plots/cases_deaths_log.gif")
