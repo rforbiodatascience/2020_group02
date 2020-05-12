@@ -229,7 +229,7 @@ OR JUST CONFOUNDING BY DEVELOPMENTAL STATUS OF THE COUNTRIES...
 </div>
 ![](../doc/Developed_and_developing_countries.png){ width=100%, height=100%}
 </div>
-<font size="4">[Global map - days from december 1st to 100 cases](https://r-kursus.rstudio.cloud/bcf69dc3ce0a4a55a0bd79ce2cec2b6a/file_show?path=%2Fcloud%2Fproject%2Fdoc%2Fmap_days_from_100_cases_to_100_deaths.html)</font>
+<font size="4">[Global map - days from december 1st to 100 cases](https://r-kursus.rstudio.cloud/bcf69dc3ce0a4a55a0bd79ce2cec2b6a/file_show?path=%2Fcloud%2Fproject%2Fdoc%2Fmap_days_from_dec1_to_100_cases.html)</font>
 
 ## Conclusion - A small virus in a world full of data
   ![](https://ing.dk/sites/ing/files/topillustration/2020/03/2019-ncov-cdc-23312coronavirus.png){ width=30%, height=30%}
