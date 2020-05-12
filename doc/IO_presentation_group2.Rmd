@@ -45,10 +45,9 @@ library("kableExtra")
 <font size="4">Non-course packages</font> <br>
 <font size="3">
 Lubridate (converting to date)
-; patchwork (making a patchwork of graphs)
 ; PMCMRplus (p-values, Cuzick Test)
 ; DiagrammeR + DiagrammeRsvg + rsvg (flowcharts)
-; leaflet (making worldmaps)
+; leaflet (making world maps)
 ; htmlwidgets (saving interactiv plots)
 ; modelr (linear regression)
 ; survivalAnalysis (Survival analysis)
