@@ -5,12 +5,6 @@ rm(list = ls())
 
 
 # Load libraries ----------------------------------------------------------
-
-install.packages("gganimate")
-install.packages("gifski")
-install.packages("plotly")
-install.packages("scales")
-library(plotly)
 library(tidyverse)
 library(gganimate)
 library(gifski)
@@ -42,7 +36,7 @@ for(i in list_of_cov_hj){
     scale_size(range = c(0.5, 16), name="Population in thousands", label = comma, breaks = c(1000, 50000, 100000, 500000)) +
     scale_colour_gradientn(colours=topo.colors(5), name = "GDP per capita", breaks = c(12, 10, 8, 6), labels = c("Richest", "Rich", "Poor", "Poorest")) +
     ylab("Days from 100 cases to 100 deaths") +
-    xlab(str_to_sentence(str_replace(i, "_", " "))) +
+    xlab(str_to_sentence(str_replace_all(i, "_", " "))) +
     ggtitle("Development of Covid-19-pandemic by country") +
     guides(alpha="none")
   plot_list_hj1[[i]] = plt
@@ -67,7 +61,7 @@ for(i in list_of_cov_hj){
     scale_size(range = c(0.5, 16), name="Population in thousands", label = comma, breaks = c(1000, 50000, 100000, 500000)) +
     scale_colour_gradientn(colours=topo.colors(5), name = "GDP per capita", breaks = c(11.5, 10, 7.5, 5), labels = c("Richest", "Rich", "Poor", "Poorest")) +
     ylab("Days from 1st December to 100 cases") +
-    xlab(str_to_sentence(str_replace(i, "_", " "))) +
+    xlab(str_to_sentence(str_replace_all(i, "_", " "))) +
     ggtitle("Development of Covid-19-pandemic by country") +
     guides(alpha="none")
   plot_list_hj2[[i]] = plt
