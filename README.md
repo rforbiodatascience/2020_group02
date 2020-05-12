@@ -41,21 +41,47 @@ COVID-19.
 cohort of 100 000 people that would experience the age-specific
 mortality rate of the reporting year.
 
+**bmi\_above30\_prevalence\_all**: Percentage of defined population with
+a body mass index (BMI) of 30 kg/m2 or higher.
+
+**cardiovascular\_diseases**: Mortality from cardiovascular disease in
+percent.
+
 **concentration\_fine\_particles**: The mean annual concentration of
 fine suspended particles of less than 2.5 microns in diameters is a
 common measure of air pollution. The mean is a population-weighted
 average for urban population in a country.
 
-**bmi\_above30\_prevalence\_all**: Percentage of defined population with
-a body mass index (BMI) of 30 kg/m2 or higher.
+**confirmed\_cases\_per\_100000**: Number of confirmed COVID-19 cases
+per 100000 inhabitants.
 
-**proportion\_basic\_handwashing\_facilities**: The percentage of
-population living in households that have a handwashing facility with
-soap and water at home.
+**country**: Country
+
+**cumulative\_covid\_test**: Cumulative number of COVID-19 tests.
 
 **current\_health\_expenditure\_per\_person\_usd**: Level of general
 government expenditure on health (GGHE) expressed as a percentage of
 total government expenditure.
+
+**date**:
+
+**date\_28\_days\_after\_100\_cases**:
+
+**days\_from\_100\_cases\_to\_100\_deaths**:
+
+**days\_from\_100\_cases\_to\_1000\_deaths**:
+
+**days\_from\_dec1\_to\_100\_cases**:
+
+**days\_to\_hundred\_cases**:
+
+**days\_to\_thousand\_cases**:
+
+**dead\_cases\_per\_100000**:
+
+**deaths\_28\_days\_after\_100\_cases**:
+
+**deaths\_28\_days\_per\_100000**:
 
 **density\_of\_hospitals**: Number of hospitals, including the following
 hospital categories: rural and district, provincial (second level
@@ -68,3 +94,84 @@ inhabitants.
 
 **density\_of\_nurses\_midwifes**: Nurses and midwifes per 10000
 inhabitants.
+
+**first\_case**:
+
+**first\_death**:
+
+**gdp\_in\_current\_prices\_millions\_of\_us\_dollars**:
+
+**gdp\_per\_capita\_us\_dollars**:
+
+**healthy\_life\_expectancy**:
+
+**hundred\_cases**:
+
+**hundred\_deaths**:
+
+**ischaemic\_heart\_disease**:
+
+**kidney\_diseases**:
+
+**lat**:
+
+**life\_expectancy**:
+
+**long**:
+
+**malignant\_neoplasms**:
+
+**measles\_reported\_cases**:
+
+**number\_of\_confirmed\_covid-19**:
+
+**pollution\_attributable\_death\_rate**:
+
+**pollution\_attributable\_death\_rate\_std**:
+
+**population\_aged\_60\_years\_old\_percentage**:
+
+**population\_density**:
+
+**population\_in\_thousands\_total**:
+
+**population\_living\_in\_urban\_areas**:
+
+**population\_median\_age\_years**:
+
+**population\_proportion\_over\_60**:
+
+**population\_proportion\_under\_15**:
+
+**prevalence\_smoking**: Percentage of population above age 15 years
+smoking any tobacco product.
+
+**proportion\_basic\_handwashing\_facilities**: The percentage of
+population living in households that have a handwashing facility with
+soap and water at home.
+
+**recov\_cases\_per\_100000**:
+
+**recovered\_from\_covid-19\_no.**
+
+**respiratory\_diseases**: Mortality from respiratory diseases in
+percent.
+
+**respiratory\_infectious**: Mortality from respiratory infections in
+percent.
+
+**road\_injury**: Mortality from road injuries in percent.
+
+**sex**:
+
+**sex\_ratio\_males\_per\_100\_females**:
+
+**test\_cases\_per\_100000**:
+
+**thousand\_cases**:
+
+**thousand\_deaths**:
+
+**proportion\_using\_clean\_fuels**:
+
+## List of variables
