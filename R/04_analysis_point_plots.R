@@ -83,46 +83,6 @@ for(i in list_of_cov_hj){
 
 
 
-# Interactive plots for selected variables --------------------------------
-
-#plotting depending variable (x-axis) possibly affecting corona outbreak (y-axis)
-p_resp <- ggplot(covid_aug_by_country, aes_string(x="respiratory_diseases", y = 'days_from_dec1_to_100_cases')) +
-  geom_point(aes(color=log(gdp_per_capita_us_dollars), size=population_in_thousands_total, alpha=0.5)) + 
-  scale_size(range = c(0.5, 20), name="Population", labels = NULL) +
-  scale_colour_gradientn(colours=topo.colors(5), name = "GDP per capita (log)") +
-  ylab("Days from 1st December to 100 cases") +
-  xlab("Respiratory Disases") +
-  ggtitle("Development of Corona-pandemic by country") +
-  guides(alpha="none")
-
-p_le <- ggplot(covid_aug_by_country, aes_string(x="life_expectancy", y = 'days_from_dec1_to_100_cases')) +
-  geom_point(aes(color=log(gdp_per_capita_us_dollars), size=population_in_thousands_total, alpha=0.5)) + 
-  scale_size(range = c(0.5, 20), name="Population", labels = NULL) +
-  scale_colour_gradientn(colours=topo.colors(5), name = "GDP per capita (log)") +
-  ylab("Days from 1st December to 100 cases") +
-  xlab("Life expectancy (years)") +
-  ggtitle("Development of Corona-pandemic by country") +
-  guides(alpha="none")
-
-p_urban <- ggplot(covid_aug_by_country, aes_string(x="population_living_in_urban_areas", y = 'days_from_dec1_to_100_cases')) +
-  geom_point(aes(color=log(gdp_per_capita_us_dollars), size=population_in_thousands_total, alpha=0.5)) + 
-  scale_size(range = c(0.5, 20), name="Population", labels=NULL) +
-  scale_colour_gradientn(colours=topo.colors(5), name="GDP per capita (log)") +
-  ylab("Days from 1st December to 100 cases") +
-  xlab("Population living in urban areas (%)") +
-  ggtitle("Development of Corona-pandemic by country") +
-  guides(alpha="none")
-
-
-
-ggplotly(p_resp, tooltip = c("country", "gdp_per_capita_us_dollars")) %>% 
-  highlight("plotly_hover")
-ggplotly(p_urban, tooltip = c("country")) %>% 
-  highlight("plotly_hover")
-ggplotly(p_urban) %>% 
-  rangeslider(covid_aug$date[2020-01-22], covid_aug$date[2020-05-03])
-
-
 # Gif ---------------------------------------------------------------------
 
 #renaming output-variables for gif
@@ -144,13 +104,6 @@ covid_aug2 <- covid_aug %>%
    labs(title = "Date: {frame_time}")
  #Animate and present the files in  a gif
  animate(gif_plot_log, duration = 10, fps = 10, width = 900, height = 450, renderer = gifski_renderer())
- # save as a GIF
+
+# Save gif ---------------------------------------------------------------
  anim_save("results/04_analysis_point_plots/cases_deaths_log.gif")
- 
- 
-
-
-# Write data
-# ------------------------------------------------------------------------------
-write_tsv(...)
-ggsave(...)
