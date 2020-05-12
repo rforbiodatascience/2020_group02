@@ -1,17 +1,16 @@
 # Clear workspace ---------------------------------------------------------
+
 rm(list = ls())
 
 
 # Load libraries ----------------------------------------------------------
+
 library("modelr")
 library("broom")
 
 
-# Define functions --------------------------------------------------------
-source(file = "R/99_project_functions.R")
-
-
 # Load data ---------------------------------------------------------------
+
 levels <- c("1", "2", "3")
 covid_aug <- read_tsv(file = "data/03_covid_aug.tsv",
                       col_types = cols(thousand_deaths = col_date(),
