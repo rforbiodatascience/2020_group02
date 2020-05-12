@@ -27,16 +27,128 @@ Original data is available in this repository in /data/_raw
 
 **adult_mortality_rate**: The probability of dying between the ages of 15 and 60 years (per 1 000 population) per year among a hypothetical cohort of 100 000 people that would experience the age-specific mortality rate of the reporting year. 
 
-**concentration_fine_particles**: The mean annual concentration of fine suspended particles of less than 2.5 microns in diameters is a common measure of air pollution. The mean is a population-weighted average for urban population in a country.
-
 **bmi_above30_prevalence_all**: Percentage of defined population with a body mass index (BMI) of 30 kg/m2 or higher.  
 
-**proportion_basic_handwashing_facilities**: The percentage of population living in households that have a handwashing facility with soap and water at home.
+**cardiovascular_diseases**: Mortality from cardiovascular disease in percent.
+
+**concentration_fine_particles**: The mean annual concentration of fine suspended particles of less than 2.5 microns in diameters is a common measure of air pollution. The mean is a population-weighted average for urban population in a country.
+
+**confirmed_cases_per_100000**: Number of confirmed COVID-19 cases per 100000 inhabitants.
+
+**country**: Country
+
+**cumulative_covid_test**: Cumulative number of COVID-19 tests.
 
 **current_health_expenditure_per_person_usd**: Level of general government expenditure on health (GGHE) expressed as a percentage of total government expenditure.
+
+**date**:
+
+**date_28_days_after_100_cases**:
+
+**days_from_100_cases_to_100_deaths**:
+
+**days_from_100_cases_to_1000_deaths**:
+
+**days_from_dec1_to_100_cases**:
+
+**days_to_hundred_cases**:
+
+**days_to_thousand_cases**:
+
+**dead_cases_per_100000**:
+
+**deaths_28_days_after_100_cases**:
+
+**deaths_28_days_per_100000**:
 
 **density_of_hospitals**: Number of hospitals, including the following hospital categories: rural and district, provincial (second level referral), regional/specialized/teaching and research hospitals (tertiary care), from the public and private sectors, per 100,000 population.
 
 **density_of_medical_doctors**: Medical doctors per 10000 inhabitants.
 
 **density_of_nurses_midwifes**: Nurses and midwifes per 10000 inhabitants. 
+
+**first_case**:
+
+**first_death**:
+
+**gdp_in_current_prices_millions_of_us_dollars**:
+
+**gdp_per_capita_us_dollars**:
+
+**healthy_life_expectancy**:
+
+**hundred_cases**:
+
+**hundred_deaths**:
+
+**ischaemic_heart_disease**:
+
+**kidney_diseases**:
+
+**lat**:
+
+**life_expectancy**:
+
+**long**:
+
+**malignant_neoplasms**:
+
+**measles_reported_cases**:
+
+**number_of_confirmed_covid-19**:
+
+**pollution_attributable_death_rate**: 
+
+**pollution_attributable_death_rate_std**: 
+
+**population_aged_60_years_old_percentage**:
+
+**population_density**:
+
+**population_in_thousands_total**:
+
+**population_living_in_urban_areas**:
+
+**population_median_age_years**:
+
+**population_proportion_over_60**:
+
+**population_proportion_under_15**:
+
+**prevalence_smoking**: Percentage of population above age 15 years smoking any tobacco product.
+
+**proportion_basic_handwashing_facilities**: The percentage of population living in households that have a handwashing facility with soap and water at home.
+
+**recov_cases_per_100000**:
+
+**recovered_from_covid-19_no.**
+
+**respiratory_diseases**: Mortality from respiratory diseases in percent.
+
+**respiratory_infectious**: Mortality from respiratory infections in percent.
+
+**road_injury**: Mortality from road injuries in percent.
+
+**sex**:
+
+**sex_ratio_males_per_100_females**:
+
+**test_cases_per_100000**:
+
+**thousand_cases**:
+
+**thousand_deaths**:
+
+
+
+
+
+
+
+
+**proportion_using_clean_fuels**:
+
+
+
+
+## List of variables
