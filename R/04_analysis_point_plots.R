@@ -5,12 +5,6 @@ rm(list = ls())
 
 
 # Load libraries ----------------------------------------------------------
-
-install.packages("gganimate")
-install.packages("gifski")
-install.packages("plotly")
-install.packages("scales")
-library(plotly)
 library(tidyverse)
 library(gganimate)
 library(gifski)
@@ -42,7 +36,7 @@ for(i in list_of_cov_hj){
     scale_size(range = c(0.5, 16), name="Population in thousands", label = comma, breaks = c(1000, 50000, 100000, 500000)) +
     scale_colour_gradientn(colours=topo.colors(5), name = "GDP per capita", breaks = c(12, 10, 8, 6), labels = c("Richest", "Rich", "Poor", "Poorest")) +
     ylab("Days from 100 cases to 100 deaths") +
-    xlab(str_to_sentence(str_replace(i, "_", " "))) +
+    xlab(str_to_sentence(str_replace_all(i, "_", " "))) +
     ggtitle("Development of Covid-19-pandemic by country") +
     guides(alpha="none")
   plot_list_hj1[[i]] = plt
@@ -67,7 +61,7 @@ for(i in list_of_cov_hj){
     scale_size(range = c(0.5, 16), name="Population in thousands", label = comma, breaks = c(1000, 50000, 100000, 500000)) +
     scale_colour_gradientn(colours=topo.colors(5), name = "GDP per capita", breaks = c(11.5, 10, 7.5, 5), labels = c("Richest", "Rich", "Poor", "Poorest")) +
     ylab("Days from 1st December to 100 cases") +
-    xlab(str_to_sentence(str_replace(i, "_", " "))) +
+    xlab(str_to_sentence(str_replace_all(i, "_", " "))) +
     ggtitle("Development of Covid-19-pandemic by country") +
     guides(alpha="none")
   plot_list_hj2[[i]] = plt
@@ -81,46 +75,6 @@ for(i in list_of_cov_hj){
   dev.off()
 }
 
-
-
-# Interactive plots for selected variables --------------------------------
-
-#plotting depending variable (x-axis) possibly affecting corona outbreak (y-axis)
-p_resp <- ggplot(covid_aug_by_country, aes_string(x="respiratory_diseases", y = 'days_from_dec1_to_100_cases')) +
-  geom_point(aes(color=log(gdp_per_capita_us_dollars), size=population_in_thousands_total, alpha=0.5)) + 
-  scale_size(range = c(0.5, 20), name="Population", labels = NULL) +
-  scale_colour_gradientn(colours=topo.colors(5), name = "GDP per capita (log)") +
-  ylab("Days from 1st December to 100 cases") +
-  xlab("Respiratory Disases") +
-  ggtitle("Development of Corona-pandemic by country") +
-  guides(alpha="none")
-
-p_le <- ggplot(covid_aug_by_country, aes_string(x="life_expectancy", y = 'days_from_dec1_to_100_cases')) +
-  geom_point(aes(color=log(gdp_per_capita_us_dollars), size=population_in_thousands_total, alpha=0.5)) + 
-  scale_size(range = c(0.5, 20), name="Population", labels = NULL) +
-  scale_colour_gradientn(colours=topo.colors(5), name = "GDP per capita (log)") +
-  ylab("Days from 1st December to 100 cases") +
-  xlab("Life expectancy (years)") +
-  ggtitle("Development of Corona-pandemic by country") +
-  guides(alpha="none")
-
-p_urban <- ggplot(covid_aug_by_country, aes_string(x="population_living_in_urban_areas", y = 'days_from_dec1_to_100_cases')) +
-  geom_point(aes(color=log(gdp_per_capita_us_dollars), size=population_in_thousands_total, alpha=0.5)) + 
-  scale_size(range = c(0.5, 20), name="Population", labels=NULL) +
-  scale_colour_gradientn(colours=topo.colors(5), name="GDP per capita (log)") +
-  ylab("Days from 1st December to 100 cases") +
-  xlab("Population living in urban areas (%)") +
-  ggtitle("Development of Corona-pandemic by country") +
-  guides(alpha="none")
-
-
-
-ggplotly(p_resp, tooltip = c("country", "gdp_per_capita_us_dollars")) %>% 
-  highlight("plotly_hover")
-ggplotly(p_urban, tooltip = c("country")) %>% 
-  highlight("plotly_hover")
-ggplotly(p_urban) %>% 
-  rangeslider(covid_aug$date[2020-01-22], covid_aug$date[2020-05-03])
 
 
 # Gif ---------------------------------------------------------------------
@@ -144,13 +98,6 @@ covid_aug2 <- covid_aug %>%
    labs(title = "Date: {frame_time}")
  #Animate and present the files in  a gif
  animate(gif_plot_log, duration = 10, fps = 10, width = 900, height = 450, renderer = gifski_renderer())
- # save as a GIF
+
+# Save gif ---------------------------------------------------------------
  anim_save("results/04_analysis_point_plots/cases_deaths_log.gif")
- 
- 
-
-
-# Write data
-# ------------------------------------------------------------------------------
-write_tsv(...)
-ggsave(...)
