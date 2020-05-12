@@ -29,7 +29,7 @@ library("kableExtra")
 ![](../results/04_analysis_aim/COVID-19 spread by country.png){width=60%, height=60% }
 
 
-## Datasets - overview of data
+## Datasets - overview of data 
 <div class="centered">
 ![](../results/04_analysis_flowcharts/variables_overview.png){ width=80%, height=80% }
 </div>
@@ -164,12 +164,30 @@ cor_covar %>%
 https://r-kursus.shinyapps.io/covid_app/
 
 
-## Sex leader - Mette Christof
+## Another explanation? {.flexbox .vcenter}
 <div class="columns-2">
 <div class="centered">
 ![](../results/04_analysis_exploratory_figures/COVID-19 spread by gender of national leader.png){ width=100%, height=100% }
+
+![](../doc/donald_trump.png){ width=50%, height=100% }
+![](../doc/mette_frederiksen.png){ width=50%, height=100% }
 </div>
 
-## Conclusion slide - HJ
+## Another explanation? {.flexbox .vcenter}
+<div class="columns-2">
+<div class="centered">
+![](../results/04_analysis_exploratory_figures/COVID-19 spread by gender of national leader.png){ width=100%, height=100% }
+
+OR JUST CONFOUNDING BY DEVELOPMENTAL STATUS OF THE COUNTRIES...
+![](../doc/Developed_and_developing_countries.png){ width=100%, height=100%}
+</div>
+
+## Conclusion - A small virus in a world full of data
+  ![](https://ing.dk/sites/ing/files/topillustration/2020/03/2019-ncov-cdc-23312coronavirus.png){ width=30%, height=30%}
+   
+  
+  - This project demonstrates the strength of Tidyverse R by cleansing, transformation, visualization and communication Covid-19 data
+  - Performed focusing on reproducibility
+  - All data analysis is available at github (https://github.com/rforbiodatascience/2020_group02)
 
 
