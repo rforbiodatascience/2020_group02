@@ -49,7 +49,7 @@ un_gdp_raw <- read_csv(file = "data/_raw/UN/SYB62_230_201904_GDP and GDP Per Cap
 
 # Load Gender leader data -------------------------------------------------
 
-#Gender-leader data
+#Gender-leader data (OEF Research)
 sex_leader_raw <- read_csv(file = "data/_raw/gender_leader.csv")
 
 
