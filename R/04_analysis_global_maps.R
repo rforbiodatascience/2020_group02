@@ -1,16 +1,20 @@
 # Clear workspace ---------------------------------------------------------
+
 rm(list = ls())
 
 # Load libraries ----------------------------------------------------------
+
 library("tidyverse")
 library("leaflet")
 library("htmlwidgets")
 
 # Load data ---------------------------------------------------------------
+
 covid_aug <- read_tsv(file = "data/03_covid_aug.tsv")
 
 
 # Wrangle data ------------------------------------------------------------
+
 #Selecting for total no. of deaths, dead_cases_per_100000, days_from_100_cases_to_100_deaths, days_from_dec1_to_100_cases 
 covid_map <- covid_aug %>% 
   group_by(country) %>% 
@@ -19,7 +23,9 @@ covid_map <- covid_aug %>%
 
 #NB!For overview of COVID-19 confirmed cases, COVID-19 realted deaths and COVID-19 tests performed for selected countries - see covid_app
 
+
 # Visualise data - COVID-19 global maps -----------------------------------
+
 #Creating pop-ups to maps for total no. of deaths and dead cases per 100.000
 covid_map <- covid_map %>% 
   mutate(popup_death = paste("Country:", country, 
@@ -89,6 +95,7 @@ map_days_from_100_cases_to_100_deaths  <- map_days_from_100_cases_to_100_deaths%
 
 
 # Write data - saving maps ------------------------------------------------
+
 #Savewiget only possible to working directory. Using normalizePath to save to subdirectories. 
 
 f<-"results/04_analysis_global_maps/map_dead_cases_per_100000.html"
