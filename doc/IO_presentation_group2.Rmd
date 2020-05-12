@@ -14,20 +14,16 @@ knitr::opts_chunk$set(echo = FALSE)
 library("tidyverse")
 library("knitr")
 library("kableExtra")
-
 ```
-## Aim and hypothesis 
 
+## Aim and hypothesis 
 - Aim: Linking COVID-19 and demograhic/population data 
 - Hypothesis: That factors like urbanisation and median population age affects COVID-19 kinetics
 
-<font size ="3">
 - [Global map - days from 100 cases to 100 deaths](map_days_from_100_cases_to_100_deaths.html)
-<font size ="3">
 - [Global map - days from 100 cases to 100 deaths](map_days_from_dec1_to_100_cases.html)
-<div class="centered">
-![](../results/04_analysis_aim/COVID-19 spread by country.png){width=60%, height=60% }
 
+![](../results/04_analysis_aim/COVID-19 spread by country.png){ width=60%, height=60% }
 
 ## Datasets - overview of data 
 <div class="centered">
