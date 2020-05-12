@@ -16,15 +16,29 @@ library("knitr")
 library("kableExtra")
 ```
 
-## Aim and hypothesis 
-- Aim: Linking COVID-19 and demograhic/population data 
-- Hypothesis: That factors like urbanisation and median population age affects COVID-19 kinetics
+## Selected outcome variables 
 
-- [Global map - days from 100 cases to 100 deaths](map_days_from_100_cases_to_100_deaths.html)
-- [Global map - days from 100 cases to 100 deaths](map_days_from_dec1_to_100_cases.html)
+<div class="centered">
+![](../results/04_analysis_aim/COVID-19 mortality by country.png){ width=80%, height=80% }
 
-![](../results/04_analysis_aim/COVID-19 spread by country.png){ width=60%, height=60% }
+<font size="3">[Global map - days from 100 cases to 100 deaths](map_days_from_100_cases_to_100_deaths.html)</font>
+<font size="3">[Global map - days from december 1st to 100 cases](map_days_from_dec1_to_100_cases.html)</font>
 
+## Aim and hypothesis
+
+<br>
+<font size="5"> Linking COVID-19 and demograhic/population data to:</font> <br>
+<font size="4"> 1. Days from 100 cases to 100 deaths <br>
+2. Days from December 1st to 100 deaths </br> </font> 
+<br>
+<br>
+
+<font size="5"> That demographic factors like urbanisation and median age affects COVID-19 kinetics</font>
+
+
+
+
+ 
 ## Datasets - overview of data 
 <div class="centered">
 ![](../results/04_analysis_flowcharts/variables_overview.png){ width=80%, height=80% }
@@ -44,10 +58,11 @@ library("kableExtra")
 ## Covid-19 cases and deaths in each country
 ![](../results/04_analysis_point_plots/cases_deaths_log.gif)
 
-## Results - variable selection 
-
-- Liniar correlation analysis lm(days from dec1 to 100 cases ~ diff. variables)
+## Results - selection of exposure variables 
+<br>
+- Liniar correlation analysis lm(days from december 1st to 100 cases ~ diff. exposure variables) <br>
 - Significant correlations:
+<br>
 
 ```{r include=FALSE, paged.print=FALSE}
 
@@ -153,11 +168,11 @@ cor_covar %>%
 
 ## COVID-19 app
 
-<div class="centered">
+<div class="left">
 
- - Confirmed cases, test and death in time series 
+Confirmed cases, test and death in time series 
 
-https://r-kursus.shinyapps.io/covid_app/
+<font size="3">https://r-kursus.shinyapps.io/covid_app/</font>
 
 
 ## Another explanation? {.flexbox .vcenter}
