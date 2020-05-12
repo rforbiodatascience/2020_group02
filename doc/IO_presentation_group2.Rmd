@@ -85,7 +85,7 @@ Lubridate (converting to date)
 ; scales (modify scales on ggplot)</font>
 </div>
 
-## Covid-19 cases and deaths in each country
+## COVID-19 cases and deaths in each country
 ![](../results/04_analysis_point_plots/cases_deaths_log.gif)
 
 ## Results - selection of exposure variables 
