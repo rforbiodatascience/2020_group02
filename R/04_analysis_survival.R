@@ -1,4 +1,3 @@
-
 # Clear workspace ---------------------------------------------------------
 
 rm(list = ls())
@@ -21,7 +20,6 @@ covid_aug <- read_tsv(file = "data/03_covid_aug.tsv")
 
 # Wrangle data ------------------------------------------------------------
 
-
 #kaplan-meier curves for survival - example with time to 100 deaths and density of medical doctors
 kaplan_meier <- covid_aug %>% 
   group_by(country) %>% 
@@ -32,12 +30,9 @@ kaplan_meier <- covid_aug %>%
   filter(!is.na(time))
 
 
-
 # Survival analyses and plots -------------------------------------------------------
 
-
 #KM plots for all tertiled variables
-
 list_colnames <- names(kaplan_meier)[59:91]
 
 plot_list <- list()
@@ -75,6 +70,3 @@ for(i in list_colnames){
     dev.off()
   }
   
-
-
-
