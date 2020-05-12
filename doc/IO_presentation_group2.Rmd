@@ -49,7 +49,6 @@ Lubridate (converting to date)
 ; DiagrammeR + DiagrammeRsvg + rsvg (flowcharts)
 ; leaflet (making world maps)
 ; htmlwidgets (saving interactiv plots)
-; modelr (linear regression)
 ; survivalAnalysis (Survival analysis)
 ; gganimate and gifski (making and saving gif)
 ; scales (modify scales on ggplot)!</font>
