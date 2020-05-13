@@ -43,23 +43,23 @@ map_dead_cases_per_100000 <- covid_map %>%
   filter(!is.na(dead_cases_per_100000)) %>% 
   leaflet() %>%
   addProviderTiles(provider = "Stamen.TerrainBackground") %>% 
-  addCircles(covid_map, lng = ~long, lat = ~lat, radius = ~`dead_cases_per_100000` * 5000,
-             popup = ~popup_death, weight = 3, color = "red", opacity = 2)
+  addCircles(covid_map, lng = ~long, lat = ~lat, radius = ~`dead_cases_per_100000` * 6000,
+             popup = ~popup_death, weight = 0.75, color = "red", opacity = 2)
 
 #Global map for total no. of deaths
 map_number_of_covid_19_related_deaths <- covid_map %>% 
   filter(!is.na(`number_of_covid-19_related_deaths`)) %>% 
   leaflet() %>%
   addProviderTiles(provider = "Stamen.TerrainBackground") %>% 
-  addCircles(covid_map, lng = ~long, lat = ~lat, radius = ~`number_of_covid-19_related_deaths` * 20,
-             popup = ~popup_death, weight = 3, color = "red", opacity = 2) 
+  addCircles(covid_map, lng = ~long, lat = ~lat, radius = ~`number_of_covid-19_related_deaths` * 25,
+             popup = ~popup_death, weight = 0.75, color = "red", opacity = 2) 
 
 #Global map of deaths from 1st december to 100 confirmed cases, as range.
 #Filtering NAs from variables to be plotted. Adding a new variable (covid_map_cuts) for indexing no. of days from Dec 1st to first 100 confirmed COVID in ranges (1-80; 80-120; .. days)
 map_days_from_dec1_to_100_cases <- covid_map  %>% 
   filter(!is.na(days_from_dec1_to_100_cases)) %>% 
   mutate(covid_map_cuts = cut(days_from_dec1_to_100_cases, c(1, 80, 120, 150, Inf), 
-                              labels = c("< 80 days", "80-120 days", "120-150 days", ">150 days")))
+                              labels = c("< 80 days", "80-120 days", "121-150 days", ">150 days")))
  
 #Choosing color/palet for range intervals for mapping. 
 pal_1 <- colorFactor(palette = c("red", "orange", "yellow", "green"), 
@@ -70,17 +70,17 @@ map_days_from_dec1_to_100_cases <- map_days_from_dec1_to_100_cases %>%
   leaflet() %>%
   addProviderTiles(provider = "Stamen.TerrainBackground") %>% 
   addCircles(covid_map, lng = ~long, lat = ~lat, color = ~pal_1(covid_map_cuts), 
-             weight = 2, radius = 300000, opacity = 1, 
+             weight = 1, radius = 300000, opacity = 1, 
              label = paste(map_days_from_dec1_to_100_cases$country, 
                            "- days from December 1st to 100 COVID-19 cases:", map_days_from_dec1_to_100_cases$days_from_dec1_to_100_cases)) %>% 
   addLegend(title = "COVID-19: days from December 1st to first 100 confirmed cases ", pal = pal_1, values = map_days_from_dec1_to_100_cases$covid_map_cuts)
-
+ 
 
 #Global map of days from first 100 cases to 100 deaths, as range. For work-around explanation, see above.
 map_days_from_100_cases_to_100_deaths <- covid_map  %>% 
   filter(!is.na(days_from_100_cases_to_100_deaths)) %>% 
   mutate(covid_map_cuts_death = cut(days_from_100_cases_to_100_deaths, c(1, 10, 20, 30, 40, Inf), 
-                                    labels = c("< 10 days", "10-20 days", "20-30 days", "30-40", ">40 days")))
+                                    labels = c("< 10 days", "10-20 days", "21-30 days", "31-40", ">40 days")))
 
 pal_2 <- colorFactor(palette = c("red", "orange", "yellow", "green", "white"), 
                      domain = map_days_from_100_cases_to_100_deaths$covid_map_cuts_death)
@@ -89,7 +89,7 @@ map_days_from_100_cases_to_100_deaths  <- map_days_from_100_cases_to_100_deaths%
   leaflet() %>%
   addProviderTiles(provider = "Stamen.TerrainBackground") %>% 
   addCircles(covid_map, lng = ~long, lat = ~lat, color = ~pal_2(covid_map_cuts_death), 
-             weight = 2, radius = 300000, opacity = 1,
+             weight = 1, radius = 300000, opacity = 2,
              label = paste(map_days_from_100_cases_to_100_deaths$country, 
                            "- days from first 100 confimed cases to 100 deaths:", map_days_from_100_cases_to_100_deaths$days_from_100_cases_to_100_deaths)) %>% 
   addLegend(title = "COVID-19: days from first 100 confirmed cases to 100 deaths",
