@@ -1,12 +1,6 @@
-# Define project functions
-# ------------------------------------------------------------------------------
-#foo <- function(x){
-# return(2*x)}
-#bar <- function(x){
-#return(x^2)}
 
-#Function for alligning country to Johns Hopkins data
-#-------------------------------------------------------------------------------
+#Function for alligning country to Johns Hopkins data -------------------
+
 country_translate <- function(x){
   con <- c(	"Africa"= "not in JH_clean",
             "American Samoa" = "not in cleaned JH",
