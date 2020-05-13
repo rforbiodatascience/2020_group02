@@ -49,8 +49,9 @@ Original data is available in this repository in /data/\_raw
   - rsvg v.1.3
   - scales v.1.1.0
   - survivalAnalysis v.0.1.2
-  - tidyverse
-v.1.3.0
+  - tidyverse v.1.3.0
+  - shiny v.
+1.4.0.2
 
 ## List of variables
 
@@ -118,8 +119,10 @@ v.1.3.0
 ## Usage
 
 To create the full data analysis the script 00.doit.R found in /R should
-be run. This will run all scripts and create all final plots. A
-presentation of the project can be found in /doc.
+be run (ensure that all packages are installed). This will run all
+scripts and create all final plots. A presentation of the project can be
+found in /doc. The shiny app can be found in /covid\_app and is
+published on shinyapps.io <https://r-kursus.shinyapps.io/covid_app>.
 
 ## Contact information
 

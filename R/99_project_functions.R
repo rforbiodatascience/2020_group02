@@ -1,4 +1,3 @@
-
 #Function for alligning country to Johns Hopkins data -------------------
 
 country_translate <- function(x){
