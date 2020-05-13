@@ -28,7 +28,7 @@ library("kableExtra")
 <div class="black">
 <br>
 <font size="6"> Aim:</font> <br>
-<font size="5"> Linking exposure variables (publicly available demograhic/population data etc) to:</font> <br>
+<font size="5"> Linking exposure variables (publicly available demographic/population data etc) to:</font> <br>
 <font size="4"> 1. Days from December 1st 2019 to 100 COVID-19 cases <br> - as a measure of worldwide spread of COVID-19 <br>
 2. Days from 100 confirmed COVID-19 cases to 100 COVID-19 derived deaths <br> - as a measure of nationwide spread of, and capability to deal with, COVID-19 </br> </font> 
 <br>
@@ -150,7 +150,7 @@ cor_covar %>%
 
 ```
 
-## Life expectancy
+## Results - Life expectancy
 <div class="columns-2">
   <div class="centered">
   ![](../results/04_analysis_exploratory_figures/Cases_life_expectancy_ter.png){ width=70%, height=70% }
@@ -161,7 +161,7 @@ cor_covar %>%
 </div>
 
 
-## Respiratory diseases
+## Results - Respiratory diseases
 <div class="columns-2">
   <div class="centered">
   ![](../results/04_analysis_exploratory_figures/Cases_respiratory_diseases_ter.png){ width=70%, height=70% }
@@ -171,7 +171,7 @@ cor_covar %>%
    - <font size="3"> A similar, but somewhat weaker, association was seen for respiratory diseases (p<0.001, log-rank test) </font>
 </div>
 
-## Population % living in urban areas
+## Results - Population % in urban areas
 
 <div class="columns-2">
   <div class="centered">
@@ -183,7 +183,7 @@ cor_covar %>%
 
 </div>
 
-## PCA analysis by population demographics
+## Results - PCA analysis by demographics
 <div class="columns-2">
   <div class="left">
   ![](../results/04_analysis_PCA/pca_deaths.png){ width=105%, height=105% }
@@ -194,7 +194,7 @@ cor_covar %>%
   - <font size="3"> Life expentancy strongest driver of PC1 </font>
   ![](../results/04_analysis_PCA/PC_significance.png){ width=60%, height=60% }
 
-## PCA and cluster analysis
+## Results - PCA and cluster analysis
   <div class="columns-2">
   <div class="left">
   ![](../results/04_analysis_PCA/pca_cluster_rel_deaths.png){ width=100%, height=100% }

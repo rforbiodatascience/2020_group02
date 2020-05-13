@@ -44,8 +44,11 @@ covid_pca %>% tidy("pcs")
 #Plot of PCA significance of individual PCs
 PC_sign <- covid_pca %>% tidy("pcs") %>% 
   ggplot(aes(x = PC, y = percent)) +
-  geom_col() +
-  theme_bw()
+  geom_col(fill = "blue") +
+  labs(x = "Principal component", y = "Percentage") +
+  theme_classic() +
+  theme(text = element_text(size=20),
+        axis.text.x = element_text(angle=90, hjust=1))
 
 png("results/04_analysis_PCA/PC_significance.png", width=8.5,height = 6.5,unit='in',res=300)
 
@@ -88,11 +91,13 @@ covid_pca_aug
 #plotting PCA with coloring by tertile absolute and relative COVID-19 variables
 pl_pca_1 <- covid_pca_aug %>% 
   ggplot(aes(x = .fittedPC1, y = .fittedPC2, colour = tertile_deaths)) +
-  geom_point()
+  geom_point() + 
+  labs(color = "Absolute deaths (tertiles)")
 
 pl_pca_2 <- covid_pca_aug %>% 
   ggplot(aes(x = .fittedPC1, y = .fittedPC2, colour = tertile_rel_deaths)) +
-  geom_point()
+  geom_point() + 
+  labs(color = "Relative deaths (tertiles)")
 
 
 png("results/04_analysis_PCA/pca_deaths.png", width=8.5,height = 6.5,unit='in',res=300)
@@ -158,19 +163,22 @@ dev.off()
 #Plot PCA - colour by relative COVID deaths
 pl1_rel <- covid_pca_aug_k_org_pca %>%
   ggplot(aes(x = .fittedPC1, y = .fittedPC2, colour = tertile_rel_deaths)) +
-  geom_point() +
+  geom_point()  + 
+  labs(color = "Relative deaths (tertiles)") +
   theme(legend.position = "bottom")
 
 #Plot PCA - colour by cluster analysis
 pl2_rel <- covid_pca_aug_k_org_pca %>%
   ggplot(aes(x = .fittedPC1, y = .fittedPC2, colour = cluster_org)) +
   geom_point() +
+  labs(color = "Clusters") +
   theme(legend.position = "bottom")
 
 #Plot PCA - colour by cluster based on PCA
 pl3_rel <- covid_pca_aug_k_org_pca %>%
   ggplot(aes(x = .fittedPC1, y = .fittedPC2, colour = cluster_pca)) +
   geom_point() +
+  labs(color = "Clustering by PCA") +
   theme(legend.position = "bottom")
 
 
