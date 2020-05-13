@@ -1,5 +1,5 @@
 ---
-title: "Influence of demographic characteristic on COVID-19 kinetics"
+title: "Influence of demographic characteristics on COVID-19 kinetics"
 author: "Mette Christoffersen, Signe Modvig, Hans Jakob Hartling and Mette Christensen"
 date: "15/5/2020"
 output: 
@@ -29,7 +29,7 @@ library("kableExtra")
 <br>
 <font size="6"> Aim:</font> <br>
 <font size="5"> Linking exposure variables (publicly available demograhic/population data etc) to:</font> <br>
-<font size="4"> 1. Days from December 1st 2019 to 100 COVID-19 derived deaths <br> - as a measure of worldwide spread of COVID-19 <br>
+<font size="4"> 1. Days from December 1st 2019 to 100 COVID-19 cases <br> - as a measure of worldwide spread of COVID-19 <br>
 2. Days from 100 confirmed COVID-19 cases to 100 COVID-19 derived deaths <br> - as a measure of nationwide spread of, and capability to deal with, COVID-19 </br> </font> 
 <br>
 <br>
