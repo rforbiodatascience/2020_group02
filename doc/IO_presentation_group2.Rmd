@@ -38,9 +38,6 @@ library("kableExtra")
 <font size="5"> Demographic factors like urbanisation and age distribution affects COVID-19 kinetics</font>
 
 
-
-
- 
 ## Datasets - overview of data 
 <div class="centered">
 ![](../results/04_analysis_flowcharts/variables_overview1.png){ width=60%, height=60% }
@@ -128,7 +125,15 @@ cor_covar %>%
 
 ```
 
+## Life expectancy
+<div class="columns-2">
+  <div class="centered">
+  ![](../results/04_analysis_exploratory_figures/Cases_life_expectancy_ter.png){ width=70%, height=70% }
+  ![](../results/04_analysis_survival/KM_life_expectancy_ter.png){width=70%, height=70% }
 
+  ![](../results/04_analysis_point_plots/cases_life_expectancy.png){ width=110%, height=110% }
+   - <font size="3"> Life expectancy clearly positively associates with COVID-19 case- and mortality kinetics (p=0.021, log-rank test)</font>
+</div>
 
 
 ## Respiratory diseases
@@ -138,17 +143,7 @@ cor_covar %>%
   ![](../results/04_analysis_survival/KM_respiratory_diseases_ter.png){width=70%, height=70% }
 
    ![](../results/04_analysis_point_plots/cases_respiratory_diseases.png){ width=110%, height=110% }
-   - <font size="3"> A clear association to COVID-19 case- and mortality kinetics was seen for respiratory diseases (p<0.001, log-rank test) </font>
-</div>
-
-## Life expectancy
-<div class="columns-2">
-  <div class="centered">
-  ![](../results/04_analysis_exploratory_figures/Cases_life_expectancy_ter.png){ width=70%, height=70% }
-  ![](../results/04_analysis_survival/KM_life_expectancy_ter.png){width=70%, height=70% }
-
-  ![](../results/04_analysis_point_plots/cases_life_expectancy.png){ width=110%, height=110% }
-   - <font size="3"> Life expectancy also associates with COVID-19 case- and mortality kinetics (p=0.021, log-rank test)</font>
+   - <font size="3"> A similar, but somewhat weaker, association was seen for respiratory diseases (p<0.001, log-rank test) </font>
 </div>
 
 ## Population % living in urban areas
@@ -159,7 +154,7 @@ cor_covar %>%
   ![](../results/04_analysis_survival/KM_population_living_in_urban_areas_ter.png){width=70%, height=70% }
 
   ![](../results/04_analysis_point_plots/cases_population_living_in_urban_areas.png){ width=110%, height=110% }
-     - <font size="3"> A similar association was seen for % of population in urban area (p=0.013, log-rank test)</font>
+     - <font size="3"> Likewise, a positive association was seen for % of the population living in urban area (p=0.013, log-rank test)</font>
 
 </div>
 
@@ -168,11 +163,10 @@ cor_covar %>%
   <div class="centered">
   ![](../results/04_analysis_PCA/pca_deaths.png){ width=105%, height=105% }
   
-  - PCA showed a clear association with COVID-19 kinetics
-  - Relative COVID-19 deaths were more informative than absolute deaths
-  - PC1 comprises 44.6% of variation
-   
-  ![](../results/04_analysis_PCA/PC_significance.png){ width=60%, height=60% }
+  - <font size="3"> PCA showed a clear association with COVID-19 kinetics </font>
+  - <font size="3"> Relative COVID-19 deaths were more informative than absolute deaths </font>
+  - <font size="3"> PC1 comprises 44.6% of variation with life expentancy as the strongest driver of PC1 </font>
+  ![](../results/04_analysis_PCA/PC_significance.png){ width=65%, height=65% }
 
 ## PCA and cluster analysis
   <div class="columns-2">
