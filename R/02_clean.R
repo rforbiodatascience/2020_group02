@@ -415,7 +415,7 @@ life_expectancy_clean <- life_expectancy %>%
          life_expectancy = "Life expectancy at birth (years)_Both sexes",
          healthy_life_expectancy = "Healthy life expectancy (HALE) at birth (years)_Both sexes")
 
-#WHO - cause specific mortality - read dataset to object.
+#WHO - cause specific mortality
 #Renaming variables, removing gender-specifc rows and unnecessary variables 
   mortality_causes_clean <- mortality_causes %>% 
   rename(Cause_1 = "...5", Cause_2 = "...6") %>% 

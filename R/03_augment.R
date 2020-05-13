@@ -176,6 +176,7 @@ covid_join <- covid_join %>%
 
 
 dfs <- mget(ls(pattern = ".+_clean"))
+
 #cleaning variable names 
 covid_join <- covid_join %>% 
   rename_all(~str_to_lower(.)) %>% 

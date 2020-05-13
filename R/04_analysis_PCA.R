@@ -188,4 +188,3 @@ png("results/04_analysis_PCA/pca_cluster_rel_deaths.png", width=8.5,height = 6.5
 (pl1_rel + pl2_rel + pl3_rel)
 
 dev.off()
-
