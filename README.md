@@ -119,14 +119,15 @@ Original data is available in this repository in /data/\_raw
 ## Usage
 
 To create the full data analysis the script 00.doit.R found in /R should
-be run (ensure that all packages are installed). This will run all
-scripts and create all final plots. A presentation of the project can be
-found in /doc. The shiny app can be found in /covid\_app and is
-published on shinyapps.io <https://r-kursus.shinyapps.io/covid_app>.
+be run (ensure that all needed packages are installed before running
+00.doit.R). This will run all scripts and create all final plots. A
+presentation of the project can be found in /doc. The shiny app can be
+found in /covid\_app and is published on shinyapps.io
+<https://r-kursus.shinyapps.io/covid_app>.
 
 ## Contact information
 
-Mette Christensen  
-Signe Modvig Stausbøll  
-Hans Jakob Hartling  
-Mette Christoffersen
+Mette Christensen (s200691)  
+Signe Modvig Stausbøll (s163636)  
+Hans Jakob Hartling (s200602)  
+Mette Christoffersen (s192033)

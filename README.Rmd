@@ -111,7 +111,7 @@ To create the full data analysis the script 00.doit.R found in /R should be run 
 
 
 ## Contact information
-Mette Christensen  
-Signe Modvig Stausbøll  
-Hans Jakob Hartling  
-Mette Christoffersen  
+Mette Christensen (s200691)  
+Signe Modvig Stausbøll (s163636)  
+Hans Jakob Hartling (s200602)  
+Mette Christoffersen (s192033)  
