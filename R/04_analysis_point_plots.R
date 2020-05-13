@@ -14,7 +14,9 @@ library(scales)
 
 # Load data ---------------------------------------------------------------
 
-covid_aug <- read_tsv(file = "data/03_covid_aug.tsv")
+covid_aug <- read_tsv(file = "data/03_covid_aug.tsv",
+                      col_types = cols(thousand_deaths = col_date(),
+                                       `days_from_100_cases_to_1000_deaths` = col_double()))
 
 #one row pr country using latest date
 covid_aug_by_country <- covid_aug %>% 
@@ -39,7 +41,7 @@ for(i in list_of_cov_hj){
     scale_colour_gradientn(colours=topo.colors(5), name = "GDP per capita", breaks = c(12, 10, 8, 6), labels = c("Richest", "Rich", "Poor", "Poorest")) +
     ylab("Days from 100 cases to 100 deaths") +
     xlab(str_to_sentence(str_replace_all(i, "_", " "))) +
-    ggtitle("Development of Covid-19-pandemic by country") +
+    ggtitle("Development of COVID-19-pandemic by country") +
     guides(alpha="none")
   plot_list_hj1[[i]] = plt
   print(plot_list_hj1[[i]])
@@ -62,9 +64,9 @@ for(i in list_of_cov_hj){
     geom_point(aes(color=log(gdp_per_capita_us_dollars), size=population_in_thousands_total, alpha=0.5)) + 
     scale_size(range = c(0.5, 16), name="Population in thousands", label = comma, breaks = c(1000, 50000, 100000, 500000)) +
     scale_colour_gradientn(colours=topo.colors(5), name = "GDP per capita", breaks = c(11.5, 10, 7.5, 5), labels = c("Richest", "Rich", "Poor", "Poorest")) +
-    ylab("Days from 1st December to 100 cases") +
+    ylab("Days from 1st December 2019 to 100 cases") +
     xlab(str_to_sentence(str_replace_all(i, "_", " "))) +
-    ggtitle("Development of Covid-19-pandemic by country") +
+    ggtitle("Development of COVID-19-pandemic by country") +
     guides(alpha="none")
   plot_list_hj2[[i]] = plt
   print(plot_list_hj2[[i]])
@@ -91,8 +93,8 @@ covid_aug2 <- covid_aug %>%
    scale_colour_gradientn(colours=topo.colors(5), name = "GDP per capita", breaks = c(12, 10, 7.5, 5), labels = c("Richest", "Rich", "Poor", "Poorest")) +
    scale_x_log10(label = comma) +
    scale_y_log10(label = comma) +
-   ylab("Confirmed Covid-19 deaths (log)") +
-   xlab("Confirmed Covid-19 cases (log)") +
+   ylab("Confirmed COVID-19 deaths (log)") +
+   xlab("Confirmed COVID-19 cases (log)") +
    theme(axis.text = element_text(size = 12), axis.title = element_text(size = 18)) +
    guides(alpha="none") + 
    transition_time(date) +

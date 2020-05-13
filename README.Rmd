@@ -9,135 +9,109 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Description
-This is a project on the influence of demographic characteristics on COVID-19 kinetics, which was performed as a part of "R for Bio Data Science" at DTU in the spring of 2020. The project includes an exploratory data analyses, survival analysis, PCA clustering, and a Shiny app developed on the data.
+This is a project on the influence of demographic characteristics on COVID-19 kinetics, which was performed as a part of the "R for Bio Data Science" course at DTU in the spring of 2020. The project includes an exploratory data analyses, survival analysis, PCA clustering, and a Shiny app developed on the data.
 
 
 ## Data
-The data for this project includes COVID-19 data from Johns Hopkins University (https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data) combined with publicly available data on population demographics, public health measures, health system capacity, COVID-19 tests, and cause-specific mortality for countries around the world. These additional data has been retrieved from the World Health Organization (https://www.who.int/data/gho), United Nations (http://data.un.org/) and Our World in Data (https://ourworldindata.org/). Data has been updated with follow-up until May 4th 2020. 
+The data for this project includes COVID-19 data from Johns Hopkins University (https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data) combined with publicly available data on population demographics, public health measures, health system capacity, COVID-19 tests, and cause-specific mortality for countries around the world. These additional data has been retrieved from the World Health Organization (https://www.who.int/data/gho), United Nations (http://data.un.org/), One Earth Future Research (https://oefresearch.org/datasets/reign), and Our World in Data (https://ourworldindata.org/). Data has been updated with follow-up until May 4th 2020. 
 
 Original data is available in this repository in /data/_raw
 
 
-## List of variables
-**number_of_confirmed_covid-19**: Number of confirmed COVID-19 cases.
+## Software requirements
 
-**number_of_covid-19_related_deaths**: Number of confirmed COVID-19 related deaths.
-
-**recovered_from_covid-19_no.**: Number of recovered cases of COVID-19.
-
-**adult_mortality_rate**: The probability of dying between the ages of 15 and 60 years (per 1 000 population) per year among a hypothetical cohort of 100 000 people that would experience the age-specific mortality rate of the reporting year. 
-
-**bmi_above30_prevalence_all**: Percentage of defined population with a body mass index (BMI) of 30 kg/m2 or higher.  
-
-**cardiovascular_diseases**: Mortality from cardiovascular disease in percent.
-
-**concentration_fine_particles**: The mean annual concentration of fine suspended particles of less than 2.5 microns in diameters is a common measure of air pollution. The mean is a population-weighted average for urban population in a country.
-
-**confirmed_cases_per_100000**: Number of confirmed COVID-19 cases per 100000 inhabitants.
-
-**country**: Country
-
-**cumulative_covid_test**: Cumulative number of COVID-19 tests.
-
-**current_health_expenditure_per_person_usd**: Level of general government expenditure on health (GGHE) expressed as a percentage of total government expenditure.
-
-**date**: Date
-
-**date_28_days_after_100_cases**: Date 28 days after reaching 100 cases.
-
-**days_from_100_cases_to_100_deaths**: Number of days from reaching 100 cases to reaching 100 deaths.
-
-**days_from_100_cases_to_1000_deaths**: Number of days from reaching 100 cases to reaching 1000 deaths.
-
-**days_from_dec1_to_100_cases**: Number of days from December 1st 2019 to reaching 100 cases.
-
-**days_to_hundred_cases**: Number of days until reaching 100 cases.
-
-**days_to_thousand_cases**: Number of days until reaching 1000 cases.
-
-**dead_cases_per_100000**: Number of COVID-19 related deaths per 100000 inhabitants.
-
-**deaths_28_days_after_100_cases**: Number of COVID-19 related deaths 28 days after reaching 100 cases.
-
-**deaths_28_days_per_100000**: Number of COVID-19 related deaths per 100000 inhabitants.
-
-**density_of_hospitals**: Number of hospitals, including the following hospital categories: rural and district, provincial (second level referral), regional/specialized/teaching and research hospitals (tertiary care), from the public and private sectors, per 100,000 population.
-
-**density_of_medical_doctors**: Medical doctors per 10000 inhabitants.
-
-**density_of_nurses_midwifes**: Nurses and midwifes per 10000 inhabitants. 
-
-**first_case**: Date for appearance of first case.
-
-**first_death**: Date for first COVID-19 related death.
-
-**gdp_in_current_prices_millions_of_us_dollars**: Gross domestic product in current prices (Millions USD)
-
-**gdp_per_capita_us_dollars**: Gross domestic product per capita in US dollars.
-
-**healthy_life_expectancy**:
-
-**hundred_cases**: Date for reaching 100 cases.
-
-**hundred_deaths**: Date for reaching 100 deaths.
-
-**ischaemic_heart_disease**: Mortality from ischaemic heart disease in percent.
-
-**kidney_diseases**: Mortality from kidney diseases in percent.
-
-**lat**: Latitude for country.
-
-**life_expectancy**:
-
-**long**: Longitude for country.
-
-**malignant_neoplasms**: Mortality from malignant neoplasms in percent.
-
-**measles_reported_cases**: 
-
-**number_of_confirmed_covid-19**:
-
-**pollution_attributable_death_rate**: 
-
-**pollution_attributable_death_rate_std**: 
-
-**population_aged_60_years_old_percentage**:
-
-**population_density**:
-
-**population_in_thousands_total**:
-
-**population_living_in_urban_areas**:
-
-**population_median_age_years**:
-
-**population_proportion_over_60**:
-
-**population_proportion_under_15**:
-
-**prevalence_smoking**: Percentage of population above age 15 years smoking any tobacco product.
-
-**proportion_basic_handwashing_facilities**: The percentage of population living in households that have a handwashing facility with soap and water at home.
-
-**recov_cases_per_100000**:
-
-**recovered_from_covid-19_no.**
-
-**respiratory_diseases**: Mortality from respiratory diseases in percent.
-
-**respiratory_infectious**: Mortality from respiratory infections in percent.
-
-**road_injury**: Mortality from road injuries in percent.
-
-**sex**:
-
-**sex_ratio_males_per_100_females**:
-
-**test_cases_per_100000**:
-
-**thousand_cases**:
-
-**thousand_deaths**:
+* R
 
 
 ## Packages
+
+* broom v.0.5.5
+* DiagrammeR v.1.0.5 
+* DiagrammeRsvg v.0.1
+* gganimate v.1.0.5
+* gifski v.0.8.6
+* htmlwidgets v.1.5.1
+* leaflet v.2.0.3
+* lubridate v.1.7.8
+* modelr v.0.1.6
+* patchwork v.1.0.0
+* PMCMRplus v.1.4.4
+* readxl v.1.3.1
+* rsvg v.1.3
+* scales v.1.1.0
+* survivalAnalysis v.0.1.2
+* tidyverse v.1.3.0
+* shiny v. 1.4.0.2
+
+## List of variables
+Variable name | Explanation
+------------- | -------------
+**adult_mortality_rate** | The probability of dying between the ages of 15 and 60 years (per 1 000 population) per year among a hypothetical cohort of 100 000 people that would experience the age-specific mortality rate of the reporting year. 
+**bmi_above30_prevalence_all** | Percentage of defined population with a body mass index (BMI) of 30 kg/m2 or higher.   
+**cardiovascular_diseases** | Mortality from cardiovascular disease in percent.
+**concentration_fine_particles** | The mean annual concentration of fine suspended particles of less than 2.5 microns in diameters is a common measure of air pollution. The mean is a population-weighted average for urban population in a country.
+**confirmed_cases_per_100000** | Number of confirmed COVID-19 cases per 100000 inhabitants.
+**country** | Country
+**cumulative_covid_test** | Cumulative number of COVID-19 tests.
+**current_health_expenditure_per_person_usd** | Level of general government expenditure on health (GGHE) expressed as a percentage of total government expenditure.
+**date** | Date
+**date_28_days_after_100_cases** | Date 28 days after reaching 100 cases.
+**days_from_100_cases_to_100_deaths** | Number of days from reaching 100 cases to reaching 100 deaths.
+**days_from_100_cases_to_1000_deaths** | Number of days from reaching 100 cases to reaching 1000 deaths.
+**days_from_dec1_to_100_cases** | Number of days from December 1st 2019 to reaching 100 cases.
+**days_to_hundred_cases** | Number of days until reaching 100 cases.
+**days_to_thousand_cases** | Number of days until reaching 1000 cases.
+**dead_cases_per_100000** | Number of COVID-19 related deaths per 100000 inhabitants.
+**deaths_28_days_after_100_cases** |  Number of COVID-19 related deaths 28 days after reaching 100 cases.
+**deaths_28_days_per_100000** | Number of COVID-19 related deaths per 100000 inhabitants.
+**density_of_hospitals** | Number of hospitals, including the following hospital categories: rural and district, provincial (second level referral), regional/specialized/teaching and research hospitals (tertiary care), from the public and private sectors, per 100,000 population.
+**density_of_medical_doctors** | Medical doctors per 10000 inhabitants.
+**density_of_nurses_midwifes** | Nurses and midwifes per 10000 inhabitants. 
+**first_case** | Date for appearance of first case.
+**first_death** | Date for first COVID-19 related death.
+**gdp_in_current_prices_millions_of_us_dollars** | Gross domestic product in current prices (Millions USD)
+**gdp_per_capita_us_dollars** | Gross domestic product per capita in US dollars.
+**healthy_life_expectancy** | Average number of years that a person can expect to live in "full health".
+**hundred_cases** | Date for reaching 100 cases.
+**hundred_deaths** | Date for reaching 100 deaths.
+**ischaemic_heart_disease** | Mortality from ischaemic heart disease in percent.
+**kidney_diseases** | Mortality from kidney diseases in percent.
+**lat** | Latitude for country.
+**life_expectancy** | Life expectancy at birth (years)
+**long** | Longitude for country.
+**malignant_neoplasms** | Mortality from malignant neoplasms in percent.
+**measles_reported_cases** | Confirmed measles cases, including those confirmed clinically, epidemiologically, or by laboratory investigation.
+**number_of_confirmed_covid-19** | Number of confirmed COVID-19 cases.
+**number_of_covid-19_related_deaths** | Number of confirmed COVID-19 related deaths.
+**pollution_attributable_death_rate** | The mortality attributable to the joint effects of household and ambient air pollution per 100000 inhabitants.
+**pollution_attributable_death_rate_std** | The mortality attributable to the joint effects of household and ambient air pollution per 100000 inhabitants (age standardized).
+**population_aged_60_years_old_percentage** | Percentage of population aged above 60 years.
+**population_density** | Population density (per km^2^)
+**population_in_thousands_total** | Population in thousands.
+**population_living_in_urban_areas** | Percent of population living in urban areas.
+**population_median_age_years** | Median age of population.
+**population_proportion_over_60** | Percentage of population aged above 60 years.
+**population_proportion_under_15** | Percentage of population aged below 15 years.
+**prevalence_smoking** | Percentage of population above age 15 years smoking any tobacco product.
+**proportion_basic_handwashing_facilities** | The percentage of population living in households that have a handwashing facility with soap and water at home.
+**recov_cases_per_100000** | Number of recovered cases of COVID-19 per 100000 inhabitants.
+**recovered_from_covid-19_no.** | Number of recovered cases of COVID-19.
+**respiratory_diseases** | Mortality from respiratory diseases in percent.
+**respiratory_infectious** | Mortality from respiratory infections in percent.
+**road_injury** | Mortality from road injuries in percent.
+**sex** | Gender of national leader.
+**sex_ratio_males_per_100_females** | Sex ratio (males per 100 females).
+**test_cases_per_100000** | Number of COVID-19 tests per 100000 inhabitants.
+**thousand_cases** | Date for reaching 1000 cases.
+**thousand_deaths** | Date for reaching 1000 deaths.
+
+
+## Usage
+To create the full data analysis the script 00.doit.R found in /R should be run (ensure that all needed packages are installed before running 00.doit.R). This will run all scripts and create all final plots. A presentation of the project can be found in /doc. The shiny app can be found in /covid_app and is published on shinyapps.io https://r-kursus.shinyapps.io/covid_app.
+
+
+## Contact information
+Mette Christensen  
+Signe Modvig Stausbøll  
+Hans Jakob Hartling  
+Mette Christoffersen  
